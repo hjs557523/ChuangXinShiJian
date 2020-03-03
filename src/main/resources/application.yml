@@ -1,2 +1,47 @@
+# Tomcat
 server:
+  tomcat:
+    max-threads: 1000
+    min-spare-threads: 30
   port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  # thymeleaf
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+
+  # mysql
+  # dev|test|pro
+  profiles:
+    active: dev
+  datasource:
+    # druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+
+# mybatis
+mybatis:
+  #1 entity
+  type-aliases-package: com.hjs.system.model
+  #2 mapper.xml
+  mapper-locations: classpath:sqlmap/*.xml
+  # mybatis-generator
+  config-location: classpath:mybatis/mybatis-config.xml
+  #3 MyBatis
+#  configuration:
+#    cache-enabled: true
+
+
+# pagehelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countsql

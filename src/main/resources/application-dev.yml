@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/gra?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&allowMultiQueries=true&useSSL=true&serverTimezone=UTC&useAffectedRows=true
+    username: root
+    password: root
+    druid:
+      initial-size: 5 #初始化连接个数
+      min-idle: 5 #最小连接池数量
+      max-active: 100 #最大连接池数量
+      max-wait: 60000  #配置获取连接等待超时的时间
+      time-between-eviction-runs-millis: 60000 #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000 #配置一个连接在池中最小生存的时间，单位是毫秒
+      #检测连接是否有效的sql
+      validation-query: SELECT 1 FROM DUAL
+      validation-query-timeout: 60000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      #PSCache MySQL下建议关闭
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20

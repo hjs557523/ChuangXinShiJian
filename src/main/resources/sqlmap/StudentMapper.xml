@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjs.system.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.Student">
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="student_id" jdbcType="VARCHAR" property="studentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="sex" jdbcType="BIT" property="sex" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="parent_mobile" jdbcType="VARCHAR" property="parentMobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="picImg" jdbcType="VARCHAR" property="picimg" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="isAvailable" jdbcType="BIT" property="isavailable" />
+    <result column="lock_state" jdbcType="INTEGER" property="lockState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sid, student_id, name, password, sex, age, create_time, mobile, parent_mobile, email, 
+    picImg, class_id, isAvailable, lock_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.Student">
+    insert into student (sid, student_id, name, 
+      password, sex, age, create_time, 
+      mobile, parent_mobile, email, 
+      picImg, class_id, isAvailable, 
+      lock_state)
+    values (#{sid,jdbcType=INTEGER}, #{studentId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, #{age,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{mobile,jdbcType=VARCHAR}, #{parentMobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{picimg,jdbcType=VARCHAR}, #{classId,jdbcType=INTEGER}, #{isavailable,jdbcType=BIT}, 
+      #{lockState,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.Student">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="parentMobile != null">
+        parent_mobile,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="picimg != null">
+        picImg,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="isavailable != null">
+        isAvailable,
+      </if>
+      <if test="lockState != null">
+        lock_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=BIT},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMobile != null">
+        #{parentMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picimg != null">
+        #{picimg,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="isavailable != null">
+        #{isavailable,jdbcType=BIT},
+      </if>
+      <if test="lockState != null">
+        #{lockState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Student">
+    update student
+    <set>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=BIT},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMobile != null">
+        parent_mobile = #{parentMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picimg != null">
+        picImg = #{picimg,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="isavailable != null">
+        isAvailable = #{isavailable,jdbcType=BIT},
+      </if>
+      <if test="lockState != null">
+        lock_state = #{lockState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Student">
+    update student
+    set student_id = #{studentId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=BIT},
+      age = #{age,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      parent_mobile = #{parentMobile,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      picImg = #{picimg,jdbcType=VARCHAR},
+      class_id = #{classId,jdbcType=INTEGER},
+      isAvailable = #{isavailable,jdbcType=BIT},
+      lock_state = #{lockState,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+
+</mapper>
