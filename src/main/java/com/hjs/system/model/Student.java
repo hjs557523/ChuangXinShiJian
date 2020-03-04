@@ -11,25 +11,15 @@ public class Student {
 
     private String password;
 
-    private Boolean sex;
-
-    private Integer age;
-
     private Date createTime;
 
     private String mobile;
 
-    private String parentMobile;
-
     private String email;
 
-    private String picimg;
+    private String picImg;
 
     private Integer classId;
-
-    private Boolean isavailable;
-
-    private Integer lockState;
 
     public Integer getSid() {
         return sid;
@@ -63,22 +53,6 @@ public class Student {
         this.password = password;
     }
 
-    public Boolean getSex() {
-        return sex;
-    }
-
-    public void setSex(Boolean sex) {
-        this.sex = sex;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -95,14 +69,6 @@ public class Student {
         this.mobile = mobile;
     }
 
-    public String getParentMobile() {
-        return parentMobile;
-    }
-
-    public void setParentMobile(String parentMobile) {
-        this.parentMobile = parentMobile;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -111,12 +77,12 @@ public class Student {
         this.email = email;
     }
 
-    public String getPicimg() {
-        return picimg;
+    public String getPicImg() {
+        return picImg;
     }
 
-    public void setPicimg(String picimg) {
-        this.picimg = picimg;
+    public void setPicImg(String picImg) {
+        this.picImg = picImg;
     }
 
     public Integer getClassId() {
@@ -125,21 +91,5 @@ public class Student {
 
     public void setClassId(Integer classId) {
         this.classId = classId;
-    }
-
-    public Boolean getIsavailable() {
-        return isavailable;
-    }
-
-    public void setIsavailable(Boolean isavailable) {
-        this.isavailable = isavailable;
-    }
-
-    public Integer getLockState() {
-        return lockState;
-    }
-
-    public void setLockState(Integer lockState) {
-        this.lockState = lockState;
     }
 }

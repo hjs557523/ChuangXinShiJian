@@ -15,6 +15,7 @@ public class HelloController {
 
     @RequestMapping("/hello")
     public String sayHello() {
-        return "Hello Hjs !";
+        System.out.println("Hello, user 访问到了这个路径...");
+        return "If you can see this page, it comments that the frame is set up successfully...";
     }
 }

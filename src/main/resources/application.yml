@@ -10,6 +10,7 @@ server:
 spring:
   # thymeleaf
   thymeleaf:
+    # 开发时关闭缓存,不然没法看到实时页面
     cache: false
     prefix: classpath:/templates/
     suffix: .html
@@ -33,10 +34,10 @@ mybatis:
   #2 mapper.xml
   mapper-locations: classpath:sqlmap/*.xml
   # mybatis-generator
-  config-location: classpath:mybatis/mybatis-config.xml
+  # config-location: classpath:mybatis/mybatis-config.xml
   #3 MyBatis
-#  configuration:
-#    cache-enabled: true
+  configuration:
+    cache-enabled: true
 
 
 # pagehelper
