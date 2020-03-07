@@ -24,12 +24,28 @@ spring:
       log-slow-sql: true
 
 
+  redis:
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 10 #连接池中的最大空闲连接
+        min-idle: 1 #连接池中的最小空闲连接
+        max-active: 20 #连接池最大连接数，使用负值表示没有限制
+        max-wait: 60000 #连接池最大阻塞等待时间，使用负值表示没有限制
+    timeout: 0 #连接超时时间
+    password: root
+
+
+
   activiti:
     check-process-definitions: false #自动检查、部署流程定义文件
     database-schema-update: true #自动更新数据库结构
     process-definition-location-prefix: classpath:/processes/ # 流程定义文件存放目录
     # process-definition-location-suffixes: #流程文件格式
-  cache:
-    ehcache:
-      config: classpath:/ehcache/ehcache.xml
-    type: ehcache
+
+
+#  cache:
+#    ehcache:
+#      config: classpath:/ehcache/ehcache.xml
+#    type: ehcache
