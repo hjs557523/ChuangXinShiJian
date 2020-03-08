@@ -1,20 +1,20 @@
 package com.hjs.system;
 
-import org.activiti.spring.boot.SecurityAutoConfiguration;
+//import org.activiti.spring.boot.SecurityAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+//@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableCaching
 @Configuration
 @EnableTransactionManagement //开启事务
 @MapperScan(basePackages = "com.hjs.system.mapper") //mapper 接口类扫描包配置
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 public class SystemApplication {
     public static void main(String[] args) {
 

@@ -18,8 +18,14 @@ spring:
     servlet:
       content-type: text/html
   # freemarker
-  freemarker:
-    check-template-location: false
+#  freemarker:
+#    check-template-location: false
+
+  mvc:
+    static-path-pattern: /**
+
+  resources:
+    static-locations: classpath:/templates/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
 
   # mysql
   # dev|test|pro

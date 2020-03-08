@@ -89,11 +89,11 @@
             <version>1.2.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring-boot-starter-basic</artifactId>
-            <version>6.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.activiti</groupId>-->
+            <!--<artifactId>activiti-spring-boot-starter-basic</artifactId>-->
+            <!--<version>6.0.0</version>-->
+        <!--</dependency>-->
 
 
         <!--开启 cache缓存-->
@@ -114,6 +114,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
             <version>2.1.6.RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
         </dependency>
 
 
@@ -426,8 +433,9 @@
                     <include>**/*.xml</include>
                     <include>**/sqlmap/*.xml</include>
                     <include>**/*.html</include>
+                    <include>**/</include>
                 </includes>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
             </resource>
         </resources>
     </build>

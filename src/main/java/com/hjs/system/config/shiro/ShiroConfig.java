@@ -17,6 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static org.apache.shiro.web.filter.mgt.DefaultFilter.anon;
+
 /**
  * @author 黄继升 16041321
  * @Description:
@@ -43,17 +48,74 @@ public class ShiroConfig {
     private String password;
 
 
-    @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
-        return null;
-    }
-
-
+    /**
+     * SecurityManager 是 Shiro 架构的核心，通过它来链接Realm和用户（文档中称之为Subject）
+     */
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //设置realm
-        securityManager.setAuthenticator();
+        securityManager.setRealm(userShiroRealm());
+        //自定义缓存实现，使用redis实现spring-cache
+        securityManager.setCacheManager(cacheManager());
+        //自定义session管理，使用redis来管理session
+        securityManager.setSessionManager(sessionManager());
+        //注入记住我管理器
+        securityManager.setRememberMeManager(rememberMeManager());
+        return securityManager;
+    }
+
+
+    @Bean
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+
+        //设置安全管理器
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
+
+        //配置登录的url，如果不设置默认会默认寻找web工程根目录下的"/login.jsp"
+        shiroFilterFactoryBean.setLoginUrl("/login");
+
+        //登录成功后跳转的url
+        //shiroFilterFactoryBean.setSuccessUrl("/index");
+
+        //登录失败(无权限)后跳转的url
+        //shiroFilterFactoryBean.setUnauthorizedUrl("/index");
+
+
+        /**
+         * Shiro内置过滤器，可以实现权限相关的拦截器
+         *    常用的过滤器：
+         *       anon: 无需认证（登录）可以访问
+         *       authc: 必须认证才可以访问
+         *       user: 如果使用rememberMe的功能可以直接访问
+         *       perm： 该资源必须得到资源权限才可以访问
+         *       role: 该资源必须得到角色权限才可以访问
+         */
+//        // 设置过滤器
+//        //（1）获取filters
+//        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+//
+//        //（2）将自定义的权限验证失败的过滤器ShiroFilterFactoryBean注入shiroFilter
+//        filters.put("perms", new ShiroPermissionsFilter());
+//
+        //（3）开始顺序配置访问权限（过滤链）
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/druid/**","anon");
+        filterChainDefinitionMap.put("/hello/**","anon");
+        filterChainDefinitionMap.put("/static/**","anon");
+        filterChainDefinitionMap.put("/login.html","anon");
+        filterChainDefinitionMap.put("/student/**","roles[student]");
+        filterChainDefinitionMap.put("/teacher/**","roles[teacher]");
+        filterChainDefinitionMap.put("/**","anon");
+
+
+
+        // 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
+        filterChainDefinitionMap.put("/**","authc");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
+        return shiroFilterFactoryBean;
     }
 
 
@@ -171,6 +233,7 @@ public class ShiroConfig {
     }
 
 
+
     /**
      * 用户Realm
      * @return
@@ -181,6 +244,8 @@ public class ShiroConfig {
         userRealm.setCredentialsMatcher(hashedCredentialsMatcher());//设置解密规则
         return userRealm;
     }
+
+
 
     /**
      * 开启shiro aop注解支持

@@ -20,10 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LoginController extends BaseController {
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
-    private StudentService studentService;
+//    @Autowired
+//    private StudentService studentService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
