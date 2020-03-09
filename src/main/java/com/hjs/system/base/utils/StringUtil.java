@@ -1,4 +1,4 @@
-package com.hjs.system.utils;
+package com.hjs.system.base.utils;
 
 /**
  * @author 黄继升 16041321

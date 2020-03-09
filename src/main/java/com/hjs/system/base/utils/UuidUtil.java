@@ -1,4 +1,4 @@
-package com.hjs.system.utils;
+package com.hjs.system.base.utils;
 
 import java.util.UUID;
 
