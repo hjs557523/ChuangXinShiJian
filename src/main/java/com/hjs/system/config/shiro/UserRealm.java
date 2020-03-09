@@ -2,6 +2,7 @@ package com.hjs.system.config.shiro;
 
 import com.hjs.system.mapper.StudentMapper;
 import com.hjs.system.model.Student;
+import com.hjs.system.service.StudentService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
@@ -29,7 +30,7 @@ public class UserRealm extends AuthorizingRealm {
     // 解决同时使用Redis缓存数据和缓存shiro时，@Cacheable无效的问题
     @Autowired
     @Lazy
-    private StudentMapper studentMapper;
+    private StudentService studentService;
 
     /**
      * 执行授权逻辑
@@ -69,7 +70,7 @@ public class UserRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         if (role.equals("student")) {
             String studentId = token.getUsername();
-            Student student = studentMapper.findStudentByStudentId(studentId);
+            Student student = studentService.queryStudent(studentId);
             if (student == null) {
                 //return null;//shiro底层会抛出UnKnowAccountException
                 throw new UnknownAccountException("用户不存在！");
