@@ -1,8 +1,11 @@
 package com.hjs.system.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Student {
+public class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer sid;
 
     private String studentId;
@@ -92,4 +95,6 @@ public class Student {
     public void setClassId(Integer classId) {
         this.classId = classId;
     }
+
+
 }

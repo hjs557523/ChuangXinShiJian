@@ -27,17 +27,29 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
       tokenName: false //自动携带 token 的字段名（如：access_token）。可设置 false 不携带。
     }
     
-    //自定义响应字段
+    // //自定义响应字段
+    // ,response: {
+    //   statusName: 'code' //数据状态的字段名称
+    //   ,statusCode: {
+    //     ok: 200 //数据状态一切正常的状态码
+    //     ,logout: 1001 //登录状态失效的状态码
+    //   }
+    //   ,msgName: 'msg' //状态信息的字段名称
+    //   ,dataName: 'data' //数据详情的字段名称
+    // }
+
     ,response: {
       statusName: 'code' //数据状态的字段名称
       ,statusCode: {
-        ok: 0 //数据状态一切正常的状态码
+        ok: 200 //数据状态一切正常的状态码
         ,logout: 1001 //登录状态失效的状态码
+        ,noperms: 403 //权限不足
+        ,fail: 0 //登录失败
       }
-      ,msgName: 'msg' //状态信息的字段名称
-      ,dataName: 'data' //数据详情的字段名称
+      ,msgName: 'message' //状态信息的字段名称
+      ,dataName: 'entity' //数据详情的字段名称
     }
-    
+
     //扩展的第三方模块
     ,extend: [
       'echarts', //echarts 核心包

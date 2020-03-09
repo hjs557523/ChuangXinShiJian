@@ -1,7 +1,10 @@
 package com.hjs.system.config.shiro;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -17,7 +20,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.apache.shiro.web.filter.mgt.DefaultFilter.anon;
@@ -54,14 +59,29 @@ public class ShiroConfig {
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        //设置realm
-        securityManager.setRealm(userShiroRealm());
+
+        //设置自定义的多realm认证器
+        securityManager.setAuthenticator(modularRealmAuthenticator());
+        List<Realm> realms = new ArrayList<>();
+
+        //添加多个Realm
+        //添加学生Realm数据源
+        realms.add(studentShiroRealm());
+        //添加教师Realm数据源
+        //---------------------------
+
+        //设置Realms
+        securityManager.setRealms(realms);
+
         //自定义缓存实现，使用redis实现spring-cache
         securityManager.setCacheManager(cacheManager());
+
         //自定义session管理，使用redis来管理session
         securityManager.setSessionManager(sessionManager());
+
         //注入记住我管理器
         securityManager.setRememberMeManager(rememberMeManager());
+
         return securityManager;
     }
 
@@ -74,7 +94,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         //配置登录的url，如果不设置默认会默认寻找web工程根目录下的"/login.jsp"
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl("/login.html");
 
         //登录成功后跳转的url
         //shiroFilterFactoryBean.setSuccessUrl("/index");
@@ -104,10 +124,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/druid/**","anon");
         filterChainDefinitionMap.put("/hello/**","anon");
         filterChainDefinitionMap.put("/static/**","anon");
-        filterChainDefinitionMap.put("/login.html","anon");
+        filterChainDefinitionMap.put("/login","anon");
         filterChainDefinitionMap.put("/templates/**","anon");
-        filterChainDefinitionMap.put("/student/**","roles[student]");
-        filterChainDefinitionMap.put("/teacher/**","roles[teacher]");
+        filterChainDefinitionMap.put("/student/**","roles[Student]"); //对应之前那个addRoles(Student)
+        filterChainDefinitionMap.put("/teacher/**","roles[Teacher]");
         filterChainDefinitionMap.put("/**","anon");
 
 
@@ -204,17 +224,17 @@ public class ShiroConfig {
     }
 
 
-//    /**
-//     * 系统自带的Realm管理，主要针对多realm
-//     * @return
-//     */
-//    @Bean
-//    public ModularRealmAuthenticator modularRealmAuthenticator() {
-//        //自己重写的ModularRealmAuthenticator
-//        UserModularRealmAuthenticator modularRealmAuthenticator = new UserModularRealmAuthenticator();
-//        modularRealmAuthenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
-//        return modularRealmAuthenticator;
-//    }
+    /**
+     * 系统自带的Realm管理，主要针对多realm
+     * @return
+     */
+    @Bean
+    public ModularRealmAuthenticator modularRealmAuthenticator() {
+        //自己重写的ModularRealmAuthenticator
+        UserModularRealmAuthenticator modularRealmAuthenticator = new UserModularRealmAuthenticator();
+        modularRealmAuthenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+        return modularRealmAuthenticator;
+    }
 
 
 
@@ -236,14 +256,14 @@ public class ShiroConfig {
 
 
     /**
-     * 用户Realm
+     * 学生Realm
      * @return
      */
     @Bean
-    public UserRealm userShiroRealm() {
-        UserRealm userRealm = new UserRealm();
-        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());//设置解密规则
-        return userRealm;
+    public StudentRealm studentShiroRealm() {
+        StudentRealm studentRealm = new StudentRealm();
+        studentRealm.setCredentialsMatcher(hashedCredentialsMatcher());//设置解密规则
+        return studentRealm;
     }
 
 

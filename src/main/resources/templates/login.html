@@ -23,7 +23,7 @@
       <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
         <div class="layui-form-item">
           <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
-          <input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
+          <input type="text" name="studentId" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
         </div>
         <div class="layui-form-item">
           <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
@@ -62,11 +62,10 @@
     
     <div class="layui-trans layadmin-user-login-footer">
       
-      <p>© 2018 <a href="http://www.layui.com/" target="_blank">layui.com</a></p>
+      <p>©2020 毕设答辩演示 <a href="http://www.layui.com/" target="_blank">16041321 黄继升</a></p>
       <p>
-        <span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>
-        <span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>
-        <span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>
+        <span><a href="https://github.com/hjs557523" target="_blank">我的github</a></span>
+        <span><a href="https://blog.csdn.net/qq_42173065" target="_blank">我的csdn</a></span>
       </p>
     </div>
     
@@ -99,34 +98,62 @@
     ,router = layui.router()
     ,search = router.search;
 
-    console.log(layui.setter.base);
     form.render();
 
     //提交
     form.on('submit(LAY-user-login-submit)', function(obj){
-      //console.log(obj.field) json格式
-    
+      console.log(obj.field)
+
+      // $.ajax({
+      //   type:'POST',
+      //   url: 'http://localhost:8080/login',
+      //   data: {
+      //     studentId: '16041321',
+      //     password: 'jisheng'
+      //   },
+      //   success:function (res) {
+      //     console.log('请求成功...')
+      //   }
+      //
+      // }
+      //
+      // );
+
       //请求登入接口
       admin.req({
-        url: layui.setter.base + 'json/user/login.js' //实际使用请改成服务端真实接口
-        ,data: obj.field
-        ,done: function(res){
-          console.log(setter)
+        type: 'POST',
+        url: 'http://localhost:8080/login',//layui.setter.base + 'json/user/login.js', //实际使用请改成服务端真实接口
+        data: obj.field,
+        done: function(res){
+          //console.log(res)
           //请求成功后，写入 access_token
           layui.data(setter.tableName, {
             key: setter.request.tokenName
-            ,value: res.data.access_token
-
+            //,value: res.entity.access_token
           });
 
-          
+
           //登入成功的提示与跳转
-          layer.msg('登入成功', {
+          layer.msg('登录成功', {
             offset: '15px'
             ,icon: 1
-            ,time: 1000
+            ,time: 1500
           }, function(){
-            //location.href = '../'; //后台主页
+            console.log("登录成功！");
+            location.href = './index.html'; //后台主页
+          });
+        },
+
+
+        fail: function (res) {
+          //console.log(res)
+          //请求成功后，写入 access_token
+
+          //登入成功的提示与跳转
+          layer.msg('登录失败,'+res.message, {
+            offset: '15px'
+            ,icon: 1
+            ,time: 1500
           });
         }
       });
@@ -135,7 +162,7 @@
     
     
     //实际使用时记得删除该代码
-    layer.msg('为了方便演示，用户名密码可随意输入', {
+    layer.msg('毕设答辩演示，输入学生学号/教师工号 + 密码即可登录系统', {
       offset: '15px'
       ,icon: 1
     });

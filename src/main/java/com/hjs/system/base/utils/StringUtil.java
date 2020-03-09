@@ -35,7 +35,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isEmpty(String targetString) {
-        if (targetString == null || targetString.equals(""))
+        if (targetString == null || targetString.trim().equals(""))
             return true;
         return false;
     }
