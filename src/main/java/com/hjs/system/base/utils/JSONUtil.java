@@ -1,6 +1,7 @@
 package com.hjs.system.base.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.hjs.system.model.Student;
@@ -61,7 +62,22 @@ public class JSONUtil {
 
     }
 
+    //对接收到的github api json数据的特殊处理
+    public static String returnGithubApiDataResult(StringBuffer json) {
+        StringBuffer result = new StringBuffer("{\"code\":\"200\",\"message\":null,\"entity\":");
+        result.append(json);
+        return result.toString();
+    }
+
     public static void main(String[] args) {
-        returnEntityResult(new String("hjs"));
+        returnEntityResult(new Integer(1));
+        returnEntityResult(new StringBuffer("hjs"));
+        returnEntityResult(new Student());
+        test();
+    }
+
+    public static void test() {
+        JSONArray arr = JSON.parseArray("{id:16041321, key:557523}");
+        System.out.println(arr.size());
     }
 }
