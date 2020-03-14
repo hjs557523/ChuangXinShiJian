@@ -1,5 +1,7 @@
 package com.hjs.system.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -56,6 +58,8 @@ public class Student implements Serializable {
         this.password = password;
     }
 
+    //解决json日期格式问题
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     public Date getCreateTime() {
         return createTime;
     }
@@ -96,5 +100,8 @@ public class Student implements Serializable {
         this.classId = classId;
     }
 
-
+    @Override
+    public String toString() {
+        return "studentId =" + this.getStudentId() + ", studentName = " + this.getName();
+    }
 }

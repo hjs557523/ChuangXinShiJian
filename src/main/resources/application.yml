@@ -17,7 +17,9 @@ spring:
     encoding: UTF-8
     servlet:
       content-type: text/html
-  # freemarker
+    mode: HTML5
+
+# freemarker
 #  freemarker:
 #    check-template-location: false
 

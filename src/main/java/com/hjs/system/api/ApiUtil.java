@@ -30,8 +30,8 @@ public class ApiUtil {
         this.url = url;
     }
 
-    //获取用户user的仓库信息
-    public static String getUserUrl(String owner, String repo) {
+    //获取用户user的某个仓库信息
+    public static String getUserRepoUrl(String owner, String repo) {
         return GITHUB_HOST + String.format("/repos/%s/%s", owner, repo);
     }
 
@@ -54,15 +54,15 @@ public class ApiUtil {
             conn.setConnectTimeout(120000);
             conn.setReadTimeout(120000);
             conn.setDoInput(true);//是否需要从接口接收数据，默认为true
+            conn.setDoOutput(true);//是否需要往接口传输数据，默认为false
+            conn.setUseCaches(false);//注意如果是POST请求，是不允许使用缓存的。这里无论什么方式直接就false
             conn.setRequestProperty("Content-Type","application/json");
+            conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("Authorization", "token " + access_token);
             conn.setRequestProperty("User-Agent", "Hjs's Graduation Project");//所有API请求都必须包含有效的User-Agent标头, 否则将会被拒绝
-            conn.setUseCaches(false);//注意如果是POST请求，是不允许使用缓存的。这里无论什么方式直接就false
             try {
-
                 if (method.equalsIgnoreCase(ApiUtil.METHOD_POST)) {
                     conn.setRequestMethod(ApiUtil.METHOD_POST);
-                    conn.setDoOutput(true);//是否需要往接口传输数据，如果是POST请求, 需要设为true, 默认为false
                     conn.connect();
                     // post方法有待完成
                     // 400 发送了无效JSON、错误类型JSON值
@@ -74,14 +74,14 @@ public class ApiUtil {
                     try {
                         conn.connect();//只建立tcp连接，并没有发送http请求
                     } catch (IOException e) {
-                        conn.disconnect();
+                        e.printStackTrace();
                         return JSONUtil.returnFailResult("connect连接失败, 可能被墙了");
                     }
-                    in = new BufferedReader(new InputStreamReader(conn.getInputStream()));//网上说这里才实际发送请求???
                     int code = conn.getResponseCode();
                     if ((code == HttpURLConnection.HTTP_OK) || (conn.getResponseCode() == HttpURLConnection.HTTP_CREATED) || (conn.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED)) {
                         // 当返回不是HttpURLConnection.HTTP_OK， HttpURLConnection.HTTP_CREATED， HttpURLConnection.HTTP_ACCEPTED 时，
                         // 不能用getInputStream()，而是应该用getErrorStream()
+                        in = new BufferedReader(new InputStreamReader(conn.getInputStream()));//网上说这里才实际发送请求???
                         String line;
                         StringBuffer result = new StringBuffer();//使用StringBuffer在同一个对象上拼接字符串，防止创建过多String对象
                         while ((line = in.readLine()) != null) {
@@ -107,7 +107,6 @@ public class ApiUtil {
                         return JSONUtil.returnFailResult("请求失败1!");
                     }
 
-
                 } else {
                     return JSONUtil.returnFailResult("请求方式有误, 请使用GET/POST传递数据");
                 }
@@ -121,7 +120,6 @@ public class ApiUtil {
             e.printStackTrace();
             return JSONUtil.returnFailResult("请求失败3!");
         } finally {
-            conn.disconnect();
         }
 
     }

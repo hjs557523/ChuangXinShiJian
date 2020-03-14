@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td th:text="${session.abc}">111</td>
+    </tr>
+</table>
+<button type="button" onclick="f()">点击跳转</button>
+
+<script>
+    function f() {
+        window.location.href = "./test2.html";
+    }
+</script>
+
+</body>
+</html>

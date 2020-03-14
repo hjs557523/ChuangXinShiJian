@@ -4,6 +4,7 @@ import com.hjs.system.mapper.StudentMapper;
 import com.hjs.system.model.Student;
 import com.hjs.system.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @Modified By:
  */
 
+@CacheConfig(cacheNames = "student")
 @Service
 public class StudentServiceImpl implements StudentService {
 

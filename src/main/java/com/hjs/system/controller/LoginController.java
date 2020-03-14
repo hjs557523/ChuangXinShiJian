@@ -1,5 +1,6 @@
 package com.hjs.system.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.hjs.system.base.BaseController;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -56,7 +61,17 @@ public class LoginController extends BaseController {
             //登录认证
             subject.login(userToken);
             subject.getSession().setAttribute("student",subject.getPrincipal());
-            return JSONUtil.returnSuccessResult("登陆成功");
+
+
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            //经过测试好像是同一个session，因为sessionId相同
+            logger.info("/login: shiro的sessionId: {}",subject.getSession().getId().toString());
+            logger.info("/login: servlet的sessionId: {}",request.getSession().getId());
+
+            request.getSession().setAttribute("hjs","16041321");
+
+            return JSONUtil.returnEntityResult((Student)subject.getPrincipal());
+            //return JSONUtil.returnSuccessResult("登陆成功");
         } catch (AuthenticationException e) {
             //认证失败就会抛出AuthenticationException这个异常，就对异常进行相应的操作，这里的处理是抛出一个自定义异常ResultException
             //到时候我们抛出自定义异常ResultException，用户名或者密码错误

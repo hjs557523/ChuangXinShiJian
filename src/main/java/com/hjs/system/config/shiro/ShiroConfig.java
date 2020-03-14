@@ -121,11 +121,12 @@ public class ShiroConfig {
 //
         //（3）开始顺序配置访问权限（过滤链）
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/druid/**","anon");
-        filterChainDefinitionMap.put("/hello/**","anon");
-        filterChainDefinitionMap.put("/static/**","anon");
         filterChainDefinitionMap.put("/login","anon");
         filterChainDefinitionMap.put("/templates/**","anon");
+        filterChainDefinitionMap.put("/druid/**","anon");
+        filterChainDefinitionMap.put("/hello","anon");
+        filterChainDefinitionMap.put("/hello2","anon");
+        filterChainDefinitionMap.put("/static/**","anon");
         filterChainDefinitionMap.put("/student/**","roles[Student]"); //对应之前那个addRoles(Student)
         filterChainDefinitionMap.put("/teacher/**","roles[Teacher]");
         filterChainDefinitionMap.put("/**","anon");

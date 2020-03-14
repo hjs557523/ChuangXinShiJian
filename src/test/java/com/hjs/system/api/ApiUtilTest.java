@@ -16,18 +16,20 @@ class ApiUtilTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiUtilTest.class);
     private static final String OWNER = "hjs557523";
-    private static final String REPO = "cxzhsj";
-    private static final String ACCESS_TOKEN = "2b2623b8f657bbde8f667a8ad4f016d60084979c";
+    private static final String REPO = "cxsj3";
+    private static final String ACCESS_TOKEN = "";
 
     @Test
     void getUserUrl() {
-        logger.info("github api: {}", ApiUtil.getUserUrl(OWNER, REPO));
+        logger.info("github api: {}", ApiUtil.getUserRepoUrl(OWNER, REPO));
     }
 
     @Test
     void requestGithubApi() {
-        String result = ApiUtil.requestGithubApi(ApiUtil.getUserUrl(OWNER, REPO), ApiUtil.METHOD_GET, ACCESS_TOKEN, null);
-        logger.info("github api请求结果: {}", result);
+        while (true) {
+            String result = ApiUtil.requestGithubApi(ApiUtil.getUserRepoUrl(OWNER, REPO), ApiUtil.METHOD_GET, ACCESS_TOKEN, null);
+            logger.info("github api请求结果: {}", result);
+        }
 
     }
 }
