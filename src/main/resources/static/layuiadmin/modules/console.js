@@ -1,6 +1,6 @@
 /** layuiAdmin.std-v1.0.0 LPPL License By http://www.layui.com/admin/ */
 
-//这个可以用ajax用来对Echart图表进行设置
+//这里是请求图表数据的接口
 ;layui.define(function (e) {
     layui.use(["admin", "carousel"], function () {
 
@@ -10,7 +10,7 @@
         // e.ajax({
         //     type: 'GET',
         //     header: {
-        //         "Authorization": "token d862884936d07ea21617b7b9cbbc2eb3df833c49",
+        //         "Authorization": "token ",
         //         "User-Agent": "Hjs's Graduation Project"
         //     },
         //     url: 'https://api.github.com/users/hjs557523?access_token=d862884936d07ea21617b7b9cbbc2eb3df833c49',

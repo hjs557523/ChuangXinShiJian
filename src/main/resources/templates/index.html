@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>毕业设计 - 基于springboot的创新实践课程管理系统</title>
+  <title>毕设演示 - 基于springboot的创新实践课程管理系统</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -67,14 +67,13 @@
           </li>
           <li class="layui-nav-item" lay-unselect>
             <a href="javascript:;">
-              <div th:text="${user.studentId}"></div>
-
+              <cite id="studentName"></cite>
             </a>
             <dl class="layui-nav-child">
               <dd><a lay-href="set/user/info.html">基本资料</a></dd>
               <dd><a lay-href="set/user/password.html">修改密码</a></dd>
               <hr>
-              <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+              <dd layadmin-event="logout" style="text-align: center;" ><a>退出</a></dd>
             </dl>
           </li>
           
@@ -91,14 +90,14 @@
       <div class="layui-side layui-side-menu">
         <div class="layui-side-scroll">
           <div class="layui-logo" lay-href="home/console.html">
-            <span>系统功能选择</span>
+            <span>创新实践课程管理系统</span>
           </div>
           
           <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
             <li data-name="home" class="layui-nav-item layui-nav-itemed">
               <a href="javascript:;" lay-tips="主页" lay-direction="2">
                 <i class="layui-icon layui-icon-home"></i>
-                <cite>主页</cite>
+                <cite>工作界面</cite>
               </a>
               <dl class="layui-nav-child">
                 <dd data-name="console" class="layui-this">
@@ -469,7 +468,32 @@
     base: '../layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
-  }).use('index');
+  }).use(['index', 'user', 'laytpl', 'jquery'], function () {
+    var $ = layui.$, setter = layui.setter, admin = layui.admin, form = layui.form, router = layui.router(), search = router.search;
+
+
+    //渲染主页数据
+    admin.req({
+      type: 'POST',
+      url: 'http://localhost:8080/student/index',
+      done: function (res) {
+        $("#studentName").html(res.entity.name);
+      },
+
+      fail: function (res) {
+        //登录状态失效
+        layer.msg(res.message, {
+          offset: '15px'
+          , icon: 1
+          , time: 1500
+        }, function () {
+          location.href = './login.html'; //后台主页
+        });
+
+      }
+    });
+
+  });
   </script>
 </body>
 </html>

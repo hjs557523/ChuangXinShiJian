@@ -621,7 +621,7 @@ a cite {
 }
 
 .layui-icon-home:before {
-    content: "\e68e"
+    content: "\e68e";
 }
 
 .layui-icon-user:before {

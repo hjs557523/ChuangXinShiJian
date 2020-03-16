@@ -1,8 +1,11 @@
 package com.hjs.system.controller;
 
+import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.model.Student;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -44,5 +47,19 @@ public class HelloController {
         mv.addObject("user", s);
         mv.setViewName("/test.html");
         return mv;
+    }
+
+
+    @RequestMapping("/hello3")
+    @ResponseBody
+    public String sayHello3(String access_token) {
+        //System.out.println(access_token);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        System.out.println(request.getParameter("access_token"));
+
+        if (SecurityUtils.getSubject().getSession().getId().toString().equals(access_token))
+            return JSONUtil.returnSuccessResult("成功");
+        else
+            return JSONUtil.returnFailResult("失败");
     }
 }

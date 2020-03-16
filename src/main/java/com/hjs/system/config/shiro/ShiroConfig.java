@@ -70,9 +70,6 @@ public class ShiroConfig {
         //添加教师Realm数据源
         //---------------------------
 
-        //设置Realms
-        securityManager.setRealms(realms);
-
         //自定义缓存实现，使用redis实现spring-cache
         securityManager.setCacheManager(cacheManager());
 
@@ -81,6 +78,9 @@ public class ShiroConfig {
 
         //注入记住我管理器
         securityManager.setRememberMeManager(rememberMeManager());
+
+        //设置Realms
+        securityManager.setRealms(realms);
 
         return securityManager;
     }
@@ -93,7 +93,7 @@ public class ShiroConfig {
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        //配置登录的url，如果不设置默认会默认寻找web工程根目录下的"/login.jsp"
+        //setLoginUrl 如果不设置值，默认会自动寻找Web工程根目录下的"/login.jsp"页面 或 "/login" 映射
         shiroFilterFactoryBean.setLoginUrl("/login.html");
 
         //登录成功后跳转的url
@@ -121,7 +121,10 @@ public class ShiroConfig {
 //
         //（3）开始顺序配置访问权限（过滤链）
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/login","anon");
+        filterChainDefinitionMap.put("/student/login","anon");
+        filterChainDefinitionMap.put("/teacher/login","anon");
+        filterChainDefinitionMap.put("/admin/login","anon");
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/templates/**","anon");
         filterChainDefinitionMap.put("/druid/**","anon");
         filterChainDefinitionMap.put("/hello","anon");
@@ -129,12 +132,12 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/static/**","anon");
         filterChainDefinitionMap.put("/student/**","roles[Student]"); //对应之前那个addRoles(Student)
         filterChainDefinitionMap.put("/teacher/**","roles[Teacher]");
-        filterChainDefinitionMap.put("/**","anon");
 
 
 
         // 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
         filterChainDefinitionMap.put("/**","authc");
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;
@@ -154,7 +157,7 @@ public class ShiroConfig {
         redisManager.setHost(host);
         redisManager.setPort(port);
         redisManager.setPassword(password);
-        redisManager.setExpire(1800);//配置缓存过期时间
+        redisManager.setExpire(1800);//配置缓存过期时间60min
         redisManager.setTimeout(timeout);
         return redisManager;
     }

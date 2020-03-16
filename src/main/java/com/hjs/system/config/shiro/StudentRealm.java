@@ -39,6 +39,7 @@ public class StudentRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        System.out.println("执行Student 授权逻辑...");
         logger.info("执行Student 授权逻辑...");
         if (principalCollection == null) {
             throw new AuthorizationException("principalCollection is null");
@@ -47,8 +48,11 @@ public class StudentRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         if (principalCollection.getPrimaryPrincipal() instanceof Student) {
             info.addRole("Student");
+            logger.info("授权结束, 授权成功!");
             return info;
         }
+
+        logger.info("授权失败");
         return info;//角色对应的权限信息
     }
 
@@ -81,6 +85,7 @@ public class StudentRealm extends AuthorizingRealm {
 
         simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(studentId)); //设置盐
 
+        logger.info("认证结束，认证成功!");
         return simpleAuthenticationInfo;
     }
 

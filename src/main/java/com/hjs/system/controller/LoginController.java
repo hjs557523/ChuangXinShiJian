@@ -39,7 +39,7 @@ public class LoginController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     private static final String STUDENT_LOGIN_TYPE = LoginType.STUDENT.toString();
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/student/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String login(Student student) {
         logger.info("接收到请求");
@@ -59,18 +59,18 @@ public class LoginController extends BaseController {
         logger.info("请求了方法");
         try {
             //登录认证
-            subject.login(userToken);
+            subject.login(userToken);//doGetAuthenticationInfo
             subject.getSession().setAttribute("student",subject.getPrincipal());
 
 
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            //经过测试好像是同一个session，因为sessionId相同
-            logger.info("/login: shiro的sessionId: {}",subject.getSession().getId().toString());
+            //经过测试好像shiro session 和 spring session 是同一个session，因为sessionId相同
+            logger.info("/login: shiro的sessionId: {}",subject.getSession().getId().toString().toString());
             logger.info("/login: servlet的sessionId: {}",request.getSession().getId());
 
-            request.getSession().setAttribute("hjs","16041321");
 
-            return JSONUtil.returnEntityResult((Student)subject.getPrincipal());
+
+            return JSONUtil.returnEntityResult(subject.getSession().getId());
             //return JSONUtil.returnSuccessResult("登陆成功");
         } catch (AuthenticationException e) {
             //认证失败就会抛出AuthenticationException这个异常，就对异常进行相应的操作，这里的处理是抛出一个自定义异常ResultException

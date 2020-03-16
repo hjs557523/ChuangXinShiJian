@@ -58,7 +58,7 @@ public class JSONUtil {
 
     //设置返回实体JSON字符串
     public static String returnEntityResult(Object entity) {
-        return returnJSONResult("200", null, entity);
+        return returnJSONResult("200", "返回数据", entity);
 
     }
 
@@ -73,11 +73,10 @@ public class JSONUtil {
         returnEntityResult(new Integer(1));
         returnEntityResult(new StringBuffer("hjs"));
         returnEntityResult(new Student());
-        test();
     }
 
-    public static void test() {
-        JSONArray arr = JSON.parseArray("{id:16041321, key:557523}");
-        System.out.println(arr.size());
-    }
+//    public static void test() {
+//        JSONArray arr = JSON.parseArray("{id:16041321, key:557523}");
+//        System.out.println(arr.size());
+//    }
 }
