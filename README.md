@@ -3,7 +3,7 @@ This is the code project for my graduation project
 ## technology
 * jdk8
 * springboot
-* springmvc
+* ~springmvc~
 * shiro
 * mysql
 * mybatis
