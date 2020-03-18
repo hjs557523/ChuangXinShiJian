@@ -188,12 +188,12 @@
 
         <!--Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable-->
         <!--添加热部署-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-            <scope>true</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+            <!--<optional>true</optional>-->
+            <!--<scope>true</scope>-->
+        <!--</dependency>-->
         <!-- IDEA使用 ctrl+shift+F9 进行重新编译，包括类文件的修改和ftl文件的修改都会同步 -->
 
 
