@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.CourseMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.Course" >
+    <id column="cid" property="cid" jdbcType="BIT" />
+    <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cid, course_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Boolean" >
+    select 
+    <include refid="Base_Column_List" />
+    from course
+    where cid = #{cid,jdbcType=BIT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Boolean" >
+    delete from course
+    where cid = #{cid,jdbcType=BIT}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.Course" >
+    insert into course (cid, course_name)
+    values (#{cid,jdbcType=BIT}, #{courseName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.Course" >
+    insert into course
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="courseName != null" >
+        course_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        #{cid,jdbcType=BIT},
+      </if>
+      <if test="courseName != null" >
+        #{courseName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Course" >
+    update course
+    <set >
+      <if test="courseName != null" >
+        course_name = #{courseName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=BIT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Course" >
+    update course
+    set course_name = #{courseName,jdbcType=VARCHAR}
+    where cid = #{cid,jdbcType=BIT}
+  </update>
+</mapper>

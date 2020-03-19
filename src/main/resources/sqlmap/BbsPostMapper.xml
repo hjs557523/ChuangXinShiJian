@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.BbsPostMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.BbsPost" >
+    <id column="bp_id" property="bpId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bp_id, title, content, publish_time, publisher_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_post
+    where bp_id = #{bpId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bbs_post
+    where bp_id = #{bpId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.BbsPost" >
+    insert into bbs_post (bp_id, title, content, 
+      publish_time, publisher_id)
+    values (#{bpId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{publishTime,jdbcType=TIMESTAMP}, #{publisherId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.BbsPost" >
+    insert into bbs_post
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bpId != null" >
+        bp_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="publisherId != null" >
+        publisher_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bpId != null" >
+        #{bpId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publisherId != null" >
+        #{publisherId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.BbsPost" >
+    update bbs_post
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publisherId != null" >
+        publisher_id = #{publisherId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where bp_id = #{bpId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.BbsPost" >
+    update bbs_post
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      publisher_id = #{publisherId,jdbcType=INTEGER}
+    where bp_id = #{bpId,jdbcType=INTEGER}
+  </update>
+</mapper>

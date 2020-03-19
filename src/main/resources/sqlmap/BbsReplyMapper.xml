@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.BbsReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.BbsReply" >
+    <id column="br_id" property="brId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="bp_id" property="bpId" jdbcType="INTEGER" />
+    <result column="reply_time" property="replyTime" jdbcType="TIMESTAMP" />
+    <result column="reviewer_id" property="reviewerId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    br_id, content, bp_id, reply_time, reviewer_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_reply
+    where br_id = #{brId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bbs_reply
+    where br_id = #{brId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.BbsReply" >
+    insert into bbs_reply (br_id, content, bp_id, 
+      reply_time, reviewer_id)
+    values (#{brId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{bpId,jdbcType=INTEGER}, 
+      #{replyTime,jdbcType=TIMESTAMP}, #{reviewerId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.BbsReply" >
+    insert into bbs_reply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="brId != null" >
+        br_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="bpId != null" >
+        bp_id,
+      </if>
+      <if test="replyTime != null" >
+        reply_time,
+      </if>
+      <if test="reviewerId != null" >
+        reviewer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="brId != null" >
+        #{brId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="bpId != null" >
+        #{bpId,jdbcType=INTEGER},
+      </if>
+      <if test="replyTime != null" >
+        #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewerId != null" >
+        #{reviewerId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.BbsReply" >
+    update bbs_reply
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="bpId != null" >
+        bp_id = #{bpId,jdbcType=INTEGER},
+      </if>
+      <if test="replyTime != null" >
+        reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewerId != null" >
+        reviewer_id = #{reviewerId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where br_id = #{brId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.BbsReply" >
+    update bbs_reply
+    set content = #{content,jdbcType=VARCHAR},
+      bp_id = #{bpId,jdbcType=INTEGER},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      reviewer_id = #{reviewerId,jdbcType=INTEGER}
+    where br_id = #{brId,jdbcType=INTEGER}
+  </update>
+</mapper>

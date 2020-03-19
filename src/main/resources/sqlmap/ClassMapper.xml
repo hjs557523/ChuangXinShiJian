@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.ClassMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.Class" >
+    <id column="cid" property="cid" jdbcType="BIT" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="is_finished" property="isFinished" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cid, class_name, tid, course_id, is_finished
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Boolean" >
+    select 
+    <include refid="Base_Column_List" />
+    from class
+    where cid = #{cid,jdbcType=BIT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Boolean" >
+    delete from class
+    where cid = #{cid,jdbcType=BIT}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.Class" >
+    insert into class (cid, class_name, tid, 
+      course_id, is_finished)
+    values (#{cid,jdbcType=BIT}, #{className,jdbcType=VARCHAR}, #{tid,jdbcType=INTEGER}, 
+      #{courseId,jdbcType=INTEGER}, #{isFinished,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.Class" >
+    insert into class
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="className != null" >
+        class_name,
+      </if>
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="isFinished != null" >
+        is_finished,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        #{cid,jdbcType=BIT},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tid != null" >
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="isFinished != null" >
+        #{isFinished,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Class" >
+    update class
+    <set >
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tid != null" >
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="isFinished != null" >
+        is_finished = #{isFinished,jdbcType=BIT},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=BIT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Class" >
+    update class
+    set class_name = #{className,jdbcType=VARCHAR},
+      tid = #{tid,jdbcType=INTEGER},
+      course_id = #{courseId,jdbcType=INTEGER},
+      is_finished = #{isFinished,jdbcType=BIT}
+    where cid = #{cid,jdbcType=BIT}
+  </update>
+</mapper>

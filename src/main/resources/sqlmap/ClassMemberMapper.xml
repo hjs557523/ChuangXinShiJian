@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.ClassMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.ClassMember" >
+    <id column="class_member_id" property="classMemberId" jdbcType="INTEGER" />
+    <result column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="student_id" property="studentId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    class_member_id, class_id, student_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from class_member
+    where class_member_id = #{classMemberId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from class_member
+    where class_member_id = #{classMemberId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.ClassMember" >
+    insert into class_member (class_member_id, class_id, student_id
+      )
+    values (#{classMemberId,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.ClassMember" >
+    insert into class_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classMemberId != null" >
+        class_member_id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classMemberId != null" >
+        #{classMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.ClassMember" >
+    update class_member
+    <set >
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where class_member_id = #{classMemberId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.ClassMember" >
+    update class_member
+    set class_id = #{classId,jdbcType=INTEGER},
+      student_id = #{studentId,jdbcType=INTEGER}
+    where class_member_id = #{classMemberId,jdbcType=INTEGER}
+  </update>
+</mapper>

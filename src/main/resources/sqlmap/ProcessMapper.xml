@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.ProcessMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.Process" >
+    <id column="process_id" property="processId" jdbcType="INTEGER" />
+    <result column="process_type" property="processType" jdbcType="BIT" />
+    <result column="process_status" property="processStatus" jdbcType="BIT" />
+    <result column="process_title" property="processTitle" jdbcType="VARCHAR" />
+    <result column="process_detail" property="processDetail" jdbcType="VARCHAR" />
+    <result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
+    <result column="executer_id_list" property="executerIdList" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="module_url" property="moduleUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    process_id, process_type, process_status, process_title, process_detail, publisher_id, 
+    executer_id_list, create_time, end_time, group_id, module_url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from process
+    where process_id = #{processId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from process
+    where process_id = #{processId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.Process" >
+    insert into process (process_id, process_type, process_status, 
+      process_title, process_detail, publisher_id, 
+      executer_id_list, create_time, end_time, 
+      group_id, module_url)
+    values (#{processId,jdbcType=INTEGER}, #{processType,jdbcType=BIT}, #{processStatus,jdbcType=BIT}, 
+      #{processTitle,jdbcType=VARCHAR}, #{processDetail,jdbcType=VARCHAR}, #{publisherId,jdbcType=INTEGER}, 
+      #{executerIdList,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{groupId,jdbcType=INTEGER}, #{moduleUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.Process" >
+    insert into process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="processId != null" >
+        process_id,
+      </if>
+      <if test="processType != null" >
+        process_type,
+      </if>
+      <if test="processStatus != null" >
+        process_status,
+      </if>
+      <if test="processTitle != null" >
+        process_title,
+      </if>
+      <if test="processDetail != null" >
+        process_detail,
+      </if>
+      <if test="publisherId != null" >
+        publisher_id,
+      </if>
+      <if test="executerIdList != null" >
+        executer_id_list,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="moduleUrl != null" >
+        module_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="processId != null" >
+        #{processId,jdbcType=INTEGER},
+      </if>
+      <if test="processType != null" >
+        #{processType,jdbcType=BIT},
+      </if>
+      <if test="processStatus != null" >
+        #{processStatus,jdbcType=BIT},
+      </if>
+      <if test="processTitle != null" >
+        #{processTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="processDetail != null" >
+        #{processDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherId != null" >
+        #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="executerIdList != null" >
+        #{executerIdList,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleUrl != null" >
+        #{moduleUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Process" >
+    update process
+    <set >
+      <if test="processType != null" >
+        process_type = #{processType,jdbcType=BIT},
+      </if>
+      <if test="processStatus != null" >
+        process_status = #{processStatus,jdbcType=BIT},
+      </if>
+      <if test="processTitle != null" >
+        process_title = #{processTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="processDetail != null" >
+        process_detail = #{processDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherId != null" >
+        publisher_id = #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="executerIdList != null" >
+        executer_id_list = #{executerIdList,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleUrl != null" >
+        module_url = #{moduleUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where process_id = #{processId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Process" >
+    update process
+    set process_type = #{processType,jdbcType=BIT},
+      process_status = #{processStatus,jdbcType=BIT},
+      process_title = #{processTitle,jdbcType=VARCHAR},
+      process_detail = #{processDetail,jdbcType=VARCHAR},
+      publisher_id = #{publisherId,jdbcType=INTEGER},
+      executer_id_list = #{executerIdList,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      group_id = #{groupId,jdbcType=INTEGER},
+      module_url = #{moduleUrl,jdbcType=VARCHAR}
+    where process_id = #{processId,jdbcType=INTEGER}
+  </update>
+</mapper>

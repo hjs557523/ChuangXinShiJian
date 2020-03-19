@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.GroupMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.Group" >
+    <id column="gid" property="gid" jdbcType="INTEGER" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="repository_url" property="repositoryUrl" jdbcType="VARCHAR" />
+    <result column="oauth_token" property="oauthToken" jdbcType="VARCHAR" />
+    <result column="state_id" property="stateId" jdbcType="TINYINT" />
+    <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
+    <result column="subject_id" property="subjectId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    gid, group_name, tid, repository_url, oauth_token, state_id, owner_id, subject_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from group
+    where gid = #{gid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from group
+    where gid = #{gid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hjs.system.model.Group" >
+    insert into group (gid, group_name, tid, 
+      repository_url, oauth_token, state_id, 
+      owner_id, subject_id)
+    values (#{gid,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{tid,jdbcType=INTEGER}, 
+      #{repositoryUrl,jdbcType=VARCHAR}, #{oauthToken,jdbcType=VARCHAR}, #{stateId,jdbcType=TINYINT}, 
+      #{ownerId,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hjs.system.model.Group" >
+    insert into group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="repositoryUrl != null" >
+        repository_url,
+      </if>
+      <if test="oauthToken != null" >
+        oauth_token,
+      </if>
+      <if test="stateId != null" >
+        state_id,
+      </if>
+      <if test="ownerId != null" >
+        owner_id,
+      </if>
+      <if test="subjectId != null" >
+        subject_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="tid != null" >
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="repositoryUrl != null" >
+        #{repositoryUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="oauthToken != null" >
+        #{oauthToken,jdbcType=VARCHAR},
+      </if>
+      <if test="stateId != null" >
+        #{stateId,jdbcType=TINYINT},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Group" >
+    update group
+    <set >
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="tid != null" >
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="repositoryUrl != null" >
+        repository_url = #{repositoryUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="oauthToken != null" >
+        oauth_token = #{oauthToken,jdbcType=VARCHAR},
+      </if>
+      <if test="stateId != null" >
+        state_id = #{stateId,jdbcType=TINYINT},
+      </if>
+      <if test="ownerId != null" >
+        owner_id = #{ownerId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectId != null" >
+        subject_id = #{subjectId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where gid = #{gid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Group" >
+    update group
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      tid = #{tid,jdbcType=INTEGER},
+      repository_url = #{repositoryUrl,jdbcType=VARCHAR},
+      oauth_token = #{oauthToken,jdbcType=VARCHAR},
+      state_id = #{stateId,jdbcType=TINYINT},
+      owner_id = #{ownerId,jdbcType=INTEGER},
+      subject_id = #{subjectId,jdbcType=INTEGER}
+    where gid = #{gid,jdbcType=INTEGER}
+  </update>
+</mapper>
