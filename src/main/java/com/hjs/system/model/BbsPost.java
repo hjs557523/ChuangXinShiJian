@@ -1,8 +1,11 @@
 package com.hjs.system.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BbsPost {
+public class BbsPost implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer bpId;
 
     private String title;
@@ -51,5 +54,16 @@ public class BbsPost {
 
     public void setPublisherId(Integer publisherId) {
         this.publisherId = publisherId;
+    }
+
+    @Override
+    public String toString() {
+        return "BbsPost{" +
+                "bpId=" + bpId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", publishTime=" + publishTime +
+                ", publisherId=" + publisherId +
+                '}';
     }
 }

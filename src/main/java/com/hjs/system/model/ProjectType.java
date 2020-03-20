@@ -1,6 +1,10 @@
 package com.hjs.system.model;
 
-public class ProjectType {
+import java.io.Serializable;
+
+public class ProjectType implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer pid;
 
     private String pType;
@@ -29,5 +33,14 @@ public class ProjectType {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectType{" +
+                "pid=" + pid +
+                ", pType='" + pType + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

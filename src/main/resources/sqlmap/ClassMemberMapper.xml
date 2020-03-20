@@ -6,26 +6,28 @@
     <result column="class_id" property="classId" jdbcType="INTEGER" />
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     class_member_id, class_id, student_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+
+
+  <select id="findClassMemberByClassMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from class_member
     where class_member_id = #{classMemberId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+
+  <delete id="deleteClassMemberByClassMemberId" parameterType="java.lang.Integer" >
     delete from class_member
     where class_member_id = #{classMemberId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.ClassMember" >
-    insert into class_member (class_member_id, class_id, student_id
-      )
-    values (#{classMemberId,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.hjs.system.model.ClassMember" >
+
+
+
+  <insert id="insertClassMember" parameterType="com.hjs.system.model.ClassMember" useGeneratedKeys="true" keyColumn="class_member_id" keyProperty="classMemberId">
     insert into class_member
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="classMemberId != null" >
@@ -50,7 +52,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.ClassMember" >
+
+
+  <update id="updateClassMember" parameterType="com.hjs.system.model.ClassMember" >
     update class_member
     <set >
       <if test="classId != null" >
@@ -62,10 +66,6 @@
     </set>
     where class_member_id = #{classMemberId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.ClassMember" >
-    update class_member
-    set class_id = #{classId,jdbcType=INTEGER},
-      student_id = #{studentId,jdbcType=INTEGER}
-    where class_member_id = #{classMemberId,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

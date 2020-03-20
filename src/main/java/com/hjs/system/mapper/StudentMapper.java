@@ -21,14 +21,13 @@ public interface StudentMapper extends BaseDAO<Student> {
      */
     Student findStudentByStudentId(String studentId);
 
+    int insertStudent(Student student);
+//
+    int updateStudent(Student student);
+//
+    int deleteStudentBySid(Integer id);
 
-//    void save(Student student);
-//
-//    void update(Student student);
-//
-//    void delete(Integer id);
-//
-//    Student find(Integer id);
+    Student findStudentBySid(Integer id);
 
 
 //    void batchSave(List<Student> list);

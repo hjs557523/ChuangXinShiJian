@@ -8,25 +8,27 @@
     <result column="subject_detail" property="subjectDetail" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
+
+
   <sql id="Base_Column_List" >
     subject_id, tid, subject_name, subject_detail, remark
   </sql>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from subject
     where subject_id = #{subjectId,jdbcType=INTEGER}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from subject
     where subject_id = #{subjectId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.Subject" >
-    insert into subject (subject_id, tid, subject_name, 
-      subject_detail, remark)
-    values (#{subjectId,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR}, 
-      #{subjectDetail,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
-  </insert>
+
+
   <insert id="insertSelective" parameterType="com.hjs.system.model.Subject" >
     insert into subject
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -64,6 +66,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Subject" >
     update subject
     <set >
@@ -82,12 +86,6 @@
     </set>
     where subject_id = #{subjectId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Subject" >
-    update subject
-    set tid = #{tid,jdbcType=INTEGER},
-      subject_name = #{subjectName,jdbcType=VARCHAR},
-      subject_detail = #{subjectDetail,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where subject_id = #{subjectId,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

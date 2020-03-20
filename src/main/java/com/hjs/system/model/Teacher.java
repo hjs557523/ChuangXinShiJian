@@ -1,8 +1,13 @@
 package com.hjs.system.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Teacher {
+public class Teacher implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer tid;
 
     private String teacherId;
@@ -63,6 +68,7 @@ public class Teacher {
         this.sex = sex;
     }
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     public Date getCreateTime() {
         return createTime;
     }
@@ -101,5 +107,21 @@ public class Teacher {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "tid=" + tid +
+                ", teacherId='" + teacherId + '\'' +
+                ", realName='" + realName + '\'' +
+                ", password='" + password + '\'' +
+                ", sex=" + sex +
+                ", createTime=" + createTime +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
+                ", picimg='" + picimg + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

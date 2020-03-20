@@ -8,26 +8,27 @@
     <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
     <result column="publisher_id" property="publisherId" jdbcType="INTEGER" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     bp_id, title, content, publish_time, publisher_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+
+
+  <select id="findBbsPostByBpId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from bbs_post
     where bp_id = #{bpId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+
+  <delete id="deleteBbsPostByBpId" parameterType="java.lang.Integer" >
     delete from bbs_post
     where bp_id = #{bpId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.BbsPost" >
-    insert into bbs_post (bp_id, title, content, 
-      publish_time, publisher_id)
-    values (#{bpId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{publishTime,jdbcType=TIMESTAMP}, #{publisherId,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.hjs.system.model.BbsPost" >
+
+
+  <insert id="insertBbsPost" parameterType="com.hjs.system.model.BbsPost" useGeneratedKeys="true" keyColumn="bp_id" keyProperty="bpId">
     insert into bbs_post
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="bpId != null" >
@@ -64,7 +65,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.BbsPost" >
+
+
+  <update id="updateBbsPost" parameterType="com.hjs.system.model.BbsPost" >
     update bbs_post
     <set >
       <if test="title != null" >
@@ -82,12 +85,6 @@
     </set>
     where bp_id = #{bpId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.BbsPost" >
-    update bbs_post
-    set title = #{title,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
-      publish_time = #{publishTime,jdbcType=TIMESTAMP},
-      publisher_id = #{publisherId,jdbcType=INTEGER}
-    where bp_id = #{bpId,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

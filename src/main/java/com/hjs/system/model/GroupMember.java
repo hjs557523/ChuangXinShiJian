@@ -1,6 +1,10 @@
 package com.hjs.system.model;
 
-public class GroupMember {
+import java.io.Serializable;
+
+public class GroupMember implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer groupMemberId;
 
     private Integer groupId;
@@ -29,5 +33,14 @@ public class GroupMember {
 
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupMember{" +
+                "groupMemberId=" + groupMemberId +
+                ", groupId=" + groupId +
+                ", studentId=" + studentId +
+                '}';
     }
 }

@@ -1,7 +1,11 @@
 package com.hjs.system.model;
 
-public class Class {
-    private Boolean cid;
+import java.io.Serializable;
+
+public class Class implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Integer cid;
 
     private String className;
 
@@ -11,11 +15,11 @@ public class Class {
 
     private Boolean isFinished;
 
-    public Boolean getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(Boolean cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
@@ -49,5 +53,16 @@ public class Class {
 
     public void setIsFinished(Boolean isFinished) {
         this.isFinished = isFinished;
+    }
+
+    @Override
+    public String toString() {
+        return "Class{" +
+                "cid=" + cid +
+                ", className='" + className + '\'' +
+                ", tid=" + tid +
+                ", courseId=" + courseId +
+                ", isFinished=" + isFinished +
+                '}';
     }
 }

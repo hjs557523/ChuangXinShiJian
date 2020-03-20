@@ -1,7 +1,10 @@
 package com.hjs.system.mapper;
 
 import com.hjs.system.model.Role;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface RoleMapper {
     int deleteByPrimaryKey(Integer rid);
 

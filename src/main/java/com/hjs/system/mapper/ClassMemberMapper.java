@@ -1,17 +1,18 @@
 package com.hjs.system.mapper;
 
 import com.hjs.system.model.ClassMember;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface ClassMemberMapper {
-    int deleteByPrimaryKey(Integer classMemberId);
 
-    int insert(ClassMember record);
+    int deleteClassMemberByClassMemberId(Integer classMemberId);
 
-    int insertSelective(ClassMember record);
+    int insertClassMember(ClassMember record);
 
-    ClassMember selectByPrimaryKey(Integer classMemberId);
+    ClassMember findClassMemberByClassMemberId(Integer classMemberId);
 
-    int updateByPrimaryKeySelective(ClassMember record);
+    int updateClassMember(ClassMember record);
 
-    int updateByPrimaryKey(ClassMember record);
 }

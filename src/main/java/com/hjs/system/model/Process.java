@@ -1,13 +1,16 @@
 package com.hjs.system.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Process {
+public class Process implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer processId;
 
-    private Boolean processType;
+    private Integer processType;
 
-    private Boolean processStatus;
+    private Integer processStatus;
 
     private String processTitle;
 
@@ -33,19 +36,19 @@ public class Process {
         this.processId = processId;
     }
 
-    public Boolean getProcessType() {
+    public Integer getProcessType() {
         return processType;
     }
 
-    public void setProcessType(Boolean processType) {
+    public void setProcessType(Integer processType) {
         this.processType = processType;
     }
 
-    public Boolean getProcessStatus() {
+    public Integer getProcessStatus() {
         return processStatus;
     }
 
-    public void setProcessStatus(Boolean processStatus) {
+    public void setProcessStatus(Integer processStatus) {
         this.processStatus = processStatus;
     }
 
@@ -111,5 +114,22 @@ public class Process {
 
     public void setModuleUrl(String moduleUrl) {
         this.moduleUrl = moduleUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Process{" +
+                "processId=" + processId +
+                ", processType=" + processType +
+                ", processStatus=" + processStatus +
+                ", processTitle='" + processTitle + '\'' +
+                ", processDetail='" + processDetail + '\'' +
+                ", publisherId=" + publisherId +
+                ", executerIdList='" + executerIdList + '\'' +
+                ", createTime=" + createTime +
+                ", endTime=" + endTime +
+                ", groupId=" + groupId +
+                ", moduleUrl='" + moduleUrl + '\'' +
+                '}';
     }
 }

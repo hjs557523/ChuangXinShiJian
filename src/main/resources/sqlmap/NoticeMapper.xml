@@ -6,27 +6,29 @@
     <result column="topic" property="topic" jdbcType="VARCHAR" />
     <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="type_id" property="typeId" jdbcType="TINYINT" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
   </resultMap>
+
+
   <sql id="Base_Column_List" >
     nid, topic, detail, create_time, type_id
   </sql>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from notice
     where nid = #{nid,jdbcType=INTEGER}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from notice
     where nid = #{nid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.Notice" >
-    insert into notice (nid, topic, detail, 
-      create_time, type_id)
-    values (#{nid,jdbcType=INTEGER}, #{topic,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{typeId,jdbcType=TINYINT})
-  </insert>
+
+
   <insert id="insertSelective" parameterType="com.hjs.system.model.Notice" >
     insert into notice
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -60,10 +62,12 @@
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="typeId != null" >
-        #{typeId,jdbcType=TINYINT},
+        #{typeId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Notice" >
     update notice
     <set >
@@ -77,17 +81,11 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="typeId != null" >
-        type_id = #{typeId,jdbcType=TINYINT},
+        type_id = #{typeId,jdbcType=INTEGER},
       </if>
     </set>
     where nid = #{nid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Notice" >
-    update notice
-    set topic = #{topic,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      type_id = #{typeId,jdbcType=TINYINT}
-    where nid = #{nid,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

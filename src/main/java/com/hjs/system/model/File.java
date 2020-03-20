@@ -1,8 +1,11 @@
 package com.hjs.system.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class File {
+public class File implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer fileId;
 
     private String fileName;
@@ -11,7 +14,7 @@ public class File {
 
     private Date uploadTime;
 
-    private Boolean fileType;
+    private Integer fileType;
 
     private Integer groupId;
 
@@ -51,11 +54,11 @@ public class File {
         this.uploadTime = uploadTime;
     }
 
-    public Boolean getFileType() {
+    public Integer getFileType() {
         return fileType;
     }
 
-    public void setFileType(Boolean fileType) {
+    public void setFileType(Integer fileType) {
         this.fileType = fileType;
     }
 
@@ -81,5 +84,19 @@ public class File {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "fileId=" + fileId +
+                ", fileName='" + fileName + '\'' +
+                ", uploadPath='" + uploadPath + '\'' +
+                ", uploadTime=" + uploadTime +
+                ", fileType=" + fileType +
+                ", groupId=" + groupId +
+                ", authorId=" + authorId +
+                ", title='" + title + '\'' +
+                '}';
     }
 }

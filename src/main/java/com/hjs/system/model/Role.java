@@ -1,6 +1,10 @@
 package com.hjs.system.model;
 
-public class Role {
+import java.io.Serializable;
+
+public class Role implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer rid;
 
     private String roleName;
@@ -29,5 +33,14 @@ public class Role {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "rid=" + rid +
+                ", roleName='" + roleName + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

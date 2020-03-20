@@ -6,25 +6,28 @@
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
   </resultMap>
+
+
   <sql id="Base_Column_List" >
     group_member_id, group_id, student_id
   </sql>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from group_member
     where group_member_id = #{groupMemberId,jdbcType=INTEGER}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from group_member
     where group_member_id = #{groupMemberId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.GroupMember" >
-    insert into group_member (group_member_id, group_id, student_id
-      )
-    values (#{groupMemberId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}
-      )
-  </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.hjs.system.model.GroupMember" >
     insert into group_member
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -50,6 +53,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.GroupMember" >
     update group_member
     <set >
@@ -62,10 +67,6 @@
     </set>
     where group_member_id = #{groupMemberId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.GroupMember" >
-    update group_member
-    set group_id = #{groupId,jdbcType=INTEGER},
-      student_id = #{studentId,jdbcType=INTEGER}
-    where group_member_id = #{groupMemberId,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

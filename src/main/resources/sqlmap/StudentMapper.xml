@@ -24,7 +24,7 @@
 
 
 
-  <select id="find" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="findStudentBySid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
     <include refid="Base_Column_List"/>
     from student
@@ -33,9 +33,9 @@
 
 
 
-  <update id="update" parameterType="com.hjs.system.model.Student" >
+  <update id="updateStudent" parameterType="com.hjs.system.model.Student" >
     update student
-    <set >
+    <set>
       <if test="studentId != null" >
         student_id = #{studentId,jdbcType=VARCHAR},
       </if>
@@ -66,23 +66,10 @@
 
 
 
-  <delete id="delete" parameterType="java.lang.Integer" >
+  <delete id="deleteStudentBySid" parameterType="java.lang.Integer" >
     delete from student
     where sid = #{sid,jdbcType=INTEGER}
   </delete>
-
-
-
-  <insert id="save" useGeneratedKeys="true" keyProperty="sid" keyColumn="sid" parameterType="com.hjs.system.model.Student" >
-    insert into student (sid, student_id, name,
-      password, create_time, mobile,
-      email, pic_img, class_id
-      )
-    values (#{sid,jdbcType=INTEGER}, #{studentId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-      #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{mobile,jdbcType=VARCHAR},
-      #{email,jdbcType=VARCHAR}, #{picImg,jdbcType=VARCHAR}, #{classId,jdbcType=INTEGER}
-      )
-  </insert>
 
 
 
@@ -95,7 +82,7 @@
 
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.Student" >
+  <insert id="insertStudent" parameterType="com.hjs.system.model.Student" >
     insert into student
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="sid != null" >
@@ -156,21 +143,6 @@
       </if>
     </trim>
   </insert>
-
-
-
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Student" >
-    update student
-    set student_id = #{studentId,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      mobile = #{mobile,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      pic_img = #{picImg,jdbcType=VARCHAR},
-      class_id = #{classId,jdbcType=INTEGER}
-    where sid = #{sid,jdbcType=INTEGER}
-  </update>
 
 
 

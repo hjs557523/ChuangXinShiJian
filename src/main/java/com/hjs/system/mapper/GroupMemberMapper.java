@@ -1,7 +1,10 @@
 package com.hjs.system.mapper;
 
 import com.hjs.system.model.GroupMember;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface GroupMemberMapper {
     int deleteByPrimaryKey(Integer groupMemberId);
 

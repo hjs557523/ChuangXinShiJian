@@ -1,17 +1,18 @@
 package com.hjs.system.mapper;
 
 import com.hjs.system.model.BbsPost;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface BbsPostMapper {
-    int deleteByPrimaryKey(Integer bpId);
 
-    int insert(BbsPost record);
+    int deleteBbsPostByBpId(Integer bpId);
 
-    int insertSelective(BbsPost record);
+    int insertBbsPost(BbsPost record);
 
-    BbsPost selectByPrimaryKey(Integer bpId);
+    BbsPost findBbsPostByBpId(Integer bpId);
 
-    int updateByPrimaryKeySelective(BbsPost record);
+    int updateBbsPost(BbsPost record);
 
-    int updateByPrimaryKey(BbsPost record);
 }

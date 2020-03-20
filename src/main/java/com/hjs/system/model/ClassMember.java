@@ -1,6 +1,10 @@
 package com.hjs.system.model;
 
-public class ClassMember {
+import java.io.Serializable;
+
+public class ClassMember implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer classMemberId;
 
     private Integer classId;
@@ -29,5 +33,14 @@ public class ClassMember {
 
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
+    }
+
+    @Override
+    public String toString() {
+        return "ClassMember{" +
+                "classMemberId=" + classMemberId +
+                ", classId=" + classId +
+                ", studentId=" + studentId +
+                '}';
     }
 }

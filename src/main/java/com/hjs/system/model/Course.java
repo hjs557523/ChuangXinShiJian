@@ -1,15 +1,19 @@
 package com.hjs.system.model;
 
-public class Course {
-    private Boolean cid;
+import java.io.Serializable;
+
+public class Course implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Integer cid;
 
     private String courseName;
 
-    public Boolean getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(Boolean cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
@@ -19,5 +23,13 @@ public class Course {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "cid=" + cid +
+                ", courseName='" + courseName + '\'' +
+                '}';
     }
 }

@@ -65,8 +65,8 @@ public class LoginController extends BaseController {
 
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             //经过测试好像shiro session 和 spring session 是同一个session，因为sessionId相同
-            logger.info("/login: shiro的sessionId: {}",subject.getSession().getId().toString().toString());
-            logger.info("/login: servlet的sessionId: {}",request.getSession().getId());
+            logger.info("请求了/login:  shiro 的sessionId: {}",subject.getSession().getId().toString().toString());
+            logger.info("请求了/login: servlet的sessionId: {}",request.getSession().getId());
 
 
 

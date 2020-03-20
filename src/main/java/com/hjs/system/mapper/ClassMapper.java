@@ -1,17 +1,17 @@
 package com.hjs.system.mapper;
 
 import com.hjs.system.model.Class;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface ClassMapper {
-    int deleteByPrimaryKey(Boolean cid);
+    int deleteClassByCid(Integer cid);
 
-    int insert(Class record);
+    int insertClass(Class record);
 
-    int insertSelective(Class record);
+    Class findClassByCid(Integer cid);
 
-    Class selectByPrimaryKey(Boolean cid);
+    int updateClass(Class record);
 
-    int updateByPrimaryKeySelective(Class record);
-
-    int updateByPrimaryKey(Class record);
 }

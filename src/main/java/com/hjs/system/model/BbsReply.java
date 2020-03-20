@@ -1,8 +1,11 @@
 package com.hjs.system.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BbsReply {
+public class BbsReply implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer brId;
 
     private String content;
@@ -51,5 +54,16 @@ public class BbsReply {
 
     public void setReviewerId(Integer reviewerId) {
         this.reviewerId = reviewerId;
+    }
+
+    @Override
+    public String toString() {
+        return "BbsReply{" +
+                "brId=" + brId +
+                ", content='" + content + '\'' +
+                ", bpId=" + bpId +
+                ", replyTime=" + replyTime +
+                ", reviewerId=" + reviewerId +
+                '}';
     }
 }

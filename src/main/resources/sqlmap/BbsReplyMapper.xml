@@ -8,25 +8,28 @@
     <result column="reply_time" property="replyTime" jdbcType="TIMESTAMP" />
     <result column="reviewer_id" property="reviewerId" jdbcType="INTEGER" />
   </resultMap>
+
+
   <sql id="Base_Column_List" >
     br_id, content, bp_id, reply_time, reviewer_id
   </sql>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from bbs_reply
     where br_id = #{brId,jdbcType=INTEGER}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from bbs_reply
     where br_id = #{brId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.BbsReply" >
-    insert into bbs_reply (br_id, content, bp_id, 
-      reply_time, reviewer_id)
-    values (#{brId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{bpId,jdbcType=INTEGER}, 
-      #{replyTime,jdbcType=TIMESTAMP}, #{reviewerId,jdbcType=INTEGER})
-  </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.hjs.system.model.BbsReply" >
     insert into bbs_reply
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -64,6 +67,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.BbsReply" >
     update bbs_reply
     <set >
@@ -82,12 +87,6 @@
     </set>
     where br_id = #{brId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.BbsReply" >
-    update bbs_reply
-    set content = #{content,jdbcType=VARCHAR},
-      bp_id = #{bpId,jdbcType=INTEGER},
-      reply_time = #{replyTime,jdbcType=TIMESTAMP},
-      reviewer_id = #{reviewerId,jdbcType=INTEGER}
-    where br_id = #{brId,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

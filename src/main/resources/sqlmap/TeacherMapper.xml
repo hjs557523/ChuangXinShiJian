@@ -16,27 +16,31 @@
   <sql id="Base_Column_List" >
     tid, teacher_id, real_name, password, sex, create_time, mobile, email, picImg, remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+
+
+  <select id="findTeacherByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from teacher
     where tid = #{tid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+
+  <select id="findTeacherByTeacherId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    from teacher
+    where teacher_id = #{teacherId,jdbcType=VARCHAR}
+  </select>
+
+
+  <delete id="deleteTeacherByTid" parameterType="java.lang.Integer" >
     delete from teacher
     where tid = #{tid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.Teacher" >
-    insert into teacher (tid, teacher_id, real_name, 
-      password, sex, create_time, 
-      mobile, email, picImg, 
-      remark)
-    values (#{tid,jdbcType=INTEGER}, #{teacherId,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{picimg,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.hjs.system.model.Teacher" >
+
+
+  <insert id="insertTeacher" parameterType="com.hjs.system.model.Teacher" useGeneratedKeys="true" keyColumn="tid" keyProperty="tid">
     insert into teacher
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="tid != null" >
@@ -103,7 +107,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Teacher" >
+
+
+  <update id="updateTeacher" parameterType="com.hjs.system.model.Teacher" >
     update teacher
     <set >
       <if test="teacherId != null" >
@@ -136,17 +142,5 @@
     </set>
     where tid = #{tid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.Teacher" >
-    update teacher
-    set teacher_id = #{teacherId,jdbcType=VARCHAR},
-      real_name = #{realName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      mobile = #{mobile,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      picImg = #{picimg,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where tid = #{tid,jdbcType=INTEGER}
-  </update>
+
 </mapper>

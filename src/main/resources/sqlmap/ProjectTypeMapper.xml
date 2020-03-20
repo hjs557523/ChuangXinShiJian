@@ -6,25 +6,28 @@
     <result column="p_type" property="pType" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
+
+
   <sql id="Base_Column_List" >
     pid, p_type, remark
   </sql>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from project_type
     where pid = #{pid,jdbcType=INTEGER}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from project_type
     where pid = #{pid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.ProjectType" >
-    insert into project_type (pid, p_type, remark
-      )
-    values (#{pid,jdbcType=INTEGER}, #{pType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-      )
-  </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.hjs.system.model.ProjectType" >
     insert into project_type
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -50,6 +53,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.ProjectType" >
     update project_type
     <set >
@@ -62,10 +67,5 @@
     </set>
     where pid = #{pid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.ProjectType" >
-    update project_type
-    set p_type = #{pType,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where pid = #{pid,jdbcType=INTEGER}
-  </update>
+
 </mapper>

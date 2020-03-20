@@ -39,8 +39,7 @@ public class StudentRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.out.println("执行Student 授权逻辑...");
-        logger.info("执行Student 授权逻辑...");
+        logger.info("开始执行Student 授权逻辑...doGetAuthorizationInfo()");
         if (principalCollection == null) {
             throw new AuthorizationException("principalCollection is null");
         }
@@ -65,7 +64,7 @@ public class StudentRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        logger.info("执行认证逻辑，开始认证Student身份...");
+        logger.info("执行认证逻辑，开始认证Student身份...doGetAuthenticationInfo()");
 
         UserToken userToken = (UserToken) authenticationToken;
         String studentId = userToken.getUsername();

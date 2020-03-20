@@ -6,32 +6,33 @@
     <result column="file_name" property="fileName" jdbcType="VARCHAR" />
     <result column="upload_path" property="uploadPath" jdbcType="VARCHAR" />
     <result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP" />
-    <result column="file_type" property="fileType" jdbcType="BIT" />
+    <result column="file_type" property="fileType" jdbcType="INTEGER" />
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
     <result column="author_id" property="authorId" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
   </resultMap>
+
+
   <sql id="Base_Column_List" >
     file_id, file_name, upload_path, upload_time, file_type, group_id, author_id, title
   </sql>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from file
     where file_id = #{fileId,jdbcType=INTEGER}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from file
     where file_id = #{fileId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjs.system.model.File" >
-    insert into file (file_id, file_name, upload_path, 
-      upload_time, file_type, group_id, 
-      author_id, title)
-    values (#{fileId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{uploadPath,jdbcType=VARCHAR}, 
-      #{uploadTime,jdbcType=TIMESTAMP}, #{fileType,jdbcType=BIT}, #{groupId,jdbcType=INTEGER}, 
-      #{authorId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR})
-  </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.hjs.system.model.File" >
     insert into file
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -74,7 +75,7 @@
         #{uploadTime,jdbcType=TIMESTAMP},
       </if>
       <if test="fileType != null" >
-        #{fileType,jdbcType=BIT},
+        #{fileType,jdbcType=INTEGER},
       </if>
       <if test="groupId != null" >
         #{groupId,jdbcType=INTEGER},
@@ -87,6 +88,9 @@
       </if>
     </trim>
   </insert>
+
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.File" >
     update file
     <set >
@@ -100,7 +104,7 @@
         upload_time = #{uploadTime,jdbcType=TIMESTAMP},
       </if>
       <if test="fileType != null" >
-        file_type = #{fileType,jdbcType=BIT},
+        file_type = #{fileType,jdbcType=INTEGER},
       </if>
       <if test="groupId != null" >
         group_id = #{groupId,jdbcType=INTEGER},
@@ -114,15 +118,6 @@
     </set>
     where file_id = #{fileId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.File" >
-    update file
-    set file_name = #{fileName,jdbcType=VARCHAR},
-      upload_path = #{uploadPath,jdbcType=VARCHAR},
-      upload_time = #{uploadTime,jdbcType=TIMESTAMP},
-      file_type = #{fileType,jdbcType=BIT},
-      group_id = #{groupId,jdbcType=INTEGER},
-      author_id = #{authorId,jdbcType=INTEGER},
-      title = #{title,jdbcType=VARCHAR}
-    where file_id = #{fileId,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

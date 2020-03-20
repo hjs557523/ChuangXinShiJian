@@ -1,6 +1,10 @@
 package com.hjs.system.model;
 
-public class Group {
+import java.io.Serializable;
+
+public class Group implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer gid;
 
     private String groupName;
@@ -11,7 +15,7 @@ public class Group {
 
     private String oauthToken;
 
-    private Byte stateId;
+    private Integer stateId;
 
     private Integer ownerId;
 
@@ -57,11 +61,11 @@ public class Group {
         this.oauthToken = oauthToken;
     }
 
-    public Byte getStateId() {
+    public Integer getStateId() {
         return stateId;
     }
 
-    public void setStateId(Byte stateId) {
+    public void setStateId(Integer stateId) {
         this.stateId = stateId;
     }
 
@@ -79,5 +83,19 @@ public class Group {
 
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "gid=" + gid +
+                ", groupName='" + groupName + '\'' +
+                ", tid=" + tid +
+                ", repositoryUrl='" + repositoryUrl + '\'' +
+                ", oauthToken='" + oauthToken + '\'' +
+                ", stateId=" + stateId +
+                ", ownerId=" + ownerId +
+                ", subjectId=" + subjectId +
+                '}';
     }
 }

@@ -1,17 +1,18 @@
 package com.hjs.system.mapper;
 
 import com.hjs.system.model.Course;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface CourseMapper {
-    int deleteByPrimaryKey(Boolean cid);
 
-    int insert(Course record);
+    int deleteCourseByCid(Integer cid);
 
-    int insertSelective(Course record);
+    int insertCourse(Course record);
 
-    Course selectByPrimaryKey(Boolean cid);
+    Course findCourseByCid(Integer cid);
 
-    int updateByPrimaryKeySelective(Course record);
+    int updateCourse(Course record);
 
-    int updateByPrimaryKey(Course record);
 }

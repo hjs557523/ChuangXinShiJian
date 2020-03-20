@@ -1,6 +1,10 @@
 package com.hjs.system.model;
 
-public class Subject {
+import java.io.Serializable;
+
+public class Subject implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer subjectId;
 
     private Integer tid;
@@ -49,5 +53,16 @@ public class Subject {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "subjectId=" + subjectId +
+                ", tid=" + tid +
+                ", subjectName='" + subjectName + '\'' +
+                ", subjectDetail='" + subjectDetail + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

@@ -1,7 +1,10 @@
 package com.hjs.system.mapper;
 
 import com.hjs.system.model.Process;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public interface ProcessMapper {
     int deleteByPrimaryKey(Integer processId);
 
