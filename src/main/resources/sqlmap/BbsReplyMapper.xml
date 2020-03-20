@@ -15,7 +15,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findBbsReplyByBrId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from bbs_reply
@@ -23,14 +23,14 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteBbsReplyByBrId" parameterType="java.lang.Integer" >
     delete from bbs_reply
     where br_id = #{brId,jdbcType=INTEGER}
   </delete>
 
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.BbsReply" >
+  <insert id="insertBbsReply" parameterType="com.hjs.system.model.BbsReply" useGeneratedKeys="true" keyColumn="br_id" keyProperty="brId">
     insert into bbs_reply
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="brId != null" >
@@ -69,7 +69,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.BbsReply" >
+  <update id="updateBbsReply" parameterType="com.hjs.system.model.BbsReply" >
     update bbs_reply
     <set >
       <if test="content != null" >

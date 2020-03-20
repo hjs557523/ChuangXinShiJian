@@ -15,7 +15,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findSubjectBySubjectId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from subject
@@ -23,13 +23,13 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteSubjectBySubjectId" parameterType="java.lang.Integer" >
     delete from subject
     where subject_id = #{subjectId,jdbcType=INTEGER}
   </delete>
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.Subject" >
+  <insert id="insertSubject" parameterType="com.hjs.system.model.Subject" useGeneratedKeys="true" keyColumn="subject_id" keyProperty="subjectId">
     insert into subject
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="subjectId != null" >
@@ -68,7 +68,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Subject" >
+  <update id="updateSubject" parameterType="com.hjs.system.model.Subject" >
     update subject
     <set >
       <if test="tid != null" >

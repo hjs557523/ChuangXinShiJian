@@ -18,7 +18,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findFileByFileId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from file
@@ -26,14 +26,14 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteFileByFileId" parameterType="java.lang.Integer" >
     delete from file
     where file_id = #{fileId,jdbcType=INTEGER}
   </delete>
 
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.File" >
+  <insert id="insertFile" parameterType="com.hjs.system.model.File" useGeneratedKeys="true" keyColumn="file_id" keyProperty="fileId">
     insert into file
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="fileId != null" >
@@ -91,7 +91,7 @@
 
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.File" >
+  <update id="updateFile" parameterType="com.hjs.system.model.File" >
     update file
     <set >
       <if test="fileName != null" >

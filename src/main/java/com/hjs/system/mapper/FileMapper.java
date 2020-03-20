@@ -6,15 +6,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FileMapper {
-    int deleteByPrimaryKey(Integer fileId);
 
-    int insert(File record);
+    int deleteFileByFileId(Integer fileId);
 
-    int insertSelective(File record);
+    int insertFile(File record);
 
-    File selectByPrimaryKey(Integer fileId);
+    File findFileByFileId(Integer fileId);
 
-    int updateByPrimaryKeySelective(File record);
+    int updateFile(File record);
 
-    int updateByPrimaryKey(File record);
 }

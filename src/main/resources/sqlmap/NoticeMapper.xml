@@ -15,7 +15,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findNoticeByNid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from notice
@@ -23,13 +23,13 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteNoticeByNid" parameterType="java.lang.Integer" >
     delete from notice
     where nid = #{nid,jdbcType=INTEGER}
   </delete>
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.Notice" >
+  <insert id="insertNotice" parameterType="com.hjs.system.model.Notice" useGeneratedKeys="true" keyColumn="nid" keyProperty="nid">
     insert into notice
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="nid != null" >
@@ -68,7 +68,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Notice" >
+  <update id="updateNotice" parameterType="com.hjs.system.model.Notice" >
     update notice
     <set >
       <if test="topic != null" >

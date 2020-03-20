@@ -13,7 +13,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findProjectTypeByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from project_type
@@ -21,14 +21,14 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteProjectTypeByPid" parameterType="java.lang.Integer" >
     delete from project_type
     where pid = #{pid,jdbcType=INTEGER}
   </delete>
 
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.ProjectType" >
+  <insert id="insertProjectType" parameterType="com.hjs.system.model.ProjectType" useGeneratedKeys="true" keyColumn="pid" keyProperty="pid">
     insert into project_type
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -55,7 +55,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.ProjectType" >
+  <update id="updateProjectType" parameterType="com.hjs.system.model.ProjectType" >
     update project_type
     <set >
       <if test="pType != null" >

@@ -6,15 +6,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NoticeMapper {
-    int deleteByPrimaryKey(Integer nid);
 
-    int insert(Notice record);
+    int deleteNoticeByNid(Integer nid);
 
-    int insertSelective(Notice record);
+    int insertNotice(Notice record);
 
-    Notice selectByPrimaryKey(Integer nid);
+    Notice findNoticeByNid(Integer nid);
 
-    int updateByPrimaryKeySelective(Notice record);
+    int updateNotice(Notice record);
 
-    int updateByPrimaryKey(Notice record);
 }

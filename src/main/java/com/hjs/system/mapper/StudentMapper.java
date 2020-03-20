@@ -22,9 +22,9 @@ public interface StudentMapper extends BaseDAO<Student> {
     Student findStudentByStudentId(String studentId);
 
     int insertStudent(Student student);
-//
+
     int updateStudent(Student student);
-//
+
     int deleteStudentBySid(Integer id);
 
     Student findStudentBySid(Integer id);

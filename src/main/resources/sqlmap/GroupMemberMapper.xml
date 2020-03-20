@@ -13,7 +13,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findGroupMemberByGroupMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from group_member
@@ -21,14 +21,14 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteGroupMemberByGroupMemberId" parameterType="java.lang.Integer" >
     delete from group_member
     where group_member_id = #{groupMemberId,jdbcType=INTEGER}
   </delete>
 
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.GroupMember" >
+  <insert id="insertGroupMember" parameterType="com.hjs.system.model.GroupMember" useGeneratedKeys="true" keyColumn="group_member_id" keyProperty="groupMemberId">
     insert into group_member
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="groupMemberId != null" >
@@ -55,7 +55,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.GroupMember" >
+  <update id="updateGroupMember" parameterType="com.hjs.system.model.GroupMember" >
     update group_member
     <set >
       <if test="groupId != null" >

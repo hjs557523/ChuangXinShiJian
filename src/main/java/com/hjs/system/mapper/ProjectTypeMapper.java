@@ -6,15 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectTypeMapper {
-    int deleteByPrimaryKey(Integer pid);
 
-    int insert(ProjectType record);
+    int deleteProjectTypeByPid(Integer pid);
 
-    int insertSelective(ProjectType record);
+    int insertProjectType(ProjectType record);
 
-    ProjectType selectByPrimaryKey(Integer pid);
+    ProjectType findProjectTypeByPid(Integer pid);
 
-    int updateByPrimaryKeySelective(ProjectType record);
-
-    int updateByPrimaryKey(ProjectType record);
+    int updateProjectType(ProjectType record);
 }

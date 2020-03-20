@@ -6,15 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProcessMapper {
-    int deleteByPrimaryKey(Integer processId);
 
-    int insert(Process record);
+    int deleteProcessByProcessId(Integer processId);
 
-    int insertSelective(Process record);
+    int insertProcess(Process record);
 
-    Process selectByPrimaryKey(Integer processId);
+    Process findProcessByProcessId(Integer processId);
 
-    int updateByPrimaryKeySelective(Process record);
-
-    int updateByPrimaryKey(Process record);
+    int updateProcess(Process record);
 }

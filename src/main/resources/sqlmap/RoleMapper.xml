@@ -13,7 +13,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findRoleByRid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from role
@@ -21,14 +21,14 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteRoleByRid" parameterType="java.lang.Integer" >
     delete from role
     where rid = #{rid,jdbcType=INTEGER}
   </delete>
 
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.Role" >
+  <insert id="insertRole" parameterType="com.hjs.system.model.Role" useGeneratedKeys="true" keyColumn="rid" keyProperty="rid">
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="rid != null" >
@@ -55,7 +55,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Role" >
+  <update id="updateRole" parameterType="com.hjs.system.model.Role" >
     update role
     <set >
       <if test="roleName != null" >

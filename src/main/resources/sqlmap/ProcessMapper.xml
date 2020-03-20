@@ -22,7 +22,7 @@
   </sql>
 
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findProcessByProcessId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from process
@@ -30,13 +30,13 @@
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteProcessByProcessId" parameterType="java.lang.Integer" >
     delete from process
     where process_id = #{processId,jdbcType=INTEGER}
   </delete>
 
 
-  <insert id="insertSelective" parameterType="com.hjs.system.model.Process" >
+  <insert id="insertProcess" parameterType="com.hjs.system.model.Process" useGeneratedKeys="true" keyColumn="process_id" keyProperty="processId">
     insert into process
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="processId != null" >
@@ -111,7 +111,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.Process" >
+  <update id="updateProcess" parameterType="com.hjs.system.model.Process" >
     update process
     <set >
       <if test="processType != null" >

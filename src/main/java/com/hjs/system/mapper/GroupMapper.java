@@ -6,15 +6,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GroupMapper {
-    int deleteByPrimaryKey(Integer gid);
 
-    int insert(Group record);
+    int deleteGroupByGid(Integer gid);
 
-    int insertSelective(Group record);
+    int insertGroup(Group record);
 
-    Group selectByPrimaryKey(Integer gid);
+    Group findGroupByGid(Integer gid);
 
-    int updateByPrimaryKeySelective(Group record);
+    int updateGroup(Group record);
 
-    int updateByPrimaryKey(Group record);
 }
