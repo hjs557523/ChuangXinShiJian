@@ -1,5 +1,8 @@
 package com.hjs.system.service;
 
+import com.github.pagehelper.Page;
+import com.hjs.system.model.Subject;
+
 /**
  * @author 黄继升 16041321
  * @Description:
@@ -7,4 +10,16 @@ package com.hjs.system.service;
  * @Modified By:
  */
 public interface SubjectService {
+
+    Page<Subject> findSubjectByPage(int pageNo, int pageSize);
+
+    Page<Subject> findSubjectByTid(Integer tid, int pageNo, int pageSize);
+
+    int deleteSubjectBySubjectId(Integer subjectId);
+
+    int insertSubject(Subject record);
+
+    Subject findSubjectBySubjectId(Integer subjectId);
+
+    int updateSubject(Subject record);
 }

@@ -1,5 +1,6 @@
 package com.hjs.system.mapper;
 
+import com.github.pagehelper.Page;
 import com.hjs.system.model.Course;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,7 @@ public interface CourseMapper {
     Course findCourseByCid(Integer cid);
 
     int updateCourse(Course record);
+
+    Page<Course> findAllCourse();
 
 }

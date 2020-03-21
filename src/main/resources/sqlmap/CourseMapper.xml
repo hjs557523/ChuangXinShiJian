@@ -18,6 +18,13 @@
   </select>
 
 
+  <select id="findAllCourse" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from course
+  </select>
+
+
   <delete id="deleteCourseByCid" parameterType="java.lang.Integer" >
     delete from course
     where cid = #{cid,jdbcType=INTEGER}

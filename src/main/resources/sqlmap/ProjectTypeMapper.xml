@@ -12,6 +12,12 @@
     pid, p_type, remark
   </sql>
 
+  <select id="findAllProjectType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from project_type
+  </select>
+
 
   <select id="findProjectTypeByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

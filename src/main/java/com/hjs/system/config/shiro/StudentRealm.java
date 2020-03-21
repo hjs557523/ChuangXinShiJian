@@ -65,7 +65,7 @@ public class StudentRealm extends AuthorizingRealm {
 
         UserToken userToken = (UserToken) authenticationToken;
         String studentId = userToken.getUsername();
-        Student student = studentService.queryStudent(studentId);
+        Student student = studentService.findStudentByStudentId(studentId);
 
         if (student == null) {
             //也可以return null，因为shiro底层会抛出UnKnowAccountException

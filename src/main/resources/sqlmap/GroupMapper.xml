@@ -18,6 +18,45 @@
   </sql>
 
 
+  <select id="findAllGroup" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from group
+  </select>
+
+
+  <select id="findGroupByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from group
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findGroupByStateId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from group
+    where state_id = #{stateId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findGroupByOwnerId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from group
+    where owner_id = #{ownerId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findGroupBySubjectId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from group
+    where subject_id = #{subjectId,jdbcType=INTEGER}
+  </select>
+
+
   <select id="findGroupByGid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

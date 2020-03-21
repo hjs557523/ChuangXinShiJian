@@ -13,6 +13,29 @@
   </sql>
 
 
+  <select id="findAllGroupMember" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from group_member
+  </select>
+
+
+  <select id="findGroupMemberByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from group_member
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findGroupMemberByStudentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from group_member
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </select>
+
+
   <select id="findGroupMemberByGroupMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

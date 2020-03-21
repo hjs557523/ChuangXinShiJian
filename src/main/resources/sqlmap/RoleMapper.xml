@@ -13,6 +13,13 @@
   </sql>
 
 
+  <select id="findAllRole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from role
+  </select>
+
+
   <select id="findRoleByRid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -25,7 +32,6 @@
     delete from role
     where rid = #{rid,jdbcType=INTEGER}
   </delete>
-
 
 
   <insert id="insertRole" parameterType="com.hjs.system.model.Role" useGeneratedKeys="true" keyColumn="rid" keyProperty="rid">

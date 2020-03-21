@@ -1,5 +1,6 @@
 package com.hjs.system.mapper;
 
+import com.github.pagehelper.Page;
 import com.hjs.system.model.Class;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +14,13 @@ public interface ClassMapper {
     Class findClassByCid(Integer cid);
 
     int updateClass(Class record);
+
+    Page<Class> findAllClass();
+
+    Page<Class> findClassByTid(Integer tid);
+
+    Page<Class> findClassByCourseId(Integer courseId);
+
+    Page<Class> findClassByIsFinished(Boolean isFinished);
 
 }

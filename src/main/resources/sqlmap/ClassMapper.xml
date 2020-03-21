@@ -21,6 +21,38 @@
   </select>
 
 
+  <select id="findClassByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from class
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findClassByCourseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from class
+    where course_id = #{courseId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findClassByIsFinished" resultMap="BaseResultMap" parameterType="java.lang.Boolean" >
+    select
+    <include refid="Base_Column_List" />
+    from class
+    where is_finished = #{isFinished,jdbcType=BIT}
+  </select>
+
+
+
+  <select id="findAllClass" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from class
+  </select>
+
+
   <delete id="deleteClassByCid" parameterType="java.lang.Integer" >
     delete from class
     where cid = #{cid,jdbcType=INTEGER}

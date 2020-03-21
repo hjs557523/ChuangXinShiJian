@@ -1,5 +1,6 @@
 package com.hjs.system.mapper;
 
+import com.github.pagehelper.Page;
 import com.hjs.system.base.BaseDAO;
 import com.hjs.system.model.Student;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,11 +24,17 @@ public interface StudentMapper extends BaseDAO<Student> {
 
     int insertStudent(Student student);
 
-    int updateStudent(Student student);
+    int updateProfile(Student student);
+
+    int updatePassword(Integer sid, String password);
 
     int deleteStudentBySid(Integer id);
 
     Student findStudentBySid(Integer id);
+
+    Page<Student> findAllStudent();
+
+    Page<Student> fuzzyQueryAllStudent(String value);
 
 
 //    void batchSave(List<Student> list);

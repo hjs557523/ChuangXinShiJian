@@ -1,11 +1,16 @@
 package com.hjs.system.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.hjs.system.mapper.StudentMapper;
 import com.hjs.system.model.Student;
 import com.hjs.system.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author 黄继升 16041321
@@ -21,15 +26,58 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Transactional
+    @CacheEvict(allEntries = true)
     @Override
-    public void saveStudent(Student student) {
-        studentMapper.save(student);
+    public int addStudent(Student student) {
+        return studentMapper.insertStudent(student);
     }
 
+
+    @Cacheable
     @Override
-    public Student queryStudent(String studentId) {
+    public Student findStudentByStudentId(String studentId) {
         return studentMapper.findStudentByStudentId(studentId);
     }
+
+
+    @Cacheable
+    @Override
+    public Student findStudentBySid(Integer sid) {
+        return studentMapper.findStudentBySid(sid);
+    }
+
+
+    @Cacheable
+    @Override
+    public Page<Student> findStudentByPage(int pageNo, int pageSize) {
+        PageHelper.startPage(pageNo, pageSize);
+        return studentMapper.findAllStudent();
+    }
+
+
+    @Override
+    public Page<Student> fuzzyQueryStudentByPage(String search, int pageNo, int pageSize) {
+        PageHelper.startPage(pageNo, pageSize);
+        return studentMapper.fuzzyQueryAllStudent(search);
+    }
+
+
+    @Transactional
+    @CacheEvict(allEntries = true)
+    @Override
+    public int updatePassword(Integer sid, String password) {
+        return studentMapper.updatePassword(sid, password);
+    }
+
+
+    @Transactional
+    @CacheEvict(allEntries = true)
+    @Override
+    public int updateStudent(Student student) {
+        return studentMapper.updateProfile(student);
+    }
+
 
     @Override
     public boolean check(String studentId, String password) {
@@ -40,6 +88,7 @@ public class StudentServiceImpl implements StudentService {
         return false;
     }
 
+
     @Override
     public boolean exists(String studentId) {
         Student student = studentMapper.findStudentByStudentId(studentId);
@@ -48,8 +97,11 @@ public class StudentServiceImpl implements StudentService {
         return false;
     }
 
+
+    @Transactional
+    @CacheEvict(allEntries = true)
     @Override
-    public void deleteStudent(Integer studentId) {
-        studentMapper.delete(studentId);
+    public int deleteStudent(Integer sid) {
+        return studentMapper.deleteStudentBySid(sid);
     }
 }

@@ -15,6 +15,21 @@
   </sql>
 
 
+  <select id="findAllSubject" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from subject
+  </select>
+
+
+  <select id="findSubjectByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from subject
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+
+
   <select id="findSubjectBySubjectId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
