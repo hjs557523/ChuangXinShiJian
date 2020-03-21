@@ -21,11 +21,7 @@ public interface TeacherService {
 
     int updateTeacher(Teacher teacher);
 
-    int updateProfile(Teacher teacher);
-
     int updatePassword(Integer tid, String password);
-
-    int updatePicImg(Integer tid, String path);
 
     int addTeacher(Teacher teacher);
 

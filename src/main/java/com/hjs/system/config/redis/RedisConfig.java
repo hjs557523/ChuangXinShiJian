@@ -40,7 +40,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      * 但可能存在两个方法的参数相同，但执行逻辑不通过，导致执行第二个方法时命中第一个方法的缓存，此时有三种解决方法：
      * 第一种是在@Cacheable注解参数中指定key
      * 第二种是自己实现一个KeyGenerator，在注解中指定KeyGenerator
-     * 第三种是用Spring提供的方案：继承CachingConfigurerSuppport并重写keyGenerator()：类名+方法名+参数列表
+     * 第三种是用Spring提供的方案：继承CachingConfigurerSuppport并重写keyGenerator()：类名+方法名+参数列表值
      * @return
      */
     @Override
@@ -54,7 +54,7 @@ public class RedisConfig extends CachingConfigurerSupport {
                 sb.append(o.getClass().getName());
                 //追加方法名
                 sb.append(method.getName());
-                //遍历参数并且追加
+                //遍历参数并且追加值
                 for (Object obj : objects) {
                     sb.append(obj.toString());
                 }

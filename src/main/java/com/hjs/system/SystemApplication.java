@@ -21,11 +21,11 @@ public class SystemApplication {
         // 程序启动入口
         // 启动嵌入式的 Tomcat 并初始化 Spring 环境机器各 Spring 组件
         SpringApplication.run(SystemApplication.class, args);
-        System.out.println("********************************************************************************");
-        System.out.println("***                     Hjs's system start-up success                        ***");
-        System.out.println("********************************************************************************");
-        System.out.println("***             ChuangXinShiJian Course Management System                    ***");
-        System.out.println("********************************************************************************");
+        System.out.println("************************************************************************************");
+        System.out.println("***                       Hjs's system start-up success                          ***");
+        System.out.println("************************************************************************************");
+        System.out.println("***               ChuangXinShiJian Course Management System                      ***");
+        System.out.println("************************************************************************************");
     }
 
 }

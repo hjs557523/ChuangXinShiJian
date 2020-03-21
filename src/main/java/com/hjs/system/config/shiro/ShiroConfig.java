@@ -151,6 +151,7 @@ public class ShiroConfig {
      * 使用的是shiro-redis开源插件
      * @return
      */
+    @Bean
     public RedisManager redisManager() {
         logger.info("创建shiro的redisManager，开始连接Redis...URL=" + host + ":" + port);
         RedisManager redisManager = new RedisManager();

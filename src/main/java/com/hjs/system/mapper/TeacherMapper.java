@@ -1,6 +1,8 @@
 package com.hjs.system.mapper;
 
+import com.github.pagehelper.Page;
 import com.hjs.system.model.Teacher;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,6 +20,12 @@ public interface TeacherMapper {
     int insertTeacher(Teacher record);
 
     //update操作返回值是记录的 matched (匹配)的条数
-    int updateTeacher(Teacher record);
+    int updateProfile(Teacher record);
+
+    Page<Teacher> findAllTeacher();
+
+    Page<Teacher> fuzzyQueryAllTeacher(String value);
+
+    int updatePassword(@Param("tid")Integer tid, @Param("password") String password);
 
 }

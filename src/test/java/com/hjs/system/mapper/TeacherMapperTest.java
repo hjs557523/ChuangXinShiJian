@@ -47,7 +47,7 @@ class TeacherMapperTest {
         Teacher teacher = new Teacher();
         teacher.setTid(1);
         teacher.setRemark("计算机视觉方向，欢迎选题");
-        logger.info("测试结果：{}", teacherMapper.updateTeacher(teacher));
+        logger.info("测试结果：{}", teacherMapper.updateProfile(teacher));
     }
 
     @Test

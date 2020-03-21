@@ -18,6 +18,20 @@
   </sql>
 
 
+  <select id="fuzzyQueryAllTeacher" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from teacher
+    where teacher_id like concat('%', #{value, jdbcType=VARCHAR}, '%') or real_name like concat('%', #{value, jdbcType=VARCHAR}, '%')
+  </select>
+
+
+  <select id="findAllTeacher" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from teacher
+  </select>
+
   <select id="findTeacherByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -109,7 +123,7 @@
   </insert>
 
 
-  <update id="updateTeacher" parameterType="com.hjs.system.model.Teacher" >
+  <update id="updateProfile" parameterType="com.hjs.system.model.Teacher" >
     update teacher
     <set >
       <if test="teacherId != null" >
@@ -138,6 +152,17 @@
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updatePassword">
+    update teacher
+    <set>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
       </if>
     </set>
     where tid = #{tid,jdbcType=INTEGER}
