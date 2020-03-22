@@ -17,13 +17,43 @@
     file_id, file_name, upload_path, upload_time, file_type, group_id, author_id, title
   </sql>
 
-
   <select id="findFileByFileId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from file
     where file_id = #{fileId,jdbcType=INTEGER}
   </select>
+
+
+    <select id="findAllFile" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from file
+    </select>
+
+
+    <select id="findFileByGroupID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from file
+        where group_id = #{groupId,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="findFileByAuthorId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from file
+        where author_id = #{authorId,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="findFileByFileType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from file
+        where file_type = #{fileType,jdbcType=INTEGER}
+    </select>
 
 
   <delete id="deleteFileByFileId" parameterType="java.lang.Integer" >

@@ -22,6 +22,53 @@
   </sql>
 
 
+  <select id="findAllProcess" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from process
+  </select>
+
+
+  <select id="findProcessByProcessType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from process
+    where process_type = #{processType, jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findProcessByProcessStatus" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from process
+    where process_status = #{processStatus, jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findProcessByPublisherId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from process
+    where publisher_id = #{publisherId, jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findProcessByExecuterId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from process
+    where process_type > 0 and executer_id_list like concat('%', #{executerId, jdbcType=VARCHAR}, '%')
+  </select>
+
+
+  <select id="findProcessByGroupId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from process
+    where group_id = #{groupId, jdbcType=INTEGER}
+  </select>
+
+
   <select id="findProcessByProcessId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

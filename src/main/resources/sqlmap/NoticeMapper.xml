@@ -7,12 +7,36 @@
     <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="author_id" property="authorId" jdbcType="INTEGER" />
   </resultMap>
 
 
   <sql id="Base_Column_List" >
-    nid, topic, detail, create_time, type_id
+    nid, topic, detail, create_time, type_id, author_id
   </sql>
+
+
+  <select id="findNoticeByAuthorId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from notice
+    where author_id = #{authorId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findNoticeByTypeId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from notice
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findAllNotice" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from notice
+  </select>
 
 
   <select id="findNoticeByNid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -47,6 +71,9 @@
       <if test="typeId != null" >
         type_id,
       </if>
+      <if test="authorId != null" >
+        author_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="nid != null" >
@@ -63,6 +90,9 @@
       </if>
       <if test="typeId != null" >
         #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="authorId != null" >
+        #{authorId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -83,6 +113,9 @@
       <if test="typeId != null" >
         type_id = #{typeId,jdbcType=INTEGER},
       </if>
+      <if test="authorId != null" >
+        author_id = #{authorId,jdbcType=INTEGER},
+    </if>
     </set>
     where nid = #{nid,jdbcType=INTEGER}
   </update>

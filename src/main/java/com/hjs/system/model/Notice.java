@@ -16,6 +16,16 @@ public class Notice implements Serializable {
 
     private Integer typeId;
 
+    private Integer authorId;
+
+    public Integer getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Integer authorId) {
+        this.authorId = authorId;
+    }
+
     public Integer getNid() {
         return nid;
     }
@@ -64,6 +74,7 @@ public class Notice implements Serializable {
                 ", detail='" + detail + '\'' +
                 ", createTime=" + createTime +
                 ", typeId=" + typeId +
+                ", authorId=" + authorId +
                 '}';
     }
 }
