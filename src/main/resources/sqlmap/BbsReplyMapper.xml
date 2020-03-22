@@ -15,6 +15,29 @@
   </sql>
 
 
+  <select id="findAllBbsReply" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bbs_reply
+  </select>
+
+
+  <select id="findBbsReplyByBpId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bbs_reply
+    where bp_id = #{bpId, jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findBbsReplyByReviewerId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bbs_reply
+    where reviewer_id = #{reviewerId, jdbcType=INTEGER}
+  </select>
+
+
   <select id="findBbsReplyByBrId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

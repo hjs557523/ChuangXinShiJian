@@ -14,6 +14,21 @@
   </sql>
 
 
+  <select id="findAllBbsPost" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bbs_post
+  </select>
+
+
+  <select id="findBbsPostByPublisherId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from bbs_post
+    where publisher_id = #{publisherId, jdbcType=INTEGER}
+  </select>
+
+
   <select id="findBbsPostByBpId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select 
     <include refid="Base_Column_List" />
