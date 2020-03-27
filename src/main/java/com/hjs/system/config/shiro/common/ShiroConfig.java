@@ -1,5 +1,7 @@
-package com.hjs.system.config.shiro;
+package com.hjs.system.config.shiro.common;
 
+import com.hjs.system.config.shiro.student.StudentRealm;
+import com.hjs.system.config.shiro.teacher.TeacherRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
@@ -24,8 +26,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.anon;
 
 /**
  * @author 黄继升 16041321
@@ -60,27 +60,31 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
-        //设置自定义的多realm认证器
+        // 设置自定义的多realm认证器
         securityManager.setAuthenticator(modularRealmAuthenticator());
         List<Realm> realms = new ArrayList<>();
 
-        //添加多个Realm
-        //添加学生Realm数据源
-        realms.add(studentShiroRealm());
-        //添加教师Realm数据源
-        //---------------------------
+        // 添加多个Realm:
 
-        //自定义缓存实现，使用redis实现spring-cache
+        // 添加学生Realm数据源
+        realms.add(studentShiroRealm());
+
+        // 添加教师Realm数据源
+        realms.add(teacherShiroRealm());
+
+        // 自定义缓存实现，使用redis实现spring-cache
         securityManager.setCacheManager(cacheManager());
 
-        //自定义session管理，使用redis来管理session
+        // 自定义session管理，使用redis来管理session
         securityManager.setSessionManager(sessionManager());
 
-        //注入记住我管理器
+        // 注入记住我管理器
         securityManager.setRememberMeManager(rememberMeManager());
 
-        //设置Realms
+        // 设置Realms
         securityManager.setRealms(realms);
+        // 设置securityManager 的realms一定要放到最后，因为在调用SecurityManager.setRealms时会将realms设置给authorizer，
+        // 并为各个Realm设置permissionResolver和rolePermissionResolver
 
         return securityManager;
     }
@@ -269,6 +273,19 @@ public class ShiroConfig {
         StudentRealm studentRealm = new StudentRealm();
         studentRealm.setCredentialsMatcher(hashedCredentialsMatcher());//设置解密规则
         return studentRealm;
+    }
+
+
+    /**
+     * 教师Realm
+     * @return
+     */
+    @Bean
+    public TeacherRealm teacherShiroRealm() {
+        TeacherRealm teacherRealm = new TeacherRealm();
+        teacherRealm.setCredentialsMatcher(hashedCredentialsMatcher()); //设置解密规则
+        return teacherRealm;
+
     }
 
 

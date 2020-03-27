@@ -1,4 +1,4 @@
-package com.hjs.system.config.shiro;
+package com.hjs.system.config.shiro.common;
 
 /**
  * @author 黄继升 16041321

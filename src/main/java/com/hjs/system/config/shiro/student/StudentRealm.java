@@ -1,5 +1,6 @@
-package com.hjs.system.config.shiro;
+package com.hjs.system.config.shiro.student;
 
+import com.hjs.system.config.shiro.common.UserToken;
 import com.hjs.system.model.Student;
 import com.hjs.system.service.StudentService;
 import org.apache.shiro.authc.*;
@@ -23,8 +24,11 @@ import org.springframework.context.annotation.Lazy;
 public class StudentRealm extends AuthorizingRealm {
     private static final Logger logger = LoggerFactory.getLogger(StudentRealm.class);
 
+    // 这里可作为项目难点1：
     // 自定义Realm注入的Service声明中加入@Lazy注解即可解决@Cacheable注解无效问题
     // 解决同时使用Redis缓存数据和缓存shiro时，@Cacheable无效的问题
+    // https://stackoverflow.com/questions/21512791/spring-service-with-cacheable-methods-gets-initialized-without-cache-when-autowi
+    // https://blog.csdn.net/elonpage/article/details/78965176
     @Autowired
     @Lazy
     private StudentService studentService;
@@ -49,7 +53,7 @@ public class StudentRealm extends AuthorizingRealm {
         }
 
         logger.info("授权失败");
-        return info;//角色对应的权限信息
+        return null;//角色对应的权限信息
     }
 
 
@@ -68,7 +72,7 @@ public class StudentRealm extends AuthorizingRealm {
         Student student = studentService.findStudentByStudentId(studentId);
 
         if (student == null) {
-            //也可以return null，因为shiro底层会抛出UnKnowAccountException
+            //也可以return null，因为直接return null的话，shiro底层会抛出UnKnowAccountException。也可以手动throw Excepton
             throw new UnknownAccountException("用户不存在！");
         }
 
@@ -79,7 +83,7 @@ public class StudentRealm extends AuthorizingRealm {
                 getName() //realm name
         );
 
-        simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(studentId)); //设置盐
+        simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(student.getStudentId())); //设置盐
 
         logger.info("认证结束，认证成功!");
         return simpleAuthenticationInfo;

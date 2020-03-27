@@ -28,11 +28,11 @@ public class LogoutController {
         try {
             Subject subject = SecurityUtils.getSubject();
             subject.logout();
-            logger.info("执行了logout()");
+            logger.info("执行了logout(), logout成功!");
             return JSONUtil.returnSuccessResult("退出成功!");
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("执行了logout()");
+            logger.info("执行了logout(), logout异常!");
             return JSONUtil.returnFailResult("退出失败");
         }
     }
