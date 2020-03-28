@@ -24,6 +24,16 @@ spring:
       log-slow-sql: true
 
 
+  #文件上传大小限制
+  #maxFileSize 是单个文件大小
+  #maxRequestSize是设置总上传的数据大小
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+
+
   redis:
     host: localhost
     port: 6379

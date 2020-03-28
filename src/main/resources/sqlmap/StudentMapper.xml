@@ -28,7 +28,7 @@
     select
     <include refid="Base_Column_List"/>
     from student
-    where sid = #{sid}
+    where sid = #{sid, jdbcType=INTEGER}
   </select>
 
 
@@ -100,7 +100,7 @@
     select 
     <include refid="Base_Column_List" />
     from student
-    where student_id = #{studentName,jdbcType=VARCHAR}
+    where student_id = #{studentId,jdbcType=VARCHAR}
   </select>
 
 

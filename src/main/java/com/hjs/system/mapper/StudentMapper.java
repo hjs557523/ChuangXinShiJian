@@ -3,10 +3,7 @@ package com.hjs.system.mapper;
 import com.github.pagehelper.Page;
 import com.hjs.system.base.BaseDAO;
 import com.hjs.system.model.Student;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,13 +17,13 @@ public interface StudentMapper extends BaseDAO<Student> {
      * @param studentId
      * @return
      */
-    Student findStudentByStudentId(String studentId);
+    Student findStudentByStudentId(@Param("studentId") String studentId);
 
     int insertStudent(Student student);
 
     int updateProfile(Student student);
 
-    int updatePassword(Integer sid, String password);
+    int updatePassword(@Param("sid") Integer sid, @Param("password")String password);
 
     int deleteStudentBySid(Integer id);
 

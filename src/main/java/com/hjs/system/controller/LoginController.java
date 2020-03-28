@@ -1,5 +1,6 @@
 package com.hjs.system.controller;
 
+import com.hjs.system.SystemApplication;
 import com.hjs.system.base.BaseController;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
@@ -7,11 +8,14 @@ import com.hjs.system.config.shiro.common.LoginType;
 import com.hjs.system.config.shiro.common.UserToken;
 import com.hjs.system.model.Student;
 import com.hjs.system.model.Teacher;
+import com.hjs.system.service.StudentService;
+import com.hjs.system.service.impl.StudentServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +38,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LoginController extends BaseController {
 
+    @Autowired
+    private StudentService studentServiceImpl;
+
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     private static final String STUDENT_LOGIN_TYPE = LoginType.STUDENT.toString();
     private static final String TEACHER_LOGIN_TYPE = LoginType.TEACHER.toString();
@@ -41,7 +48,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/student/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String studentLogin(Student student) {
-        logger.info("接收到请求");
+        logger.info("接收到登录请求");
         logger.info("登录Student: " + student);
         //后台校验提交的用户名和密码
         if (StringUtil.isEmpty(student.getStudentId()))
@@ -59,14 +66,19 @@ public class LoginController extends BaseController {
             // 登录认证
             // shiro 密码如何验证？ https://www.cnblogs.com/zuochengsi-9/p/10153874.html
             subject.login(userToken);//doGetAuthenticationInfo
+
+            //servlet session 和 shiro session? : https://yq.aliyun.com/articles/114167?t=t1
             subject.getSession().setAttribute("student", (Student)subject.getPrincipal());
 
+            //HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            //System.out.println(request); 重新包装HttpServletRequest为: org.apache.shiro.web.servlet.ShiroHttpServletRequest@7a0ce4d4
+            //request.getSession(): org.apache.catalina.session.StandardSessionFacade
+            //subject.getSession(): org.apache.shiro.subject.support.DelegatingSubject$StoppingAwareProxiedSession
 
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            // 经过测试好像shiro session 和 spring session 是同一个session，因为sessionId相同
-            logger.info("请求了/student/login: Apache shiro  的sessionId: {}",subject.getSession().getId().toString());
-            logger.info("请求了/student/login: Spring servlet的sessionId: {}",request.getSession().getId());
 
+            //shiro session 是对 spring session 的封装，两者sessionId相同
+            //logger.info("请求了/student/login: Apache shiro  的sessionId: {}",subject.getSession().getId().toString());
+            //logger.info("请求了/student/login: Spring servlet的sessionId: {}",request.getSession().getId());
 
 
             return JSONUtil.returnEntityResult(subject.getSession().getId());
