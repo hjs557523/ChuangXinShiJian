@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 
 /**
@@ -39,6 +41,9 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController extends BaseController {
 
     @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
     private StudentService studentServiceImpl;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -48,6 +53,19 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/student/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String studentLogin(Student student) {
+//        Cookie[] cookies = request.getCookies();
+//        for (Cookie cookie : cookies)
+//        logger.info(cookie.getName() + ":" + cookie.getValue());
+
+//
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String name = headerNames.nextElement();
+//            //通过请求头的名称获取请求头的值
+//            String value = request.getHeader(name);
+//            System.out.println(name + "----" + value);
+//        }
+
         logger.info("接收到登录请求");
         logger.info("登录Student: " + student);
         //后台校验提交的用户名和密码
@@ -81,7 +99,7 @@ public class LoginController extends BaseController {
             //logger.info("请求了/student/login: Spring servlet的sessionId: {}",request.getSession().getId());
 
 
-            return JSONUtil.returnEntityResult(subject.getSession().getId());
+            return JSONUtil.returnEntityResult(subject.getSession().getId());//这里我把sessionId作为access_token传给前端，可用于模仿前后端分离
             //return JSONUtil.returnSuccessResult("登陆成功");
         } catch (AuthenticationException e) {
             //认证失败就会抛出AuthenticationException这个异常，就对异常进行相应的操作，这里的处理是抛出一个自定义异常ResultException

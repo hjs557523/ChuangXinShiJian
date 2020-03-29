@@ -26,6 +26,8 @@ public class Student implements Serializable {
 
     private Integer classId;
 
+    private String githubName;
+
     public Integer getSid() {
         return sid;
     }
@@ -100,6 +102,14 @@ public class Student implements Serializable {
         this.classId = classId;
     }
 
+    public String getGithubName() {
+        return githubName;
+    }
+
+    public void setGithubName(String githubName) {
+        this.githubName = githubName;
+    }
+
 
     @Override
     public String toString() {
@@ -113,6 +123,7 @@ public class Student implements Serializable {
                 ", email='" + email + '\'' +
                 ", picImg='" + picImg + '\'' +
                 ", classId=" + classId +
+                ", githubName='" + githubName + '\'' +
                 '}';
     }
 }

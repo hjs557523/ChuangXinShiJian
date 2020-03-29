@@ -92,6 +92,8 @@ public class ShiroConfig {
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
+        logger.info("拦截器配置链初始化...");
+
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
         //设置安全管理器
@@ -124,7 +126,8 @@ public class ShiroConfig {
 //        filters.put("perms", new ShiroPermissionsFilter());
 //
         //（3）开始顺序配置访问权限（过滤链）
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();//项目难点：LinkedHashMap可以保证顺序
+
         filterChainDefinitionMap.put("/student/login","anon");
         filterChainDefinitionMap.put("/teacher/login","anon");
         filterChainDefinitionMap.put("/admin/login","anon");
@@ -142,7 +145,11 @@ public class ShiroConfig {
         // 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
         filterChainDefinitionMap.put("/**","authc");
 
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
+        logger.info("拦截器链: " + shiroFilterFactoryBean.getFilterChainDefinitionMap());
+        logger.info("拦截器链初始化结束.");
 
         return shiroFilterFactoryBean;
     }
@@ -201,7 +208,7 @@ public class ShiroConfig {
      */
     @Bean
     public DefaultWebSessionManager sessionManager() {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();//默认sessionManager
         sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }

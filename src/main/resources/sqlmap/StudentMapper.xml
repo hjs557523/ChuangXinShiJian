@@ -14,12 +14,13 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="pic_img" property="picImg" jdbcType="VARCHAR" />
     <result column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="github_name" property="githubName" jdbcType="VARCHAR" />
   </resultMap>
 
 
 
   <sql id="Base_Column_List" >
-    sid, student_id, name, password, create_time, mobile, email, pic_img, class_id
+    sid, student_id, name, password, create_time, mobile, email, pic_img, class_id, github_name
   </sql>
 
 
@@ -83,6 +84,9 @@
       <if test="classId != null" >
         class_id = #{classId,jdbcType=INTEGER},
       </if>
+      <if test="githubName != null" >
+        github_name = #{githubName,jdbcType=VARCHAR},
+      </if>
     </set>
     where sid = #{sid,jdbcType=INTEGER}
   </update>
@@ -135,6 +139,9 @@
       <if test="classId != null" >
         class_id,
       </if>
+      <if test="githubName != null" >
+        github_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="sid != null" >
@@ -163,6 +170,9 @@
       </if>
       <if test="classId != null" >
         #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="githubName != null" >
+        #{githubName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

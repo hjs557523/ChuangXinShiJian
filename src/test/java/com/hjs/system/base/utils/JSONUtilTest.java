@@ -43,5 +43,13 @@ class JSONUtilTest {
         map.put("student", student);
         map.put("teacher", teacher);
         logger.info(JSONUtil.returnEntityResult(map));
+
+        String a = "hjs";
+        String b = "hjs";
+        if (a == b)
+            logger.info("true");
+
     }
+
+
 }
