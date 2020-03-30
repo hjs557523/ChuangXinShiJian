@@ -50,6 +50,7 @@ public class LoginController extends BaseController {
     private static final String STUDENT_LOGIN_TYPE = LoginType.STUDENT.toString();
     private static final String TEACHER_LOGIN_TYPE = LoginType.TEACHER.toString();
 
+    //consumes 指定接收的内容的类型
     @RequestMapping(value = "/student/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String studentLogin(Student student) {

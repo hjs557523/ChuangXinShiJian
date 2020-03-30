@@ -20,9 +20,9 @@
             width: 150,
             align: "center",
             fixed: "right",
-            toolbar: "#table-useradmin-webuser"
+            toolbar: "#table-useradmin-webuser"  //edit、del
         }]],
-        page: !0,
+        page: !0, //true
         limit: 30,
         height: "full-220",
         text: "对不起，加载出现异常！"
@@ -37,7 +37,7 @@
             layer.open({
                 type: 2,
                 title: "编辑用户",
-                content: "../../../views/user/user/userform.html",
+                content: "../../../templates/user/user/userform.html",
                 maxmin: !0,
                 area: ["500px", "450px"],
                 btn: ["确定", "取消"],

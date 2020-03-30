@@ -46,6 +46,11 @@ public class StudentProfileController {
     }
 
 
+    /**
+     * 修改头像
+     * @param file
+     * @return
+     */
     @RequestMapping(value = "/student/profile/avatarUpload", method = RequestMethod.POST)
     @ResponseBody
     public String studentAvatarUpload(MultipartFile file) {
@@ -123,6 +128,13 @@ public class StudentProfileController {
 
 
 
+    /**
+     * 修改密码
+     * @param oldPwd
+     * @param newPwd
+     * @param confirmPwd
+     * @return
+     */
     @RequestMapping(value = "/student/profile/passwordModify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String studentPasswordModify(String oldPwd, String newPwd, String confirmPwd) {
@@ -167,6 +179,11 @@ public class StudentProfileController {
     }
 
 
+    /**
+     * 修改学生个人信息
+     * @param student
+     * @return
+     */
     @RequestMapping(value = "/student/profile/profileModify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String studentProfileModify(Student student) {

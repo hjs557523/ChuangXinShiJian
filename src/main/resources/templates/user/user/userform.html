@@ -4,7 +4,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>layuiAdmin 网站用户 iframe 框</title>
+  <title>编辑用户 iframe 框</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -56,19 +56,20 @@
     base: '../../../layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
-  }).use(['index', 'form', 'upload'], function(){
+  }).use(['index', 'form', 'upload', 'jquery'], function(){
     var $ = layui.$
     ,form = layui.form
     ,upload = layui.upload ;
     
     upload.render({
       elem: '#layuiadmin-upload-useradmin'
-      ,url: layui.setter.base + 'json/upload/demo.js'
+      ,url: 'http://localhost:8080/img/get'//layui.setter.base + 'json/upload/demo.js'//服务端上传接口
       ,accept: 'images'
       ,method: 'get'
-      ,acceptMime: 'image/*'
-      ,done: function(res){
+      ,acceptMime: 'image/*' //规定打开文件选择框时，筛选出的文件类型，值为用逗号隔开的 MIME 类型列表。
+      ,done: function(res){//上传图片后的回调
         $(this.item).prev("div").children("input").val(res.data.src)
+        console.log("上传成功!");
       }
     });
   })
