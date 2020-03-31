@@ -7,7 +7,9 @@ import com.hjs.system.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,11 +22,11 @@ public class JSONUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JSONUtil.class);
 
-    public static String returnJSONResult(String code, String message, Object entity) {
+    public static String returnJSONResult(Integer code, String message, Object entity) {
         Map<String, Object> map = new HashMap<>();
         map.put("code", code);
-        map.put("message", message);
-        map.put("entity", entity);
+        map.put("msg", message);
+        map.put("data", entity);
         logger.info("返回字符串: " + JSONObject.toJSONString(map, SerializerFeature.WriteNullStringAsEmpty));
 
 //        //alibaba 的fastjson默认会把null值滤去
@@ -40,24 +42,47 @@ public class JSONUtil {
     }
 
 
+    public static String returnJSONResult(Integer code, String message, Integer count, Object entity) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", code);
+        map.put("msg", message);
+        map.put("count", count);
+        map.put("data", entity);
+        logger.info("返回字符串: " + JSONObject.toJSONString(map, SerializerFeature.WriteNullStringAsEmpty));
+        return JSON.toJSONString(map);
+    }
+
+
     //设置返回失败消息JSON字符串
     public static String returnFailResult(String message) {
-        return returnJSONResult("0", message, null);
+        return returnJSONResult(1001, message, null);
     }
+
+
 
     //设置返回成功消息JSON字符串
     public static String returnSuccessResult(String message) {
-        return returnJSONResult("200", message, null);
+        return returnJSONResult(0, message, null);
     }
+
+
 
     //设置返回403权限不足JSON字符串
     public static String returnForbiddenResult() {
-        return returnJSONResult("403", "权限不足", null);
+        return returnJSONResult(403, "权限不足", null);
     }
+
+
 
     //设置返回实体JSON字符串
     public static String returnEntityResult(Object entity) {
-        return returnJSONResult("200", "返回数据", entity);
+        return returnJSONResult(0, "返回数据", entity);
+    }
+
+
+    //设置返回分页数据JSON字符串
+    public static String returnEntityResult(Integer count, String msg, Object entity) {
+        return returnJSONResult(0, msg, count, entity);
 
     }
 
@@ -68,8 +93,12 @@ public class JSONUtil {
         return result.toString();
     }
 
+
     public static void main(String[] args) {
-        returnEntityResult(new Integer(1));
+        List<Student> list = new ArrayList<>();
+        list.add(new Student());
+        list.add(new Student());
+        returnEntityResult(2, "结果如下", list);
         returnEntityResult(new StringBuffer("hjs"));
         returnEntityResult(new Student());
     }

@@ -2,6 +2,7 @@ package com.hjs.system.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hjs.system.mapper.ClassMapper;
 import com.hjs.system.model.Class;
 import com.hjs.system.service.ClassService;

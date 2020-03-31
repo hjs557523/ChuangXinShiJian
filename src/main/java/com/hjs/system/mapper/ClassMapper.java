@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.hjs.system.model.Class;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface ClassMapper {
@@ -22,5 +24,7 @@ public interface ClassMapper {
     Page<Class> findClassByCourseId(Integer courseId);
 
     Page<Class> findClassByIsFinished(Boolean isFinished);
+
+    List<Class> findClassByTid2(Integer tid);
 
 }

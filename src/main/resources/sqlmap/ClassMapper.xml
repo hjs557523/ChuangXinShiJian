@@ -29,6 +29,13 @@
   </select>
 
 
+  <select id="findClassByTid2" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from class
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+
   <select id="findClassByCourseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />

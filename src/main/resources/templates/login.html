@@ -163,12 +163,15 @@
                 url: api,
                 data: obj.field,
                 done: function (res) {
-                    console.log(obj.field)
+                    //console.log("进入了成功回调")
+                    console.log(obj.field);
+                    //console.log(JSON.stringify(obj.field))
                     //请求成功后，写入 access_token
                     layui.data(setter.tableName, {
                         key: setter.request.tokenName
-                        ,value: res.entity
+                        ,value: res.data
                     });
+                    console.log(res);
 
 
 

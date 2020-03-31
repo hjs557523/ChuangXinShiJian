@@ -22,14 +22,18 @@
             fixed: "right",
             toolbar: "#table-useradmin-webuser"  //edit、del
         }]],
-        page: !0, //true
-        limit: 30,
+        page: !0, //true, 允许分页
+        limit: 30, //一页展示多少数据
         height: "full-220",
         text: "对不起，加载出现异常！"
     }), i.on("tool(LAY-user-manage)", function (e) {
         e.data;
+        console.log(e.data)
         if ("del" === e.event) layer.prompt({formType: 1, title: "敏感操作，请验证口令"}, function (t, i) {
             layer.close(i), layer.confirm("真的删除行么", function (t) {
+
+                //在这里写删除课程代码逻辑admin.req/ajax
+
                 e.del(), layer.close(t)
             })
         }); else if ("edit" === e.event) {
@@ -72,6 +76,7 @@
         text: "对不起，加载出现异常！"
     }), i.on("tool(LAY-user-back-manage)", function (e) {
         e.data;
+        console.log(e.data);
         if ("del" === e.event) layer.prompt({formType: 1, title: "敏感操作，请验证口令"}, function (t, i) {
             layer.close(i), layer.confirm("确定删除此管理员？", function (t) {
                 console.log(e), e.del(), layer.close(t)

@@ -58,8 +58,12 @@
           <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">选中删除</button>
           <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">新增添加</button>
         </div>
-        
+
+
+        <!--数据表格-->
         <table id="LAY-user-manage" lay-filter="LAY-user-manage"></table>
+
+
         <script type="text/html" id="imgTpl"> 
           <img style="display: inline-block; width: 50%; height: 100%;" src= {{ d.avatar }}>
         </script>
@@ -97,8 +101,8 @@
     //事件
     var active = {
       batchdel: function(){
-        var checkStatus = table.checkStatus('LAY-user-manage')
-        ,checkData = checkStatus.data; //得到选中的数据
+        var checkStatus = table.checkStatus('LAY-user-manage') //'LAY-user-manage'为表格的id值
+        ,checkData = checkStatus.data; //得到选中的数据  [{field的值为key, 实际值为value},{},{}]
 
         if(checkData.length === 0){
           return layer.msg('请选择数据');
@@ -111,6 +115,8 @@
           layer.close(index);
           
           layer.confirm('确定删除吗？', function(index) {
+
+            console.log(checkData);
             
             //执行 Ajax 后重载
             /*
@@ -119,6 +125,7 @@
               //,……
             });
             */
+
             table.reload('LAY-user-manage');
             layer.msg('已删除');
           });
@@ -152,11 +159,15 @@
         }); 
       }
     };
-    
+
+
+    //判断是点击了"选中删除"/"新增添加"按钮，然后选择触发对应的事件
     $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
       var type = $(this).data('type');
       active[type] ? active[type].call(this) : '';
     });
+
+
   });
   </script>
 </body>
