@@ -28,6 +28,16 @@ public class Student implements Serializable {
 
     private String githubName;
 
+    private String openId;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
     public Integer getSid() {
         return sid;
     }
@@ -124,6 +134,7 @@ public class Student implements Serializable {
                 ", picImg='" + picImg + '\'' +
                 ", classId=" + classId +
                 ", githubName='" + githubName + '\'' +
+                ", openId='" + openId + '\'' +
                 '}';
     }
 }

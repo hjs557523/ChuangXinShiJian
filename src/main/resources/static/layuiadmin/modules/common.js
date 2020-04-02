@@ -12,7 +12,7 @@
                         , icon: 1
                         , time: 1500
                     }, function () {
-                        location.href = '=/templates/login.html'; //后台主页
+                        location.href = '/login.html'; //后台主页
                         layui.data(setter.tableName, {
                             key: setter.request.tokenName
                             ,value: null

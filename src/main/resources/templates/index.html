@@ -482,6 +482,8 @@
 
       fail: function (res) {
         //登录状态失效
+        console.log(res);
+        console.log("登录状态失效");//实际上之前不重写ShiroLoginFilter，没有权限/即session过期，后端会强制跳转到回login.html
         layer.msg(res.message, {
           offset: '15px'
           , icon: 1

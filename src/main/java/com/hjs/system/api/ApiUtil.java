@@ -3,6 +3,19 @@ package com.hjs.system.api;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hjs.system.base.utils.JSONUtil;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +23,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 黄继升 16041321
@@ -21,14 +38,139 @@ import java.net.URL;
 public class ApiUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiUtil.class);
-    private final String url;
+
+    // github 相关
     public static final String GITHUB_HOST = "https://api.github.com";
     public static final String METHOD_POST = "POST";
     public static final String METHOD_GET = "GET";
 
-    public ApiUtil(String url) {
-        this.url = url;
+
+    // 微信登录接口
+    public static final String WX_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";
+    // appid
+    public static final String WX_LOGIN_APPID = "wx55cd29c85957466a";
+    // appid_secret
+    public static final String WX_LOGIN_SECRET = "55888c4b9a6653ba667c3bab2ebb7dce";
+    // 固定参数: 授权类型
+    public static final String WX_LOGIN_GRANT_TYPE = "authorization_code";
+
+
+    public static String wxApiGetRequest(String url, Map<String, String> params) {
+        //创建HttpClient对象
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        String resultString = "";
+        CloseableHttpResponse response = null;
+
+        try {
+            //创建URI
+            URIBuilder builder = new URIBuilder(url);
+            if (params != null) {
+                for (String key : params.keySet()) {
+                    builder.addParameter(key, params.get(key));
+                }
+            }
+            URI uri = builder.build();
+
+            //创建http GET请求
+            HttpGet httpGet = new HttpGet(uri);
+
+            //执行请求
+            response = httpClient.execute(httpGet);//这里可能会抛出异常
+
+            //判断返回状态是否为200
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {//200
+                resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+            }
+
+        } catch (Exception e) {
+            logger.info("get请求微信接口出现错误: " + e.getMessage());
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+                httpClient.close();
+            } catch (IOException e) {
+                logger.info("关闭response出现错误: " + e.getMessage());
+            }
+        }
+        return resultString;
     }
+
+
+    public static String wxApiGetRequest(String url) {
+        return wxApiGetRequest(url, null);
+    }
+
+
+    public static String wxApiPostRequest(String url, Map<String, String> params) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        String resultString = "";
+        try {
+            HttpPost httpPost = new HttpPost(url);
+            if (params != null) {
+                List<NameValuePair> paramList = new ArrayList<>();
+                for (String key : params.keySet()) {
+                    paramList.add(new BasicNameValuePair(key, params.get(key)));
+                }
+                //模拟表单
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(paramList);
+                httpPost.setEntity(entity);
+            }
+            //执行http请求
+            response = httpClient.execute(httpPost);
+            resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+
+        } catch (Exception e) {
+            logger.info("post请求微信接口出现错误: " + e.getMessage());
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+                httpClient.close();
+            } catch (IOException e) {
+                logger.info("关闭response出现错误: " + e.getMessage());
+            }
+        }
+
+        return resultString;
+    }
+
+
+    public static String wxApiPostRequest(String url) {
+        return wxApiPostRequest(url, null);
+    }
+
+
+    public static String wxApiPostRequestJSON(String url, String json) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        String resultString = "";
+        try {
+            HttpPost httpPost = new HttpPost(url);
+            StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+            httpPost.setEntity(entity);
+            response = httpClient.execute(httpPost);
+            resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+        } catch (Exception e) {
+            logger.info("post请求微信接口出现错误: " + e.getMessage());
+        } finally {
+            try {
+                if (response != null)
+                    response.close();
+                httpClient.close();
+            } catch (IOException e) {
+                logger.info("关闭response出现错误: " + e.getMessage());
+            }
+        }
+
+        return resultString;
+    }
+
 
     //获取用户user的某个仓库信息
     public static String getUserRepoUrl(String owner, String repo) {

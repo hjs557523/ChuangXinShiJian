@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -100,7 +101,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         //setLoginUrl 如果不设置值，默认会自动寻找Web工程根目录下的"/login.jsp"页面 或 "/login" 映射
-        shiroFilterFactoryBean.setLoginUrl("/login.html");
+        //shiroFilterFactoryBean.setLoginUrl("/login.html");
 
         //登录成功后跳转的url
         //shiroFilterFactoryBean.setSuccessUrl("/index");
@@ -120,14 +121,17 @@ public class ShiroConfig {
          */
 //        // 设置过滤器
 //        //（1）获取filters
-//        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
 //
 //        //（2）将自定义的权限验证失败的过滤器ShiroFilterFactoryBean注入shiroFilter
-//        filters.put("perms", new ShiroPermissionsFilter());
+        filters.put("authc", new ShiroLoginFilter());
 //
         //（3）开始顺序配置访问权限（过滤链）
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();//项目难点：LinkedHashMap可以保证顺序
 
+        filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/wx/**", "anon");
+        filterChainDefinitionMap.put("/login.html", "anon");
         filterChainDefinitionMap.put("/student/login","anon");
         filterChainDefinitionMap.put("/teacher/login","anon");
         filterChainDefinitionMap.put("/admin/login","anon");
@@ -169,7 +173,7 @@ public class ShiroConfig {
         redisManager.setHost(host);
         redisManager.setPort(port);
         redisManager.setPassword(password);
-        redisManager.setExpire(7200);//配置缓存过期时间120min
+        redisManager.setExpire(7200);//配置缓存过期时间2小时 = 120min
         redisManager.setTimeout(timeout);
         return redisManager;
     }

@@ -161,7 +161,7 @@ public class ClassManagementController {
             logger.info("删除Class失败: " + e.getMessage());
             return JSONUtil.returnFailResult("删除失败, 请重试!");
         }
-        
+
     }
 
 }
