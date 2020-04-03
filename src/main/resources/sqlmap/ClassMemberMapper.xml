@@ -5,6 +5,7 @@
     <id column="class_member_id" property="classMemberId" jdbcType="INTEGER" />
     <result column="class_id" property="classId" jdbcType="INTEGER" />
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    <result column="accept" property="accept" jdbcType="BIT"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -63,6 +64,9 @@
       <if test="studentId != null" >
         student_id,
       </if>
+      <if test="accept != null" >
+        accept,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="classMemberId != null" >
@@ -73,6 +77,9 @@
       </if>
       <if test="studentId != null" >
         #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="accept != null" >
+        #{accept,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -86,6 +93,9 @@
       </if>
       <if test="studentId != null" >
         student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="accept != null" >
+        accept = #{accept,jdbcType=BIT},
       </if>
     </set>
     where class_member_id = #{classMemberId,jdbcType=INTEGER}

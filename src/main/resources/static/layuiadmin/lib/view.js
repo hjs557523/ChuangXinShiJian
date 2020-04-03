@@ -11,7 +11,7 @@
     }, i.removeLoad = function () {
         this.elemLoad && this.elemLoad.remove()
     }, i.exit = function (e) {
-        layui.data(r.tableName, {key: r.request.tokenName, remove: !0}), e && e()
+        layui.data(r.tableName, {key: r.request.tokenName, remove: !0}), e && e() //这里定义强制跳转到登录页？？？
     }, i.req = function (e) {
         var n = e.success, a = (e.error, r.request), o = r.response, s = function () {
             return r.debug ? "<br><cite>URL：</cite>" + e.url : ""
@@ -28,8 +28,10 @@
                 "function" == typeof n && n(t)
             },
             error: function (e, t) {
-                var n = ["请求异常，请重试<br><cite>错误信息：</cite>" + t, s()].join("");
+                var n = ["请求异常，登录信息已失效, 请重新登录!<br><cite>错误信息：</cite>" + t, s()].join("");
                 i.error(n), "function" == typeof n && n(res)
+                console.log("登录失效!");
+                //window.location.href="/login.html"
             }
         }, e))
     }, i.popup = function (e) {

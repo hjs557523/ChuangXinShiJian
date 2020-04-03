@@ -162,7 +162,7 @@
                 type: 'POST',
                 url: api,
                 data: obj.field,
-                done: function (res) {
+                done: function (res) { //res.code = 0
                     //console.log("进入了成功回调")
                     console.log(obj.field);
                     //console.log(JSON.stringify(obj.field))
@@ -186,16 +186,18 @@
                 },
 
 
-                //res.code = 0
+                //res.code = 101
                 fail: function (res) {
                     console.log(res)
                     //登入成功的提示与跳转
-                    layer.msg('登录失败,' + res.message, {
+                    layer.msg('登录失败,' + res.msg, {
                         offset: '15px'
-                        , icon: 1
+                        , icon: 2
                         , time: 1500
                     });
                 }
+
+                //res.code = 1001会导致登录状态失效，自动跳转到登录页。即session过期。服务端改写响应码为200，仅返回JSON字符串。不再强制跳转。这里由前端自己根据响应码控制跳转
             });
         });
 

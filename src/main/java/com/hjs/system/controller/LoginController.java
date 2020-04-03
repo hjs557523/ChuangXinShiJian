@@ -58,7 +58,7 @@ public class LoginController extends BaseController {
 //        for (Cookie cookie : cookies)
 //        logger.info(cookie.getName() + ":" + cookie.getValue());
 
-//
+
 //        Enumeration<String> headerNames = request.getHeaderNames();
 //        while (headerNames.hasMoreElements()) {
 //            String name = headerNames.nextElement();

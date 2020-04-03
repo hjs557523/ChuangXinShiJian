@@ -26,7 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        logger.info("配置了默认访问的根目录");
+        logger.info("配置映射静态路径可作为项目根目录");
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/templates/");
 
@@ -54,7 +54,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //默认地址（可以是页面或后台请求接口）
-        logger.info("请求了默认访问接口localhost");
+        logger.info("设置请求默认访问接口localhost, 将重定向到login.html");
         registry.addViewController("/").setViewName("forward:/login.html");
         //设置过滤优先级最高
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);

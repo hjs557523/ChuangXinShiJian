@@ -55,7 +55,7 @@ public class JSONUtil {
 
     //设置返回失败消息JSON字符串
     public static String returnFailResult(String message) {
-        return returnJSONResult(1001, message, null);
+        return returnJSONResult(101, message, null);
     }
 
 
@@ -67,10 +67,8 @@ public class JSONUtil {
 
 
 
-    //设置返回403权限不足JSON字符串
-    public static String returnForbiddenResult() {
-        return returnJSONResult(403, "权限不足", null);
-    }
+    //设置返回登录状态失效的JSON字符串
+    public static String returnForbiddenResult(String message) { return returnJSONResult(1001, message, null); }
 
 
 

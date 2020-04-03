@@ -34,7 +34,7 @@ public class StudentRealm extends AuthorizingRealm {
     private StudentService studentService;
 
     /**
-     * 执行授权逻辑, 当请求访问的页面链接配置了相应的权限, 或者shiro标签才会执行此方法，否则不会执行
+     * 执行授权逻辑, 当请求访问的url配置了相应的权限, 或者shiro标签才会执行此方法，否则不会执行
      * @param principalCollection
      * @return
      */

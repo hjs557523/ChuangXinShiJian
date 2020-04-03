@@ -11,6 +11,8 @@ public class ClassMember implements Serializable {
 
     private Integer studentId;
 
+    private Boolean accept;
+
     public Integer getClassMemberId() {
         return classMemberId;
     }
@@ -35,12 +37,11 @@ public class ClassMember implements Serializable {
         this.studentId = studentId;
     }
 
-    @Override
-    public String toString() {
-        return "ClassMember{" +
-                "classMemberId=" + classMemberId +
-                ", classId=" + classId +
-                ", studentId=" + studentId +
-                '}';
+    public Boolean getAccept() {
+        return accept;
+    }
+
+    public void setAccept(Boolean accept) {
+        this.accept = accept;
     }
 }

@@ -101,7 +101,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         //setLoginUrl 如果不设置值，默认会自动寻找Web工程根目录下的"/login.jsp"页面 或 "/login" 映射
-        //shiroFilterFactoryBean.setLoginUrl("/login.html");
+//        shiroFilterFactoryBean.setLoginUrl("/login.html");
 
         //登录成功后跳转的url
         //shiroFilterFactoryBean.setSuccessUrl("/index");
@@ -129,8 +129,8 @@ public class ShiroConfig {
         //（3）开始顺序配置访问权限（过滤链）
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();//项目难点：LinkedHashMap可以保证顺序
 
-        filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/wx/**", "anon");
+        filterChainDefinitionMap.put("/", "anon");//访问localhost的时候能够不会被拦截，自动跳转到login.html
+        filterChainDefinitionMap.put("/wx/login", "anon");
         filterChainDefinitionMap.put("/login.html", "anon");
         filterChainDefinitionMap.put("/student/login","anon");
         filterChainDefinitionMap.put("/teacher/login","anon");
@@ -138,8 +138,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/templates/**","anon");
         filterChainDefinitionMap.put("/druid/**","anon");
-        filterChainDefinitionMap.put("/hello","anon");
-        filterChainDefinitionMap.put("/hello2","anon");
+//        filterChainDefinitionMap.put("/hello","anon");
+//        filterChainDefinitionMap.put("/hello2","anon");
         filterChainDefinitionMap.put("/static/**","anon");
         filterChainDefinitionMap.put("/student/**","roles[Student]"); //对应之前那个addRoles(Student)
         filterChainDefinitionMap.put("/teacher/**","roles[Teacher]");
@@ -173,7 +173,7 @@ public class ShiroConfig {
         redisManager.setHost(host);
         redisManager.setPort(port);
         redisManager.setPassword(password);
-        redisManager.setExpire(7200);//配置缓存过期时间2小时 = 120min
+        redisManager.setExpire(6 * 60 * 60);//配置缓存过期时间6小时
         redisManager.setTimeout(timeout);
         return redisManager;
     }

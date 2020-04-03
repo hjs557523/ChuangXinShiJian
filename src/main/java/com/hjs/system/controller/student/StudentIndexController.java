@@ -39,6 +39,19 @@ public class StudentIndexController {
     @ResponseBody
     public String getStudentUserInfo(String access_token) {
 
+//        Cookie[] cookies = request.getCookies();
+//        for (Cookie cookie : cookies)
+//        logger.info(cookie.getName() + ":" + cookie.getValue());
+
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String name = headerNames.nextElement();
+//            //通过请求头的名称获取请求头的值
+//            String value = request.getHeader(name);
+//            System.out.println(name + "----" + value);
+//        }
+
+
         if (StringUtil.isEmpty(access_token)) {
             logger.info("access_token 为 null");
         }

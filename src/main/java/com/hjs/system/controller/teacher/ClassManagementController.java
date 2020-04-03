@@ -8,7 +8,6 @@ import com.hjs.system.model.Class;
 import com.hjs.system.model.Teacher;
 import com.hjs.system.service.ClassService;
 import com.hjs.system.service.CourseService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;

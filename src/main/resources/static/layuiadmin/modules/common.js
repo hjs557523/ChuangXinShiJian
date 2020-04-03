@@ -12,13 +12,29 @@
                         , icon: 1
                         , time: 1500
                     }, function () {
-                        location.href = '/login.html'; //后台主页
+                        location.href = '/login.html'; //退回到登录界面
                         layui.data(setter.tableName, {
                             key: setter.request.tokenName
                             ,value: null
                         });
                     });
                     //location.href = "./login.html"
+                })
+            },
+            
+            fail: function (e) {
+                i.exit(function () {
+                    layer.msg('退出成功!', {
+                        offset: '15px'
+                        , icon: 1
+                        , time: 1500
+                    }, function () {
+                        location.href = '/login.html';//退回到登录界面
+                        layui.data(setter.tableName, {
+                            key: setter.request.tokenName
+                            , value: null
+                        });
+                    });
                 })
             }
         })

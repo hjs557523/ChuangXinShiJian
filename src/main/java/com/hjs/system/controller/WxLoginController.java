@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +43,9 @@ public class WxLoginController {
     private static final Logger logger = LoggerFactory.getLogger(WxLoginController.class);
 
     @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
     private StudentService studentServiceImpl;
 
     @Autowired
@@ -49,6 +54,17 @@ public class WxLoginController {
     @RequestMapping(value = "/wx/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String wxUserLogin(@RequestParam("code") String code, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("userType") Integer userType) {
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            //通过请求头的名称获取请求头的值
+            String value = request.getHeader(name);
+            System.out.println(name + "----" + value);
+        }
+
+
+
         logger.info("接收到微信端的登录请求");
         // 参数都不能为空
         if (StringUtil.isEmpty(code) || StringUtil.isEmpty(username) || StringUtil.isEmpty(password) || StringUtil.isEmpty(userType.toString()))
