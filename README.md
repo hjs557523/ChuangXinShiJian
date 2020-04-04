@@ -16,5 +16,6 @@
 | Alibaba Druid | 数据库连接池 |
 | Thymeleaf | 前端页面模板 |
 | Kaptcha | 验证码生成 |
-| LayUi | 前端页面框架 |
+| LayUi | 前端页面UI框架 |
 | Log4j | 日志管理 |
+| HttpClient | 支持HTTP协议的客户端编程工具包 |
