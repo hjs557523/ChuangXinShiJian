@@ -1,5 +1,5 @@
 # GraduationProject
-This is the code project for my graduation project
+利用前后端分离思想，高仿前后端分离版本
 # 技术框架
 | **技术** |  **名称**| 
 | ------   |:------:|
