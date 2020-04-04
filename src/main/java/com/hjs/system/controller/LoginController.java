@@ -88,6 +88,11 @@ public class LoginController extends BaseController {
 
             //servlet session 和 shiro session? : https://yq.aliyun.com/articles/114167?t=t1
             subject.getSession().setAttribute("student", (Student)subject.getPrincipal());
+            //logger.info(String.valueOf(request.getSession().getMaxInactiveInterval())); //1800s
+            //logger.info(String.valueOf(subject.getSession().getTimeout())); //1800 000ms
+            //事实证明，即使设置了redis来缓存session，session的过期时间 ≠ redis缓存时间，仍然要手动设置
+            subject.getSession().setTimeout(3 * 60 * 60 * 1000);//session有效期设置6小时
+
 
             //HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             //System.out.println(request); 重新包装HttpServletRequest为: org.apache.shiro.web.servlet.ShiroHttpServletRequest@7a0ce4d4

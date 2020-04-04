@@ -30,8 +30,9 @@ import java.util.regex.Pattern;
  * @Modified By:
  */
 
-@Controller
+@Controller("TeacherClassManagement")
 public class ClassManagementController {
+
     private static final Logger logger = LoggerFactory.getLogger(ClassManagementController.class);
 
     @Autowired
@@ -120,7 +121,7 @@ public class ClassManagementController {
 
     @RequestMapping(value = "/teacher/class/findAll", method = RequestMethod.GET, produces = "application/json;charset=UTF-8" )
     @ResponseBody
-    public String findClassesByPage(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
+    public String findMyClassesByPage(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
         if (pageNum == null) {
             pageNum = 1;
         } else if (pageSize == null) {

@@ -130,8 +130,8 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();//项目难点：LinkedHashMap可以保证顺序
 
         filterChainDefinitionMap.put("/", "anon");//访问localhost的时候能够不会被拦截，自动跳转到login.html
-        filterChainDefinitionMap.put("/wx/login", "anon");
         filterChainDefinitionMap.put("/login.html", "anon");
+        filterChainDefinitionMap.put("/wx/login", "anon");
         filterChainDefinitionMap.put("/student/login","anon");
         filterChainDefinitionMap.put("/teacher/login","anon");
         filterChainDefinitionMap.put("/admin/login","anon");

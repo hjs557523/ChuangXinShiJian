@@ -52,9 +52,6 @@ public class StudentIndexController {
 //        }
 
 
-        if (StringUtil.isEmpty(access_token)) {
-            logger.info("access_token 为 null");
-        }
         Subject subject = SecurityUtils.getSubject();
 
         if(subject.hasRole("Student")) {

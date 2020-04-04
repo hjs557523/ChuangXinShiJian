@@ -5,6 +5,7 @@ import com.hjs.system.api.ApiUtil;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
 import com.hjs.system.config.shiro.common.LoginType;
+import com.hjs.system.config.shiro.common.ShiroLoginFilter;
 import com.hjs.system.config.shiro.common.UserToken;
 import com.hjs.system.model.Student;
 import com.hjs.system.model.Teacher;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 /**
  * @author 黄继升 16041321
- * @Description:
+ * @Description: 微信登录接口
  * @date Created in 2020/4/1 17:18
  * @Modified By:
  */
@@ -39,7 +40,6 @@ public class WxLoginController {
 
     private static final String STUDENT_LOGIN_TYPE = LoginType.STUDENT.toString();
     private static final String TEACHER_LOGIN_TYPE = LoginType.TEACHER.toString();
-
     private static final Logger logger = LoggerFactory.getLogger(WxLoginController.class);
 
     @Autowired
@@ -55,15 +55,10 @@ public class WxLoginController {
     @ResponseBody
     public String wxUserLogin(@RequestParam("code") String code, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("userType") Integer userType) {
 
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String name = headerNames.nextElement();
-            //通过请求头的名称获取请求头的值
-            String value = request.getHeader(name);
-            System.out.println(name + "----" + value);
-        }
-
-
+        if (ShiroLoginFilter.isAjaxRequest(request))
+            logger.info("该微信请求是ajax请求");
+        else
+            logger.info("该微信请求不是ajax请求");
 
         logger.info("接收到微信端的登录请求");
         // 参数都不能为空
@@ -118,6 +113,7 @@ public class WxLoginController {
                         }
                         //更新session
                         SecurityUtils.getSubject().getSession().setAttribute("student", authenticationInfo);
+                        SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);//3小时
                     } catch (Exception e) {
                         logger.info("添加openId失败!");
                         return JSONUtil.returnFailResult("添加openId失败!");

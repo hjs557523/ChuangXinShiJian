@@ -6,6 +6,7 @@
     i.events.logout = function () {
         i.req({
             url: "http://localhost:8080/logout", type: "get", done: function (e) {
+                console.log("done:" + e);
                 i.exit(function () {
                     layer.msg('退出成功!', {
                         offset: '15px'
@@ -23,6 +24,7 @@
             },
             
             fail: function (e) {
+                console.log("fail:" + e);
                 i.exit(function () {
                     layer.msg('退出成功!', {
                         offset: '15px'

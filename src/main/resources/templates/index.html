@@ -477,7 +477,7 @@
       type: 'POST',
       url: 'http://localhost:8080/student/index',
       done: function (res) {
-        $("#studentName").html(res.entity.name);
+        $("#studentName").html(res.data.name);
       },
 
       fail: function (res) {
