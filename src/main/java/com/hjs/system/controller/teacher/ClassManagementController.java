@@ -9,7 +9,6 @@ import com.hjs.system.model.Teacher;
 import com.hjs.system.service.ClassService;
 import com.hjs.system.service.CourseService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,21 +43,29 @@ public class ClassManagementController {
     @Autowired
     private CourseService courseServiceImpl;
 
-    @RequestMapping(value = "/teacher/class/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+
+    /**
+     * 教师创建班级接口
+     * @param classes
+     * @return
+     */
+    @RequestMapping(value = "/teacher/class/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String addClass(Class classes) {
+    public String createClass(Class classes) {
         //校验数据
         if (StringUtil.isEmpty(classes.getClassName()))
             return JSONUtil.returnFailResult("请输入自定义的创新实践班级名称");
-        else if (StringUtil.isEmpty(classes.getCourseId().toString()))
+        else if (classes.getCourse().getCid() == null)
             return JSONUtil.returnFailResult("请选择该班级所属的创新实践课程");
-        else if (!Pattern.compile("^[1-4]$").matcher(classes.getCourseId().toString()).matches())
+        else if (!Pattern.compile("^[1-4]$").matcher(classes.getCourse().getCid().toString()).matches())
             return JSONUtil.returnFailResult("根据课程安排, 请选择创新实践1/创新实践2/创新实践3/创新综合实践");
         else {
+            // 获取当前教师用户
             Teacher current_user = (Teacher) SecurityUtils.getSubject().getPrincipal();
             Integer tid = current_user.getTid();
-            boolean isFinished = false;//创建班级，默认未完结
-            classes.setTid(tid);
+            classes.getTeacher().setTid(tid);
+
+            boolean isFinished = false;//初始创建班级，因此默认未完结
             classes.setIsFinished(isFinished);
 
             try {
@@ -75,14 +82,19 @@ public class ClassManagementController {
     }
 
 
+    /**
+     * 教师更新班级信息接口
+     * @param classes
+     * @return
+     */
     @RequestMapping(value = "/teacher/class/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String modifyClassInfo(Class classes) {
         //校验数据
         if (StringUtil.isEmpty(classes.getClassName()))
-            return JSONUtil.returnFailResult("请设置该创新实践班级的班级名称!");
-        else if (StringUtil.isEmpty(classes.getCourseId().toString()))
-            return JSONUtil.returnFailResult("请设置该班级所属的创新实践课程！");
+            return JSONUtil.returnFailResult("请必须设置您的创新实践班级名称!");
+        else if (StringUtil.isEmpty(classes.getCourse().getCid().toString()))
+            return JSONUtil.returnFailResult("请选择该班级对应的创新实践课程类型!");
         else if (StringUtil.isEmpty(classes.getIsFinished().toString()))
             return JSONUtil.returnFailResult("请设置该创新实践班级的进行状态！");
         else {
@@ -101,6 +113,11 @@ public class ClassManagementController {
     }
 
 
+    /**
+     * 教师删除班级接口
+     * @param Cid
+     * @return
+     */
     @RequestMapping(value = "/teacher/class/delete", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteClass(Integer Cid) {
@@ -119,6 +136,13 @@ public class ClassManagementController {
 
 
 
+
+    /**
+     * 教师查看其所创建的所有班级
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/teacher/class/findAll", method = RequestMethod.GET, produces = "application/json;charset=UTF-8" )
     @ResponseBody
     public String findMyClassesByPage(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
@@ -146,7 +170,11 @@ public class ClassManagementController {
 
 
 
-
+    /**
+     * 教师批量删除创建的所有班级接口
+     * @param classIdList
+     * @return
+     */
     //前端给后端传JSON数组: https://www.cnblogs.com/yfzhou/p/9661994.html
     @RequestMapping(value = "/teacher/class/batchDel", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -163,5 +191,7 @@ public class ClassManagementController {
         }
 
     }
+
+
 
 }

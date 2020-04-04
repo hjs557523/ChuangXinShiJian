@@ -2,10 +2,15 @@ package com.hjs.system.model;
 
 import java.io.Serializable;
 
+/**
+ * 班级成员中间表
+ */
 public class ClassMember implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer classMemberId;
+
+    //private Class classInfo;
 
     private Integer classId;
 

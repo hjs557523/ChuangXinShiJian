@@ -42,6 +42,11 @@ public class ClassManagementController {
     @Autowired
     ClassService classServiceImpl;
 
+    /**
+     * 学生申请加入班级
+     * @param cid
+     * @return
+     */
     @RequestMapping(value = "/student/class/join", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String joinClass(Integer cid) {
@@ -67,6 +72,12 @@ public class ClassManagementController {
     }
 
 
+    /**
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/student/class/findAll", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String findAllClassesByPage(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
@@ -81,11 +92,37 @@ public class ClassManagementController {
         Page<Class> classes = classServiceImpl.findClassByPage(pageNum, pageSize);
         PageInfo<Class> pageInfo = new PageInfo<>(classes);
         Integer count = (int) pageInfo.getTotal();
-//        if (count == 0)
-//            return JSONUtil.returnEntityResult(count, "目前没有");
+        if (count == 0)
+            return JSONUtil.returnEntityResult(count, "目前没有任何老师创建过班级", pageInfo);
+        else
+            return JSONUtil.returnEntityResult(count, "查询成功, 返回数据如下", pageInfo);
+    }
+
+
+    @RequestMapping(value = "/student/class/findAllByTid", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findAllClassesByPageAndTid(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize, @RequestParam("tid") Integer tid) {
+        if (pageNum == null)
+            pageNum = 1;
+        else if (pageSize == null)
+            pageSize = 12;
+        else if (tid == null)
+            return JSONUtil.returnFailResult("所查询班级的教师Id为空!");
+        logger.info("分页查询第{}页，每页{}条, 该班级由老师{}创建", new Object[]{pageNum, pageSize, tid});
+        Page<Class> classes = classServiceImpl.findClassByTid(tid, pageNum, pageSize);
+        PageInfo<Class> pageInfo = new PageInfo<>(classes);
+        Integer count = (int) pageInfo.getTotal();
+        if (count == 0)
+            return JSONUtil.returnEntityResult(count, "该老师没有任何班级创建记录", pageInfo);
+        else
+            return JSONUtil.returnEntityResult(count, "查询成功, 该老师创建过的班级如下: ", pageInfo);
+
+    }
 
 
 
+    @RequestMapping(value = "/student/class/findAllBy")
+    public String findAllClassesByPageAndTeacherName() {
         return null;
     }
 

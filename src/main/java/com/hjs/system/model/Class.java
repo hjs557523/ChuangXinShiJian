@@ -9,9 +9,13 @@ public class Class implements Serializable {
 
     private String className;
 
-    private Integer tid;
+//    private Integer tid;
 
-    private Integer courseId;
+//    private Integer courseId;
+
+    private Teacher teacher;
+
+    private Course course;
 
     private Boolean isFinished;
 
@@ -31,21 +35,37 @@ public class Class implements Serializable {
         this.className = className;
     }
 
-    public Integer getTid() {
-        return tid;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTid(Integer tid) {
-        this.tid = tid;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
-    public Integer getCourseId() {
-        return courseId;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
+    public void setCourse(Course course) {
+        this.course = course;
     }
+
+//    public Integer getTid() {
+//        return tid;
+//    }
+//
+//    public void setTid(Integer tid) {
+//        this.tid = tid;
+//    }
+
+//    public Integer getCourseId() {
+//        return courseId;
+//    }
+//
+//    public void setCourseId(Integer courseId) {
+//        this.courseId = courseId;
+//    }
 
     public Boolean getIsFinished() {
         return isFinished;
@@ -60,8 +80,8 @@ public class Class implements Serializable {
         return "Class{" +
                 "cid=" + cid +
                 ", className='" + className + '\'' +
-                ", tid=" + tid +
-                ", courseId=" + courseId +
+                ", teacher=" + teacher +
+                ", course=" + course +
                 ", isFinished=" + isFinished +
                 '}';
     }

@@ -4,9 +4,25 @@
   <resultMap id="BaseResultMap" type="com.hjs.system.model.Class" >
     <id column="cid" property="cid" jdbcType="INTEGER" />
     <result column="class_name" property="className" jdbcType="VARCHAR" />
-    <result column="tid" property="tid" jdbcType="INTEGER" />
-    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <!--<result column="tid" property="tid" jdbcType="INTEGER" />-->
+    <!--<result column="course_id" property="courseId" jdbcType="INTEGER" />-->
     <result column="is_finished" property="isFinished" jdbcType="BIT" />
+    <association property="teacher" column="tid" javaType="com.hjs.system.model.Teacher">
+      <id column="tid" property="tid" jdbcType="INTEGER" />
+      <result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="password" property="password" jdbcType="VARCHAR" />
+      <result column="sex" property="sex" jdbcType="BIT" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="picImg" property="picimg" jdbcType="VARCHAR" />
+      <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </association>
+    <association property="course" column="course_id" javaType="com.hjs.system.model.Course">
+      <id column="cid" property="cid" jdbcType="INTEGER" />
+      <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+    </association>
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -14,49 +30,49 @@
   </sql>
 
   <select id="findClassByCid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from class
-    where cid = #{cid,jdbcType=INTEGER}
+    select * from class c
+    left join teacher t on c.tid = t.tid
+    left join course co on c.course_id = co.cid
+    where c.cid = #{cid,jdbcType=INTEGER}
   </select>
 
 
   <select id="findClassByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from class
-    where tid = #{tid,jdbcType=INTEGER}
+    select * from class c
+    left join teacher t on c.tid = t.tid
+    left join course co on c.course_id = co.cid
+    where c.tid = #{tid,jdbcType=INTEGER}
   </select>
 
 
   <select id="findClassByTid2" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from class
-    where tid = #{tid,jdbcType=INTEGER}
+    select * from class c
+    left join teacher t on c.tid = t.tid
+    left join course co on c.course_id = co.cid
+    where c.tid = #{tid,jdbcType=INTEGER}
   </select>
 
   <select id="findClassByCourseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from class
-    where course_id = #{courseId,jdbcType=INTEGER}
+    select * from class c
+    left join teacher t on c.tid = t.tid
+    left join course co on c.course_id = co.cid
+    where c.course_id = #{courseId,jdbcType=INTEGER}
   </select>
 
 
   <select id="findClassByIsFinished" resultMap="BaseResultMap" parameterType="java.lang.Boolean" >
-    select
-    <include refid="Base_Column_List" />
-    from class
-    where is_finished = #{isFinished,jdbcType=BIT}
+    select * from class c
+    left join teacher t on c.tid = t.tid
+    left join course co on c.course_id = co.cid
+    where c.is_finished = #{isFinished,jdbcType=BIT}
   </select>
 
 
 
   <select id="findAllClass" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from class
+    select * from class c
+    left join teacher t on c.tid = t.tid
+    left join course co on c.course_id = co.cid
   </select>
 
 
@@ -75,10 +91,10 @@
       <if test="className != null" >
         class_name,
       </if>
-      <if test="tid != null" >
+      <if test="teacher.tid != null" >
         tid,
       </if>
-      <if test="courseId != null" >
+      <if test="course.cid != null" >
         course_id,
       </if>
       <if test="isFinished != null" >
@@ -92,11 +108,11 @@
       <if test="className != null" >
         #{className,jdbcType=VARCHAR},
       </if>
-      <if test="tid != null" >
-        #{tid,jdbcType=INTEGER},
+      <if test="teacher.tid != null" >
+        #{teacher.tid,jdbcType=INTEGER},
       </if>
-      <if test="courseId != null" >
-        #{courseId,jdbcType=INTEGER},
+      <if test="course.cid != null" >
+        #{course.cid,jdbcType=INTEGER},
       </if>
       <if test="isFinished != null" >
         #{isFinished,jdbcType=BIT},
@@ -111,11 +127,11 @@
       <if test="className != null" >
         class_name = #{className,jdbcType=VARCHAR},
       </if>
-      <if test="tid != null" >
-        tid = #{tid,jdbcType=INTEGER},
+      <if test="teacher.tid != null" >
+        tid = #{teacher.tid,jdbcType=INTEGER},
       </if>
-      <if test="courseId != null" >
-        course_id = #{courseId,jdbcType=INTEGER},
+      <if test="course.cid != null" >
+        course_id = #{course.cid,jdbcType=INTEGER},
       </if>
       <if test="isFinished != null" >
         is_finished = #{isFinished,jdbcType=BIT},
