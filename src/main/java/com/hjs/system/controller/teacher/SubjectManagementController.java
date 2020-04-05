@@ -36,6 +36,10 @@ public class SubjectManagementController {
     private SubjectService subjectServiceImpl;
 
 
+    @Autowired
+    private HttpServletRequest request;
+
+
     /**
      * 教师创建课题接口
      * @param subject
@@ -162,13 +166,30 @@ public class SubjectManagementController {
     }
 
 
+    /**
+     * 教师批量删除创建的所有课题接口
+     * @param subjectIdList
+     * @return
+     */
+    @RequestMapping(value = "/teacher/subject/batchDel", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String batchDelete(@RequestParam(value = "subjectIdList[]") List<Integer> subjectIdList) {
+        try {
+            for (Integer sid : subjectIdList) {
+                if (subjectServiceImpl.deleteSubjectBySubjectId(sid) < 0)
+                    return JSONUtil.returnFailResult("记录id = " + sid + "删除失败！");
+            }
 
-//    @RequestMapping(value = "/teacher/subject/batchDel", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-//    @ResponseBody
-//    public String batchDelete(@RequestParam(value = "subjectIdList[]") List<Integer> classIdList) {
-//        try {
-//
-//        }
-//        return null;
-//    }
+            return JSONUtil.returnFailResult("删除成功!");
+
+        } catch (Exception e) {
+            logger.info("批量删除Subject失败: " + e.getMessage());
+            return JSONUtil.returnFailResult("批量删除失败, 请重试!");
+
+        }
+
+    }
+
+
+
 }

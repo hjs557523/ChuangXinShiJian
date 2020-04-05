@@ -178,7 +178,7 @@ public class ClassManagementController {
     //前端给后端传JSON数组: https://www.cnblogs.com/yfzhou/p/9661994.html
     @RequestMapping(value = "/teacher/class/batchDel", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String batchDelete(@RequestParam(value = "classIdList[]") List<Integer> classIdList) {
+    public String batchDelete(@RequestParam(name = "classIdList[]") List<Integer> classIdList) {
         try {
             for (Integer cid : classIdList) {
                 if (classServiceImpl.deleteClassByCid(cid) < 0)
@@ -186,7 +186,7 @@ public class ClassManagementController {
             }
             return JSONUtil.returnSuccessResult("删除成功!");
         } catch (Exception e) {
-            logger.info("删除Class失败: " + e.getMessage());
+            logger.info("批量删除Class失败: " + e.getMessage());
             return JSONUtil.returnFailResult("删除失败, 请重试!");
         }
 

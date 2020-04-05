@@ -29,33 +29,25 @@
 
 
   <select id="findAllClassMember" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from class_member
+    select * from class_member cm left join student st on cm.student_id = st.sid
   </select>
 
 
   <select id="findClassMemberByClassId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from class_member
+    select * from class_member cm left join student st on cm.student_id = st.sid
     where class_id = #{classId, jdbcType=INTEGER}
   </select>
 
 
   <select id="findClassMemberByStudentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from class_member
+    select * from class_member cm left join student st on cm.student_id = st.sid
     where student_id = #{studentId, jdbcType=INTEGER}
   </select>
 
 
 
   <select id="findClassMemberByClassMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from class_member
+    select * from class_member cm left join student st on cm.student_id = st.sid
     where class_member_id = #{classMemberId,jdbcType=INTEGER}
   </select>
 
@@ -76,7 +68,7 @@
       <if test="classId != null" >
         class_id,
       </if>
-      <if test="studentId != null" >
+      <if test="student.sid != null" >
         student_id,
       </if>
       <if test="accept != null" >
@@ -90,8 +82,8 @@
       <if test="classId != null" >
         #{classId,jdbcType=INTEGER},
       </if>
-      <if test="studentId != null" >
-        #{studentId,jdbcType=INTEGER},
+      <if test="student.sid != null" >
+        #{student.sid,jdbcType=INTEGER},
       </if>
       <if test="accept != null" >
         #{accept,jdbcType=BIT},
@@ -106,8 +98,8 @@
       <if test="classId != null" >
         class_id = #{classId,jdbcType=INTEGER},
       </if>
-      <if test="studentId != null" >
-        student_id = #{studentId,jdbcType=INTEGER},
+      <if test="student.sid != null" >
+        student_id = #{student.sid,jdbcType=INTEGER},
       </if>
       <if test="accept != null" >
         accept = #{accept,jdbcType=BIT},

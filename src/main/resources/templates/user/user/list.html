@@ -111,12 +111,16 @@
         layer.prompt({
           formType: 1
           ,title: '敏感操作，请验证口令'
-        }, function(value, index){
+        }, function(value, index){// 点击确定进入函数回调
           layer.close(index);
           
-          layer.confirm('确定删除吗？', function(index) {
+          layer.confirm('确定删除吗？', function(index) { //点击确定进入确定回调
 
-            console.log(checkData);
+            console.log(value); //口令
+
+            console.log(checkData); //删除的数据
+
+            console.log(index); //
             
             //执行 Ajax 后重载
             /*
