@@ -162,6 +162,9 @@
                 type: 'POST',
                 url: api,
                 data: obj.field,
+                // data: JSON.stringify(obj.field),
+                // contentType: "application/json; charset=UTF-8",
+                // contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 done: function (res) { //res.code = 0
                     //console.log("进入了成功回调")
                     console.log(obj.field);
@@ -169,7 +172,7 @@
                     //请求成功后，写入 access_token
                     layui.data(setter.tableName, {
                         key: setter.request.tokenName
-                        ,value: res.data
+                        ,value: res.data.Token
                     });
                     console.log(res);
 
@@ -181,7 +184,7 @@
                         , icon: 1
                         , time: 1000
                     }, function () {
-                        location.href = './index.html'; //后台主页
+                        location.href = './index.html?current_user='+res.data.userId; //后台主页
                     });
                 },
 

@@ -10,11 +10,13 @@ public class ClassMember implements Serializable {
 
     private Integer classMemberId;
 
-    //private Class classInfo;
+//    private Class classInfo;
 
     private Integer classId;
 
-    private Integer studentId;
+//    private Integer studentId;
+
+    private Student student;
 
     private Boolean accept;
 
@@ -34,13 +36,13 @@ public class ClassMember implements Serializable {
         this.classId = classId;
     }
 
-    public Integer getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
+//    public Integer getStudentId() {
+//        return studentId;
+//    }
+//
+//    public void setStudentId(Integer studentId) {
+//        this.studentId = studentId;
+//    }
 
     public Boolean getAccept() {
         return accept;
@@ -48,5 +50,21 @@ public class ClassMember implements Serializable {
 
     public void setAccept(Boolean accept) {
         this.accept = accept;
+    }
+
+//    public Class getClassInfo() {
+//        return classInfo;
+//    }
+//
+//    public void setClassInfo(Class classInfo) {
+//        this.classInfo = classInfo;
+//    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

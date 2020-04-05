@@ -18,7 +18,6 @@ import java.io.PrintWriter;
  * @Description: 首先两个方法的返回值都是boolean，那么说明这是两个“开关”。第一个开关isAccessAllowed表示是否为允许访问的方法，
  * 在这里做一个是否已登录的判断，第二个开关onAccessDenied是当访问被拒绝时是否已经被处理了，如果需要继续处理就返回true，不需要就返回false，
  * 那么在这里把状态码添加到响应中去就可以从前端取到了。
-
  * @date Created in 2020/4/1 14:31
  * @Modified By:
  */
@@ -27,7 +26,7 @@ public class ShiroLoginFilter extends FormAuthenticationFilter {
     private static final Logger logger = LoggerFactory.getLogger(ShiroLoginFilter.class);
 
     /**
-     * 在访问controller前判断是否登录，ajax 返回json，普通请求则重定向。
+     * 在访问controller前判断是否登录，ajax 返回json，普通请求则重定向。用于拦截session失效的请求，并对普通请求和ajax请求进行区分
      * @param request
      * @param response
      * @return  true-继续往下执行，false-该filter过滤器已经处理，不继续执行其他过滤器

@@ -13,15 +13,57 @@
     }, i.exit = function (e) {
         layui.data(r.tableName, {key: r.request.tokenName, remove: !0}), e && e() //这里定义强制跳转到登录页？？？
     }, i.req = function (e) {
-        var n = e.success, a = (e.error, r.request), o = r.response, s = function () {
+        var n = e.success,
+            a = (e.error, r.request),
+            o = r.response,
+            s = function () {
             return r.debug ? "<br><cite>URL：</cite>" + e.url : ""
         };
-        return e.data = e.data || {}, e.headers = e.headers || {}, a.tokenName && (e.data[a.tokenName] = a.tokenName in e.data ? e.data[a.tokenName] : layui.data(r.tableName)[a.tokenName] || "", e.headers[a.tokenName] = a.tokenName in e.headers ? e.headers[a.tokenName] : layui.data(r.tableName)[a.tokenName] || ""), delete e.success, delete e.error, t.ajax(t.extend({
-            type: "get",
+
+
+
+        e.data = e.data || {};
+        e.headers = e.headers || {};
+        if (a.tokenName) {
+            // Ajax请求拓展(增加纯JSON请求的处理逻辑)
+            // JSON纯字符串请求的情况
+            if (e.contentType && e.contentType.indexOf('application/json') != -1) {
+                // 自动给URL传入默认Token
+                // var url = e.url;
+                // if (url.indexOf('?') != -1) {
+                //     e.url = url + '&' + a.tokenName + '=' + (layui.data(r.tableName)[a.tokenName] || '');
+                // } else {
+                //     e.url = url + '?' + a.tokenName + '=' + (layui.data(r.tableName)[a.tokenName] || '');
+                // }
+
+                //自动给Request Headers 传入 Token
+                e.headers[a.tokenName] = (layui.data(r.tableName)[a.tokenName] || '');
+            }
+            else {
+
+                // 表单请求情况
+                // 自动给参数传入默认 Token
+                e.data[a.tokenName] = a.tokenName in e.data
+                    ? e.data[a.tokenName]
+                    : (layui.data(r.tableName)[a.tokenName] || "");
+
+                // 自动给请求头Request Header 传入Token
+                e.headers[a.tokenName] = a.tokenName in e.headers
+                    ? e.headers[a.tokenName]
+                    : (layui.data(r.tableName)[a.tokenName] || "");
+            }
+        }
+
+
+        delete e.success;
+        delete e.error;
+
+        return t.ajax(t.extend({
+            type: "get",//说明不指定type，默认为get
             dataType: "json",
             success: function (t) {
                 var a = o.statusCode;
-                if (t[o.statusName] == a.ok) "function" == typeof e.done && e.done(t); else if (t[o.statusName] == a.logout) {i.exit(); window.location.href="/login.html"} else if (t[o.statusName] == a.fail) "function" == typeof e.fail && e.fail(t); else {
+                if (t[o.statusName] == a.ok) "function" == typeof e.done && e.done(t); else if (t[o.statusName] == a.logout) {i.exit(); layer.msg('您的登录状态已失效, 请重新登录!', {offset: '15px', icon: 2, time: 1500}, function () {location.href = './login.html';});} else if (t[o.statusName] == a.fail) "function" == typeof e.fail && e.fail(t); else {
                     var r = ["<cite>Error：</cite> " + (t[o.msgName] || "返回状态码异常"), s()].join("");
                     i.error(r)
                 }
@@ -30,8 +72,7 @@
             error: function (e, t) {
                 var n = ["请求异常，登录信息已失效, 请重新登录!<br><cite>错误信息：</cite>" + t, s()].join("");
                 i.error(n), "function" == typeof n && n(res)
-                console.log("登录失效!");
-                //window.location.href="/login.html"
+                window.location.href="/login.html"
             }
         }, e))
     }, i.popup = function (e) {

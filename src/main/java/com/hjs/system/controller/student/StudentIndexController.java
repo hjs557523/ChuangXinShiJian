@@ -2,6 +2,7 @@ package com.hjs.system.controller.student;
 
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
+import com.hjs.system.base.utils.TokenUtil;
 import com.hjs.system.model.Student;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -35,9 +36,37 @@ public class StudentIndexController {
 
 
     //@RequiresRoles("Student")
-    @RequestMapping(value = "/student/index", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/student/index", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String getStudentUserInfo(String access_token) {
+    public String getStudentUserInfo() {
+
+        try {
+
+            Boolean isReccent = TokenUtil.IsRecentLogin(request, "current_user");
+            if (isReccent) {
+                Student student = (Student) SecurityUtils.getSubject().getPrincipal();
+                return JSONUtil.returnEntityResult(student);
+            } else {
+                Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute(request.getParameter("current_user"));
+                return JSONUtil.returnEntityResult(student);
+            }
+
+        } catch (Exception e) { //抛出异常是由于session仍存在，但该用户已退出登录。就直接跳到登录界面
+            return JSONUtil.returnForbiddenResult("登录失效");
+        }
+
+
+//        logger.info("------------------------------------------");
+//        logger.info("request.getMethod()： " + request.getMethod());
+//        logger.info("request.getRequestURL(): " + request.getRequestURL().toString());
+//        logger.info("request.getRequestURI(): " + request.getRequestURI());
+//        logger.info("request.getQueryString(): " + request.getQueryString());
+//        logger.info("request.getParameter(\"current_user\"): " + request.getParameter("current_user"));
+//        logger.info("request.getParameterMap(): " + request.getParameterMap().toString());
+//        logger.info("request.getContentType(): " + request.getContentType());
+//        logger.info("request.getParameterNames()： " + request.getParameterNames().toString());
+//        logger.info("------------------------------------------");
+
 
 //        Cookie[] cookies = request.getCookies();
 //        for (Cookie cookie : cookies)
@@ -52,28 +81,22 @@ public class StudentIndexController {
 //        }
 
 
-        Subject subject = SecurityUtils.getSubject();
+//        logger.info(request.getHeader("Cookie"));
 
-        if(subject.hasRole("Student")) {
-            logger.info("subject.hasRole()");
-        }
+//        Subject subject = SecurityUtils.getSubject();
 
-        if(subject.isPermitted("Student")) {
-            logger.info("subject.isPermitted()");
-        } else {
-            logger.info("no define subject.isPermitted()");
-        }
+//        if(subject.hasRole("Student")) {
+//            logger.info("subject.hasRole()");
+//        }
+//
+//        if(subject.isPermitted("Student")) {
+//            logger.info("subject.isPermitted()");
+//        } else {
+//            logger.info("no define subject.isPermitted()");
+//        }
 
-
-        String sessionId = (String) subject.getSession().getId();
-        if (access_token.equals(sessionId)) {
-            //同一会话
-            Student student = (Student) SecurityUtils.getSubject().getPrincipal();
-            return JSONUtil.returnEntityResult(student);
-
-        } else {
-            return JSONUtil.returnFailResult("登录状态已失效，请重新登录!");
-        }
+//        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
+//        return JSONUtil.returnEntityResult(student);
 
     }
 

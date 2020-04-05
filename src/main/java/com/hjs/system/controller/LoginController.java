@@ -17,16 +17,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -54,6 +54,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/student/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String studentLogin(Student student) {
+//        logger.info(request.getQueryString());
 //        Cookie[] cookies = request.getCookies();
 //        for (Cookie cookie : cookies)
 //        logger.info(cookie.getName() + ":" + cookie.getValue());
@@ -69,6 +70,20 @@ public class LoginController extends BaseController {
 
         logger.info("接收到登录请求");
         logger.info("登录Student: " + student);
+
+        // 存在问题：基于session和cookie保持会话的项目，当同一浏览器发生多用户先后登陆，进而产生session覆盖，但之前的登录的用户虽然已经登录态丢失，
+        // 却由于同一浏览器属于同一会话，因此凭借保持不变的cookie能够完成一些ajax操作，但如果存在刷新页面的逻辑，则返回的页面会重新渲染为最新的用户，逻辑混乱
+
+        // 无法解决：原想每一次请求登录时都进行判断，判断该请求对应的session是否存在，存在销毁原先用户session，强制登出。重新设置新cookie给最近登陆的用户
+        // 但是前一个用户刷新时还是取到了最新的cookie，可见cookie确实是真的整个浏览器域共享...
+
+        // 最新解决方案：用session 存储不同用户信息，在每个url中带上登录名如 fozubaoyou.com?uid=sa，后台用 session[Request["uid"]]来获取用户信息。
+//        if (request.getSession(false) != null) { //注意false才会不自动创建session
+//            logger.info("将之前用户强制踢下线..."); //销毁之前创建的session，避免无用session过多浪费资源
+//            SecurityUtils.getSubject().logout();//包括了getRequest().getSession().invalidate();
+//        }
+
+
         //后台校验提交的用户名和密码
         if (StringUtil.isEmpty(student.getStudentId()))
             return JSONUtil.returnFailResult("学生学号不能为空!");
@@ -82,16 +97,28 @@ public class LoginController extends BaseController {
         UserToken userToken = new UserToken(student.getStudentId(), student.getPassword(), STUDENT_LOGIN_TYPE);
         userToken.setRememberMe(false);
         try {
-            // 登录认证
+            // 登录认证，login成功，没有session就创建session
             // shiro 密码如何验证？ https://www.cnblogs.com/zuochengsi-9/p/10153874.html
             subject.login(userToken);//doGetAuthenticationInfo
 
-            //servlet session 和 shiro session? : https://yq.aliyun.com/articles/114167?t=t1
-            subject.getSession().setAttribute("student", (Student)subject.getPrincipal());
+//            logger.info("1.Principal: " + subject.getPrincipal());
+//            logger.info("2.PreviousPrincipals: " + subject.getPreviousPrincipals());
+//            logger.info("3.Principals: "+ subject.getPrincipals());
+
+//            servlet session 和 shiro session? : https://yq.aliyun.com/articles/114167?t=t1
+//            subject.getSession().setAttribute("student", (Student)subject.getPrincipal());
+            subject.getSession().setAttribute(student.getStudentId(), (Student)subject.getPrincipal());
+//            HttpSession session = request.getSession();
+//            Enumeration enumeration = session.getAttributeNames();
+//            while (enumeration.hasMoreElements()) {
+//                String name = enumeration.nextElement().toString();
+//                System.out.println(name + ": " + session.getAttribute(name));
+//            }
+
             //logger.info(String.valueOf(request.getSession().getMaxInactiveInterval())); //1800s
             //logger.info(String.valueOf(subject.getSession().getTimeout())); //1800 000ms
             //事实证明，即使设置了redis来缓存session，session的过期时间 ≠ redis缓存时间，仍然要手动设置
-            subject.getSession().setTimeout(3 * 60 * 60 * 1000);//session有效期设置6小时
+            subject.getSession().setTimeout(3 * 60 * 60 * 1000);//session有效期设置3小时
 
 
             //HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -104,8 +131,14 @@ public class LoginController extends BaseController {
             //logger.info("请求了/student/login: Apache shiro  的sessionId: {}",subject.getSession().getId().toString());
             //logger.info("请求了/student/login: Spring servlet的sessionId: {}",request.getSession().getId());
 
+            logger.info(SecurityUtils.getSubject().getPrincipal().getClass().getName());
+            logger.info(Student.class.getName());
 
-            return JSONUtil.returnEntityResult(subject.getSession().getId());//这里我把sessionId作为access_token传给前端，可用于模仿前后端分离
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", student.getStudentId());
+            map.put("Token", subject.getSession().getId());
+            return JSONUtil.returnEntityResult(map);
             //return JSONUtil.returnSuccessResult("登陆成功");
         } catch (AuthenticationException e) {
             //认证失败就会抛出AuthenticationException这个异常，就对异常进行相应的操作，这里的处理是抛出一个自定义异常ResultException

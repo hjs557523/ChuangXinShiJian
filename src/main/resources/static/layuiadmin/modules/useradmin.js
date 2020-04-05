@@ -48,8 +48,8 @@
                 yes: function (e, t) {
                     var l = window["layui-layer-iframe" + e], r = "LAY-user-front-submit",
                         n = t.find("iframe").contents().find("#" + r);
-                    l.layui.form.on("submit(" + r + ")", function (t) {
-                        t.field;
+                    l.layui.form.on("submit(" + r + ")", function (t) {  //这里ajax提交内容
+                        t.field;//提交修改的表单内容
                         i.reload("LAY-user-front-submit"), layer.close(e)
                     }), n.trigger("click")
                 },

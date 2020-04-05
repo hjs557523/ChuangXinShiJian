@@ -4,8 +4,23 @@
   <resultMap id="BaseResultMap" type="com.hjs.system.model.ClassMember" >
     <id column="class_member_id" property="classMemberId" jdbcType="INTEGER" />
     <result column="class_id" property="classId" jdbcType="INTEGER" />
-    <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    <!--<result column="student_id" property="studentId" jdbcType="INTEGER" />-->
     <result column="accept" property="accept" jdbcType="BIT"/>
+
+    <association property="student" column="student_id" javaType="com.hjs.system.model.Student">
+      <id column="sid" property="sid" jdbcType="INTEGER" />
+      <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="password" property="password" jdbcType="VARCHAR" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="pic_img" property="picImg" jdbcType="VARCHAR" />
+      <result column="class_id" property="classId" jdbcType="INTEGER" />
+      <result column="github_name" property="githubName" jdbcType="VARCHAR" />
+      <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    </association>
+
   </resultMap>
 
   <sql id="Base_Column_List" >

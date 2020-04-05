@@ -1,5 +1,6 @@
 package com.hjs.system.mapper;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjs.system.SystemApplication;
 import com.hjs.system.model.Class;
@@ -37,7 +38,10 @@ class ClassMapperTest {
 
     @Test
     void Test() {
-        logger.info(classMapper.findClassByTid2(1).toString());
+        PageHelper.startPage(2,2);
+        for (Class c : new PageInfo<Class>(classMapper.findAllClass()).getList()) {
+            logger.info(c.toString());
+        }
     }
 
     @Test
