@@ -5,7 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
 import com.hjs.system.model.Class;
+import com.hjs.system.model.ClassMember;
+import com.hjs.system.model.Student;
 import com.hjs.system.model.Teacher;
+import com.hjs.system.service.ClassMemberService;
 import com.hjs.system.service.ClassService;
 import com.hjs.system.service.CourseService;
 import org.apache.shiro.SecurityUtils;
@@ -39,6 +42,9 @@ public class ClassManagementController {
 
     @Autowired
     private ClassService classServiceImpl;
+
+    @Autowired
+    private ClassMemberService classMemberServiceImpl;
 
     @Autowired
     private CourseService courseServiceImpl;
@@ -82,6 +88,7 @@ public class ClassManagementController {
     }
 
 
+
     /**
      * 教师更新班级信息接口
      * @param classes
@@ -111,6 +118,7 @@ public class ClassManagementController {
             }
         }
     }
+
 
 
     /**
@@ -188,6 +196,68 @@ public class ClassManagementController {
         } catch (Exception e) {
             logger.info("批量删除Class失败: " + e.getMessage());
             return JSONUtil.returnFailResult("删除失败, 请重试!");
+        }
+
+    }
+
+
+
+    /**
+     * 教师处理加入班级申请
+     * @param cmid
+     * @return
+     */
+    @RequestMapping(value = "/teacher/class/agree", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String agreeJoin(@RequestParam(name = "cmid") Integer cmid, @RequestParam(name = "isAgree") Integer isAgree) {
+
+        ClassMember classMember = new ClassMember();
+        Student student = new Student();
+        classMember.setClassMemberId(cmid);
+        classMember.setStudent(student);
+        if (isAgree == 0)
+            classMember.setAccept(false);
+        else
+            classMember.setAccept(false);
+        try {
+            if (classMemberServiceImpl.updateClassMember(classMember) > 0)
+                return JSONUtil.returnSuccessResult("修改成功!");
+            else {
+                return JSONUtil.returnFailResult("修改失败!");
+            }
+        } catch (Exception e) {
+            logger.info("修改异常:" + e.getMessage());
+            return JSONUtil.returnFailResult("修改失败, 请稍后重试!");
+        }
+
+    }
+
+
+
+
+    /**
+     * 教师查询班级学生，包括加入和待加入的
+     * @param cid
+     * @return
+     */
+    @RequestMapping(value = "/teacher/class/findStudent", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findMyStudentByClass(@RequestParam("page") Integer pageNum, @RequestParam("limit") Integer pageSize, @RequestParam("cid") Integer cid) {
+        if (pageNum == null)
+            pageNum = 1;
+        if (pageSize == null)
+            pageSize = 12;
+
+        logger.info("分页查询第{}页，每页{}条, 该班级id为: {}", new Object[]{pageNum, pageSize, cid});
+
+        Page<ClassMember> classMembers = classMemberServiceImpl.findClassMemberByClassId(cid, pageNum, pageSize);
+        PageInfo<ClassMember> pageInfo = new PageInfo<>(classMembers);
+        Integer count = (int) pageInfo.getTotal();
+
+        if (count == 0)
+            return JSONUtil.returnEntityResult(count, "您的班级没有学生记录", pageInfo);
+        else {
+            return JSONUtil.returnEntityResult(count, "该班级学生记录如下", pageInfo);
         }
 
     }

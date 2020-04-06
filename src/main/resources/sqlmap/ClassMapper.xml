@@ -76,6 +76,16 @@
   </select>
 
 
+
+
+  <select id="findClassByTeacherName" resultMap="BaseResultMap">
+    select * from class c right join teacher t on c.tid = t.tid left join course co on c.course_id = co.cid
+    where t.real_name like concat('%', #{name, jdbcType=VARCHAR}, '%')
+  </select>
+
+
+
+
   <delete id="deleteClassByCid" parameterType="java.lang.Integer" >
     delete from class
     where cid = #{cid,jdbcType=INTEGER}

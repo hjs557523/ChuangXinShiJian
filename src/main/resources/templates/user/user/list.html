@@ -90,11 +90,19 @@
     
     //监听搜索
     form.on('submit(LAY-user-front-search)', function(data){
+
+      //这里执行查询ajax
+
       var field = data.field;
+      console.log(field);
       
       //执行重载
       table.reload('LAY-user-manage', {
-        where: field
+        //url: '',
+        where: field, //设定异步数据接口的额外参数
+        // page: {
+        //   curr: 1 //重新从第一页开始
+        // },
       });
     });
   

@@ -26,4 +26,7 @@ public interface ClassService {
     Page<Class> findClassByCourseId(Integer courseId, int pageNo, int pageSize);
 
     Page<Class> findClassByIsFinished(Boolean isFinished, int pageNo, int pageSize);
+
+    Page<Class> findClassByTeacherName(String name, int pageNo, int pageSize);
+
 }

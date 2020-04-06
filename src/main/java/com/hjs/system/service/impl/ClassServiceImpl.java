@@ -89,4 +89,13 @@ public class ClassServiceImpl implements ClassService {
         return classMapper.findClassByIsFinished(isFinished);
     }
 
+
+    @Cacheable
+    @Override
+    public Page<Class> findClassByTeacherName(String name, int pageNo, int pageSize) {
+        PageHelper.startPage(pageNo, pageSize);
+        return classMapper.findClassByTeacherName(name);
+    }
+
+
 }

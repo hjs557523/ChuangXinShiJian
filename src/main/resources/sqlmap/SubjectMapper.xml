@@ -7,6 +7,20 @@
     <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
     <result column="subject_detail" property="subjectDetail" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+
+    <association property="teacher" column="tid" javaType="com.hjs.system.model.Teacher">
+      <id column="tid" property="tid" jdbcType="INTEGER" />
+      <result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="password" property="password" jdbcType="VARCHAR" />
+      <result column="sex" property="sex" jdbcType="BIT" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="picImg" property="picimg" jdbcType="VARCHAR" />
+      <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </association>
+
   </resultMap>
 
 
@@ -15,32 +29,30 @@
   </sql>
 
 
+  <select id="findSubjectByTname" resultMap="BaseResultMap">
+    select * from subject s left join teacher t on s.tid = t.tid where t.real_name like concat('%', #{name, jdbcType=VARCHAR}, '%')
+  </select>
+
+
+
+
   <select id="findAllSubject" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from subject
+    select * from subject s left join teacher t on s.tid = t.tid
   </select>
 
 
   <select id="findSubjectByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from subject
-    where tid = #{tid,jdbcType=INTEGER}
+    select * from subject s left join teacher t on s.tid = t.tid where tid = #{tid,jdbcType=INTEGER}
   </select>
 
 
   <select id="findSubjectBySubjectId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from subject
-    where subject_id = #{subjectId,jdbcType=INTEGER}
+    select * from subject s left join teacher t on s.tid = t.tid where subject_id = #{subjectId,jdbcType=INTEGER}
   </select>
 
 
   <delete id="deleteSubjectBySubjectId" parameterType="java.lang.Integer" >
-    delete from subject
-    where subject_id = #{subjectId,jdbcType=INTEGER}
+    delete from subject where subject_id = #{subjectId,jdbcType=INTEGER}
   </delete>
 
 
@@ -50,7 +62,7 @@
       <if test="subjectId != null" >
         subject_id,
       </if>
-      <if test="tid != null" >
+      <if test="teacher.tid != null" >
         tid,
       </if>
       <if test="subjectName != null" >
@@ -67,8 +79,8 @@
       <if test="subjectId != null" >
         #{subjectId,jdbcType=INTEGER},
       </if>
-      <if test="tid != null" >
-        #{tid,jdbcType=INTEGER},
+      <if test="teacher.tid != null" >
+        #{teacher.tid,jdbcType=INTEGER},
       </if>
       <if test="subjectName != null" >
         #{subjectName,jdbcType=VARCHAR},
@@ -86,8 +98,8 @@
   <update id="updateSubject" parameterType="com.hjs.system.model.Subject" >
     update subject
     <set >
-      <if test="tid != null" >
-        tid = #{tid,jdbcType=INTEGER},
+      <if test="teacher.tid != null" >
+        tid = #{teacher.tid,jdbcType=INTEGER},
       </if>
       <if test="subjectName != null" >
         subject_name = #{subjectName,jdbcType=VARCHAR},

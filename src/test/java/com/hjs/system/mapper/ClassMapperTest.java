@@ -38,8 +38,8 @@ class ClassMapperTest {
 
     @Test
     void Test() {
-        PageHelper.startPage(2,2);
-        for (Class c : new PageInfo<Class>(classMapper.findAllClass()).getList()) {
+        PageHelper.startPage(1,6);
+        for (Class c : new PageInfo<Class>(classMapper.findClassByTeacherName("途")).getList()) {
             logger.info(c.toString());
         }
     }

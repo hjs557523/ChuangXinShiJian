@@ -62,7 +62,7 @@
   <insert id="insertClassMember" parameterType="com.hjs.system.model.ClassMember" useGeneratedKeys="true" keyColumn="class_member_id" keyProperty="classMemberId">
     insert into class_member
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="classMemberId != null" >
+      <if test="classMemberId != null">
         class_member_id,
       </if>
       <if test="classId != null" >
@@ -83,7 +83,7 @@
         #{classId,jdbcType=INTEGER},
       </if>
       <if test="student.sid != null" >
-        #{student.sid,jdbcType=INTEGER},
+        #{student.sid, jdbcType=INTEGER},
       </if>
       <if test="accept != null" >
         #{accept,jdbcType=BIT},

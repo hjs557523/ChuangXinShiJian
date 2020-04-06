@@ -7,7 +7,9 @@ public class Subject implements Serializable {
 
     private Integer subjectId;
 
-    private Integer tid;
+//    private Integer tid;
+
+    private Teacher teacher;
 
     private String subjectName;
 
@@ -21,14 +23,6 @@ public class Subject implements Serializable {
 
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
-    }
-
-    public Integer getTid() {
-        return tid;
-    }
-
-    public void setTid(Integer tid) {
-        this.tid = tid;
     }
 
     public String getSubjectName() {
@@ -55,11 +49,19 @@ public class Subject implements Serializable {
         this.remark = remark;
     }
 
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
     @Override
     public String toString() {
         return "Subject{" +
                 "subjectId=" + subjectId +
-                ", tid=" + tid +
+                ", teacher=" + teacher +
                 ", subjectName='" + subjectName + '\'' +
                 ", subjectDetail='" + subjectDetail + '\'' +
                 ", remark='" + remark + '\'' +

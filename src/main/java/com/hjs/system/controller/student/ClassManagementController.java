@@ -42,8 +42,9 @@ public class ClassManagementController {
     @Autowired
     ClassService classServiceImpl;
 
+
     /**
-     * 学生申请加入班级
+     * 学生根据班级id申请加入班级
      * @param cid
      * @return
      */
@@ -72,8 +73,10 @@ public class ClassManagementController {
     }
 
 
+
+
     /**
-     *
+     * 学生查看所有班级
      * @param pageNum
      * @param pageSize
      * @return
@@ -87,8 +90,6 @@ public class ClassManagementController {
             pageSize = 12;
         logger.info("分页查询第{}页，每页{}条", pageNum, pageSize);
 
-        //获取当前用户
-        Student current_user = (Student) SecurityUtils.getSubject().getPrincipal();
         Page<Class> classes = classServiceImpl.findClassByPage(pageNum, pageSize);
         PageInfo<Class> pageInfo = new PageInfo<>(classes);
         Integer count = (int) pageInfo.getTotal();
@@ -99,32 +100,72 @@ public class ClassManagementController {
     }
 
 
+
+
+    /**
+     * 根据老师id查看其开展的所有班级
+     * @param pageNum
+     * @param pageSize
+     * @param tid
+     * @return
+     */
     @RequestMapping(value = "/student/class/findAllByTid", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String findAllClassesByPageAndTid(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize, @RequestParam("tid") Integer tid) {
+        Page<Class> classes;
+        PageInfo<Class> pageInfo;
+        Integer count;
+
         if (pageNum == null)
             pageNum = 1;
-        else if (pageSize == null)
+        if (pageSize == null)
             pageSize = 12;
-        else if (tid == null)
-            return JSONUtil.returnFailResult("所查询班级的教师Id为空!");
+        if (tid == null) {
+            classes = classServiceImpl.findClassByPage(pageNum, pageSize);
+        } else {
+            classes = classServiceImpl.findClassByTid(tid, pageNum, pageSize);
+        }
         logger.info("分页查询第{}页，每页{}条, 该班级由老师{}创建", new Object[]{pageNum, pageSize, tid});
-        Page<Class> classes = classServiceImpl.findClassByTid(tid, pageNum, pageSize);
-        PageInfo<Class> pageInfo = new PageInfo<>(classes);
-        Integer count = (int) pageInfo.getTotal();
+        pageInfo = new PageInfo<>(classes);
+        count = (int) pageInfo.getTotal();
         if (count == 0)
-            return JSONUtil.returnEntityResult(count, "该老师没有任何班级创建记录", pageInfo);
+            return JSONUtil.returnEntityResult(count, "没有查询到相关记录", pageInfo);
         else
-            return JSONUtil.returnEntityResult(count, "查询成功, 该老师创建过的班级如下: ", pageInfo);
+            return JSONUtil.returnEntityResult(count, "查询到的相关记录如下", pageInfo);
 
     }
 
 
+    /**
+     * 根据老师名模糊搜索其所有班级
+     * @return
+     */
+    @RequestMapping(value = "/student/class/QueryAllByTname", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findAllClassesByPageAndTeacherName(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize, @RequestParam("name") String name ) {
+        Page<Class> classes;
+        PageInfo<Class> pageInfo;
+        Integer count;
 
-    @RequestMapping(value = "/student/class/findAllBy")
-    public String findAllClassesByPageAndTeacherName() {
-        return null;
+        if (pageNum == null)
+            pageNum = 1;
+        if (pageSize == null)
+            pageSize = 12;
+        if (StringUtil.isEmpty(name)) {
+            classes = classServiceImpl.findClassByPage(pageNum, pageSize);
+        } else {
+            classes = classServiceImpl.findClassByTeacherName(name, pageNum, pageSize);
+        }
+        logger.info("分页查询第{}页，每页{}条, 模糊搜索名字: {}", new Object[]{pageNum, pageSize, name});
+        pageInfo = new PageInfo<>(classes);
+        count = (int) pageInfo.getTotal();
+        if (count == 0)
+            return JSONUtil.returnEntityResult(count, "没有查询到相关记录", pageInfo);
+        else
+            return JSONUtil.returnEntityResult(count, "查询到的相关记录如下", pageInfo);
     }
+
+
 
 
 }

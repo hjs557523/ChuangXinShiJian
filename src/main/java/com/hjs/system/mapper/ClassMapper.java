@@ -25,6 +25,8 @@ public interface ClassMapper {
 
     Page<Class> findClassByIsFinished(Boolean isFinished);
 
+    Page<Class> findClassByTeacherName(String name);//模糊搜索
+
     List<Class> findClassByTid2(Integer tid);
 
 }

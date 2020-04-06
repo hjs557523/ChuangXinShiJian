@@ -35,7 +35,6 @@ public class SubjectManagementController {
     @Autowired
     private SubjectService subjectServiceImpl;
 
-
     @Autowired
     private HttpServletRequest request;
 
@@ -57,8 +56,8 @@ public class SubjectManagementController {
 
         // 获取当前教师用户
         Teacher current_user = (Teacher) SecurityUtils.getSubject().getPrincipal();
-        Integer tid = current_user.getTid();
-        subject.setTid(tid);
+        // Integer tid = current_user.getTid();
+        subject.setTeacher(current_user);
         try {
             if (subjectServiceImpl.insertSubject(subject) > 0)
                 return JSONUtil.returnSuccessResult("创建课题成功!");
@@ -88,7 +87,7 @@ public class SubjectManagementController {
                 Teacher current_user = (Teacher) SecurityUtils.getSubject().getPrincipal();
                 Subject delSubejct = subjectServiceImpl.findSubjectBySubjectId(subjectId);
                 // 删除前再检查是否是当前老师的课题
-                if (delSubejct.getTid() != current_user.getTid())
+                if (delSubejct.getTeacher().getTid() != current_user.getTid())
                     return JSONUtil.returnFailResult("您没有权限删除该课题！");
                 else if (subjectServiceImpl.deleteSubjectBySubjectId(subjectId) > 0)
                     return JSONUtil.returnSuccessResult("删除课题成功！");
@@ -103,13 +102,14 @@ public class SubjectManagementController {
 
 
 
+
     /**
      * 教师查看所创建的课题接口
      * @param pageNum
      * @param pageSize
      * @return
      */
-    @RequestMapping(value = "/teacher/subject/findAll", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/teacher/subject/findAllMine", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String findMySubjectByPage(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
         if (pageNum == null) {
@@ -137,6 +137,8 @@ public class SubjectManagementController {
     }
 
 
+
+
     /**
      * 教师修改课题接口
      * @param subject
@@ -152,6 +154,11 @@ public class SubjectManagementController {
             return JSONUtil.returnFailResult("请设置您的课题内容");
         else if (StringUtil.isEmpty(subject.getRemark()))
             subject.setRemark("暂无备注");
+
+        // 获取当前教师用户
+        Teacher current_user = (Teacher) SecurityUtils.getSubject().getPrincipal();
+        subject.setTeacher(current_user);
+
         try {
             if (subjectServiceImpl.updateSubject(subject) > 0) {
                 return JSONUtil.returnSuccessResult("修改成功！");
@@ -164,6 +171,7 @@ public class SubjectManagementController {
             return JSONUtil.returnFailResult("修改失败，数据库发生异常！");
         }
     }
+
 
 
     /**
