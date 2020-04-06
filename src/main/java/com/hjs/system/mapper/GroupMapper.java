@@ -10,8 +10,6 @@ public interface GroupMapper {
 
     Page<Group> findAllGroup();
 
-    Page<Group> findGroupByTid(Integer tid);
-
     Page<Group> findGroupByStateId(Integer stateId);
 
     Page<Group> findGroupByOwnerId(Integer ownerId);

@@ -15,6 +15,8 @@ public interface SubjectService {
 
     Page<Subject> findSubjectByTid(Integer tid, int pageNo, int pageSize);
 
+    Page<Subject> findSubjectByTname(int pageNo, int pageSize, String name);
+
     int deleteSubjectBySubjectId(Integer subjectId);
 
     int insertSubject(Subject record);

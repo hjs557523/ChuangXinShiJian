@@ -3,7 +3,7 @@
 <mapper namespace="com.hjs.system.mapper.SubjectMapper" >
   <resultMap id="BaseResultMap" type="com.hjs.system.model.Subject" >
     <id column="subject_id" property="subjectId" jdbcType="INTEGER" />
-    <result column="tid" property="tid" jdbcType="INTEGER" />
+    <!--<result column="tid" property="tid" jdbcType="INTEGER" />-->
     <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
     <result column="subject_detail" property="subjectDetail" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />

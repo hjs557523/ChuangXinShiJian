@@ -1,11 +1,17 @@
 package com.hjs.system.controller.student;
 
+import com.hjs.system.base.utils.JSONUtil;
+import com.hjs.system.model.Group;
+import com.hjs.system.model.Student;
 import com.hjs.system.service.GroupMemberService;
 import com.hjs.system.service.GroupService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 黄继升 16041321
@@ -26,5 +32,38 @@ public class GroupManagementController {
     private GroupMemberService groupMemberServiceImpl;
 
 
+    // 创建小组
+    @RequestMapping(value = "/student/group/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String createGroup(@RequestBody Group group, @RequestBody Integer subjectId) {
+
+        // 获取当前用户
+        Student current_user = (Student) SecurityUtils.getSubject().getPrincipal();
+        Integer ownerId = current_user.getSid();
+
+        group.setStateId(0);// 默认初始创建为 “未完结” 状态
+        group.setSubjectId(subjectId);
+        group.setOwnerId(ownerId);
+
+
+        // 添加当前用户到组员关系表中
+        try {
+            if (groupServiceImpl.createGroup(group) > 0)
+                return JSONUtil.returnSuccessResult("创建成功!");
+            else
+                return JSONUtil.returnFailResult("创建失败, 请稍后重试!");
+
+        } catch (Exception e) {
+            logger.info("数据库发生异常: {}" + e.getMessage());
+            return JSONUtil.returnFailResult("创建失败, 数据库发生异常!");
+        }
+
+    }
+
+
+    //加入小组
+    public String joinGroup() {
+        return null;
+    }
 
 }

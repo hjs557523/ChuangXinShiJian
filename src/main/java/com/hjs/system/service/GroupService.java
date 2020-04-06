@@ -2,6 +2,7 @@ package com.hjs.system.service;
 
 import com.github.pagehelper.Page;
 import com.hjs.system.model.Group;
+import com.hjs.system.model.GroupMember;
 
 /**
  * @author 黄继升 16041321
@@ -12,8 +13,6 @@ import com.hjs.system.model.Group;
 public interface GroupService {
 
     Page<Group> findGroupByPage(int pageNo, int pageSize);
-
-    Page<Group> findGroupByTid(Integer tid, int pageNo, int pageSize);
 
     Page<Group> findGroupByStateId(Integer stateId, int pageNo, int pageSize);
 
@@ -28,5 +27,7 @@ public interface GroupService {
     Group findGroupByGid(Integer gid);
 
     int updateGroup(Group record);
+
+    int createGroup(Group record);
 
 }

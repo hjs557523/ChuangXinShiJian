@@ -25,6 +25,14 @@ public class Subject implements Serializable {
         this.subjectId = subjectId;
     }
 
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }
@@ -47,14 +55,6 @@ public class Subject implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
     }
 
     @Override

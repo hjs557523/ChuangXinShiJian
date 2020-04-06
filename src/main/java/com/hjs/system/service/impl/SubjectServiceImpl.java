@@ -43,6 +43,14 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
 
+    @Cacheable
+    @Override
+    public Page<Subject> findSubjectByTname(int pageNo, int pageSize, String name) {
+        PageHelper.startPage(pageNo, pageSize);
+        return subjectMapper.findSubjectByTname(name);
+    }
+
+
     @Transactional
     @CacheEvict(allEntries = true)
     @Override

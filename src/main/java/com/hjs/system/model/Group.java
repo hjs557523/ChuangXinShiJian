@@ -9,8 +9,6 @@ public class Group implements Serializable {
 
     private String groupName;
 
-    private Integer tid;
-
     private String repositoryUrl;
 
     private String oauthToken;
@@ -35,14 +33,6 @@ public class Group implements Serializable {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    public Integer getTid() {
-        return tid;
-    }
-
-    public void setTid(Integer tid) {
-        this.tid = tid;
     }
 
     public String getRepositoryUrl() {
@@ -90,7 +80,6 @@ public class Group implements Serializable {
         return "Group{" +
                 "gid=" + gid +
                 ", groupName='" + groupName + '\'' +
-                ", tid=" + tid +
                 ", repositoryUrl='" + repositoryUrl + '\'' +
                 ", oauthToken='" + oauthToken + '\'' +
                 ", stateId=" + stateId +

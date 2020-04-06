@@ -3,7 +3,12 @@ package com.hjs.system.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.hjs.system.mapper.GroupMapper;
+import com.hjs.system.mapper.GroupMemberMapper;
 import com.hjs.system.model.Group;
+import com.hjs.system.model.GroupMember;
+import com.hjs.system.model.Student;
+import com.hjs.system.model.Subject;
+import com.hjs.system.service.GroupMemberService;
 import com.hjs.system.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -26,20 +31,15 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupMapper groupMapper;
 
+    @Autowired
+    private GroupMemberMapper groupMemberMapper;
+
 
     @Cacheable
     @Override
     public Page<Group> findGroupByPage(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo, pageSize);
         return groupMapper.findAllGroup();
-    }
-
-
-    @Cacheable
-    @Override
-    public Page<Group> findGroupByTid(Integer tid, int pageNo, int pageSize) {
-        PageHelper.startPage(pageNo, pageSize);
-        return groupMapper.findGroupByTid(tid);
     }
 
 
@@ -95,5 +95,24 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int updateGroup(Group record) {
         return groupMapper.updateGroup(record);
+    }
+
+
+
+    // 创建小组, 默认会将创建者自动加入小组成员表中
+    @Transactional //默认PROPAGATION_REQUIRED 已经存在于一个事务中，就加入该事务; 如果当前没有事务，就新建一个事务
+    @CacheEvict(allEntries = true)
+    @Override
+    public int createGroup(Group record) {
+        int gid = groupMapper.insertGroup(record);
+        if (gid > 0) {
+            GroupMember groupMember = new GroupMember();
+            Student student = new Student();
+            student.setSid(record.getOwnerId());
+            groupMember.setStudent(student);
+            groupMember.setGroupId(gid);
+            return groupMemberMapper.insertGroupMember(groupMember);
+        }
+        return gid;
     }
 }

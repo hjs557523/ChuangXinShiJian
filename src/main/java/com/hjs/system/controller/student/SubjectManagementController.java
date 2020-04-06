@@ -32,6 +32,12 @@ public class SubjectManagementController {
     private SubjectService subjectServiceImpl;
 
 
+    /**
+     * 学生查看系统所有课题
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/student/subject/findAll", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String findAllSubjectByPage(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
@@ -57,7 +63,37 @@ public class SubjectManagementController {
     }
 
 
-    public String findSubjectByTname(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize, @RequestParam("name") String name) {
 
+    /**
+     * 学生根据教师名模糊搜索课题
+     * @param pageNum
+     * @param pageSize
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/student/subject/findByTname", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findSubjectByTname(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize, @RequestParam("name") String name) {
+        if (pageNum == null)
+            pageNum = 1;
+        if (pageSize == null)
+            pageSize = 12;
+
+        logger.info("分页查询第{}页，每页{}条, 模糊搜索名:{}", new Object[]{pageNum, pageSize, name});
+
+        try {
+            Page<Subject> subjects = subjectServiceImpl.findSubjectByTname(pageNum, pageSize, name);
+            PageInfo<Subject> pageInfo = new PageInfo<>(subjects);
+            Integer count = (int) pageInfo.getTotal();
+            if (count == 0)
+                return JSONUtil.returnEntityResult(count, "未查找到课题记录", pageInfo);
+            else
+                return JSONUtil.returnEntityResult(count, "该老师的课题记录如下", pageInfo);
+
+        } catch (Exception e) {
+            logger.info("查询出错：" + e.getMessage());
+            return JSONUtil.returnFailResult("数据库查询失败");
+        }
+        
     }
 }

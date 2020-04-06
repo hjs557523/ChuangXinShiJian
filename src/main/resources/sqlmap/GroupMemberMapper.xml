@@ -4,7 +4,22 @@
   <resultMap id="BaseResultMap" type="com.hjs.system.model.GroupMember" >
     <id column="group_member_id" property="groupMemberId" jdbcType="INTEGER" />
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
-    <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    <!--<result column="student_id" property="studentId" jdbcType="INTEGER" />-->
+
+    <association property="student" column="student_id" javaType="com.hjs.system.model.Student">
+      <id column="sid" property="sid" jdbcType="INTEGER" />
+      <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="password" property="password" jdbcType="VARCHAR" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="pic_img" property="picImg" jdbcType="VARCHAR" />
+      <result column="class_id" property="classId" jdbcType="INTEGER" />
+      <result column="github_name" property="githubName" jdbcType="VARCHAR" />
+      <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    </association>
+
   </resultMap>
 
 
@@ -14,39 +29,27 @@
 
 
   <select id="findAllGroupMember" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from group_member
+    select * from group_member g left join student s on g.student_id = s.sid
   </select>
 
 
   <select id="findGroupMemberByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from group_member
-    where group_id = #{groupId,jdbcType=INTEGER}
+    select * from group_member g left join student s on g.student_id = s.sid where group_id = #{groupId,jdbcType=INTEGER}
   </select>
 
 
   <select id="findGroupMemberByStudentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from group_member
-    where student_id = #{studentId,jdbcType=INTEGER}
+    select * from group_member g left join student s on g.student_id = s.sid where student_id = #{studentId,jdbcType=INTEGER}
   </select>
 
 
   <select id="findGroupMemberByGroupMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from group_member
-    where group_member_id = #{groupMemberId,jdbcType=INTEGER}
+    select * from group_member g left join student s on g.student_id = s.sid where group_member_id = #{groupMemberId,jdbcType=INTEGER}
   </select>
 
 
   <delete id="deleteGroupMemberByGroupMemberId" parameterType="java.lang.Integer" >
-    delete from group_member
-    where group_member_id = #{groupMemberId,jdbcType=INTEGER}
+    delete from group_member where group_member_id = #{groupMemberId,jdbcType=INTEGER}
   </delete>
 
 
@@ -60,7 +63,7 @@
       <if test="groupId != null" >
         group_id,
       </if>
-      <if test="studentId != null" >
+      <if test="student.sid != null" >
         student_id,
       </if>
     </trim>
@@ -71,8 +74,8 @@
       <if test="groupId != null" >
         #{groupId,jdbcType=INTEGER},
       </if>
-      <if test="studentId != null" >
-        #{studentId,jdbcType=INTEGER},
+      <if test="student.sid != null" >
+        #{student.sid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -84,8 +87,8 @@
       <if test="groupId != null" >
         group_id = #{groupId,jdbcType=INTEGER},
       </if>
-      <if test="studentId != null" >
-        student_id = #{studentId,jdbcType=INTEGER},
+      <if test="student.sid != null" >
+        student_id = #{student.sid,jdbcType=INTEGER},
       </if>
     </set>
     where group_member_id = #{groupMemberId,jdbcType=INTEGER}

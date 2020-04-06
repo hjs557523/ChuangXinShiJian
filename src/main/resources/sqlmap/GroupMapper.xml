@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.hjs.system.model.Group" >
     <id column="gid" property="gid" jdbcType="INTEGER" />
     <result column="group_name" property="groupName" jdbcType="VARCHAR" />
-    <result column="tid" property="tid" jdbcType="INTEGER" />
     <result column="repository_url" property="repositoryUrl" jdbcType="VARCHAR" />
     <result column="oauth_token" property="oauthToken" jdbcType="VARCHAR" />
     <result column="state_id" property="stateId" jdbcType="INTEGER" />
@@ -14,7 +13,7 @@
 
 
   <sql id="Base_Column_List" >
-    gid, group_name, tid, repository_url, oauth_token, state_id, owner_id, subject_id
+    gid, group_name, repository_url, oauth_token, state_id, owner_id, subject_id
   </sql>
 
 
@@ -22,14 +21,6 @@
     select
     <include refid="Base_Column_List" />
     from group
-  </select>
-
-
-  <select id="findGroupByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from group
-    where tid = #{tid,jdbcType=INTEGER}
   </select>
 
 
@@ -81,9 +72,6 @@
       <if test="groupName != null" >
         group_name,
       </if>
-      <if test="tid != null" >
-        tid,
-      </if>
       <if test="repositoryUrl != null" >
         repository_url,
       </if>
@@ -106,9 +94,6 @@
       </if>
       <if test="groupName != null" >
         #{groupName,jdbcType=VARCHAR},
-      </if>
-      <if test="tid != null" >
-        #{tid,jdbcType=INTEGER},
       </if>
       <if test="repositoryUrl != null" >
         #{repositoryUrl,jdbcType=VARCHAR},
@@ -134,9 +119,6 @@
     <set >
       <if test="groupName != null" >
         group_name = #{groupName,jdbcType=VARCHAR},
-      </if>
-      <if test="tid != null" >
-        tid = #{tid,jdbcType=INTEGER},
       </if>
       <if test="repositoryUrl != null" >
         repository_url = #{repositoryUrl,jdbcType=VARCHAR},

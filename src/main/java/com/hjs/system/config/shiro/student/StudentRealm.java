@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Lazy;
  * @Modified By:
  */
 public class StudentRealm extends AuthorizingRealm {
+
     private static final Logger logger = LoggerFactory.getLogger(StudentRealm.class);
 
     // 这里可作为项目难点1：
