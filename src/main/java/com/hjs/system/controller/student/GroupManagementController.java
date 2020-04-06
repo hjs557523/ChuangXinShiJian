@@ -2,6 +2,7 @@ package com.hjs.system.controller.student;
 
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.model.Group;
+import com.hjs.system.model.GroupMember;
 import com.hjs.system.model.Student;
 import com.hjs.system.service.GroupMemberService;
 import com.hjs.system.service.GroupService;
@@ -32,7 +33,12 @@ public class GroupManagementController {
     private GroupMemberService groupMemberServiceImpl;
 
 
-    // 创建小组
+    /**
+     * 创建小组
+     * @param group
+     * @param subjectId
+     * @return
+     */
     @RequestMapping(value = "/student/group/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String createGroup(@RequestBody Group group, @RequestBody Integer subjectId) {
@@ -61,9 +67,37 @@ public class GroupManagementController {
     }
 
 
-    //加入小组
-    public String joinGroup() {
-        return null;
+
+
+    /**
+     * 加入小组
+     * @param gid
+     * @return
+     */
+    @RequestMapping(value = "/student/group/join", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String joinGroup(@RequestParam("gid") Integer gid) {
+
+        // 获取当前用户
+        Student current_user = (Student) SecurityUtils.getSubject().getPrincipal();
+
+        GroupMember groupMember = new GroupMember();
+        groupMember.setStudent(current_user);
+        groupMember.setGroupId(gid);
+
+        try {
+            if (groupMemberServiceImpl.insertGroupMember(groupMember) > 0)
+                return JSONUtil.returnSuccessResult("加入成功");
+            else
+                return JSONUtil.returnFailResult("加入失败");
+
+        } catch (Exception e) {
+            logger.info("数据库异常: " + e.getMessage());
+            return JSONUtil.returnFailResult("数据库异常, 请稍后重试!");
+        }
     }
+
+
+
 
 }
