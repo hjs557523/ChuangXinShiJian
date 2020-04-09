@@ -27,25 +27,17 @@
 
 
   <select id="findStudentBySid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select
-    <include refid="Base_Column_List"/>
-    from student
-    where sid = #{sid, jdbcType=INTEGER}
+    select <include refid="Base_Column_List"/> from student where sid = #{sid, jdbcType=INTEGER}
   </select>
 
 
   <select id="findAllStudent" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from student
+    select <include refid="Base_Column_List"/> from student
   </select>
 
 
   <select id="fuzzyQueryAllStudent" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List"/>
-    from student
-    where student_id like concat('%', #{value, jdbcType=VARCHAR}, '%') or name like concat('%', #{value, jdbcType=VARCHAR}, '%')
+    select <include refid="Base_Column_List"/> from student where student_id like concat('%', #{value, jdbcType=VARCHAR}, '%') or name like concat('%', #{value, jdbcType=VARCHAR}, '%')
   </select>
 
   <update id="updatePassword">
@@ -98,17 +90,13 @@
 
 
   <delete id="deleteStudentBySid" parameterType="java.lang.Integer" >
-    delete from student
-    where sid = #{sid,jdbcType=INTEGER}
+    delete from student where sid = #{sid,jdbcType=INTEGER}
   </delete>
 
 
 
   <select id="findStudentByStudentId" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from student
-    where student_id = #{studentId,jdbcType=VARCHAR}
+    select <include refid="Base_Column_List" /> from student where student_id = #{studentId,jdbcType=VARCHAR}
   </select>
 
 

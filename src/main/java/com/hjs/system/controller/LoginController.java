@@ -54,19 +54,22 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/student/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String studentLogin(Student student) {
+
+        logger.info("接收到web端的登录请求");
 //        logger.info(request.getQueryString());
-//        Cookie[] cookies = request.getCookies();
-//        for (Cookie cookie : cookies)
-//        logger.info(cookie.getName() + ":" + cookie.getValue());
+        Cookie[] cookies = request.getCookies();
+        if (cookies!=null) {
+            for (Cookie cookie : cookies)
+                logger.info(cookie.getName() + ":" + cookie.getValue());
+        }
 
-
-//        Enumeration<String> headerNames = request.getHeaderNames();
-//        while (headerNames.hasMoreElements()) {
-//            String name = headerNames.nextElement();
-//            //通过请求头的名称获取请求头的值
-//            String value = request.getHeader(name);
-//            System.out.println(name + "----" + value);
-//        }
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            //通过请求头的名称获取请求头的值
+            String value = request.getHeader(name);
+            System.out.println(name + "----" + value);
+        }
 
         logger.info("接收到登录请求");
         logger.info("登录Student: " + student);

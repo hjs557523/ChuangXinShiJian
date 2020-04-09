@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -55,12 +56,14 @@ public class WxLoginController {
     @ResponseBody
     public String wxUserLogin(@RequestParam("code") String code, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("userType") Integer userType) {
 
-        if (ShiroLoginFilter.isAjaxRequest(request))
-            logger.info("该微信请求是ajax请求");
-        else
-            logger.info("该微信请求不是ajax请求");
+//        if (ShiroLoginFilter.isAjaxRequest(request))
+//            logger.info("该微信请求是ajax请求");
+//        else
+//            logger.info("该微信请求不是ajax请求");
 
         logger.info("接收到微信端的登录请求");
+
+
         // 参数都不能为空
         if (StringUtil.isEmpty(code) || StringUtil.isEmpty(username) || StringUtil.isEmpty(password) || StringUtil.isEmpty(userType.toString()))
             return JSONUtil.returnFailResult("验证信息不完整, 请重新填写登录!");
@@ -141,7 +144,7 @@ public class WxLoginController {
 //                    }
 //                }
 //                    subject.getSession().setAttribute("teacher", (Teacher)subject.getPrincipal());
-                return JSONUtil.returnEntityResult(subject.getSession().getId());
+                return JSONUtil.returnEntityResult("JSESSIONID=" + subject.getSession().getId());
             } catch (AuthenticationException e) {
                 logger.info("认证失败");
                 return JSONUtil.returnFailResult("账号或密码错误");
