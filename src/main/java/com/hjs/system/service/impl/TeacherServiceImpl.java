@@ -75,6 +75,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
 
+    @Cacheable
+    @Override
+    public Teacher findTeacherByGitHubName(String githubName) {
+        return teacherMapper.findTeacherByGitHubName(githubName);
+    }
+
+
     /**
      * @CacheEvict: 主要针对方法配置，能够根据一定的条件对指定缓存进行清空：
      * 主要参数：

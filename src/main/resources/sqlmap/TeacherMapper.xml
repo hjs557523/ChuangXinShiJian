@@ -12,9 +12,10 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="picImg" property="picimg" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="github_name" property="githubName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    tid, teacher_id, real_name, password, sex, create_time, mobile, email, picImg, remark
+    tid, teacher_id, real_name, password, sex, create_time, mobile, email, picImg, remark, github_name
   </sql>
 
 
@@ -45,6 +46,15 @@
     <include refid="Base_Column_List"/>
     from teacher
     where teacher_id = #{teacherId,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <select id="findTeacherByGitHubName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    from teacher
+    where github_name = #{githubName,jdbcType=VARCHAR}
   </select>
 
 
@@ -87,6 +97,9 @@
       <if test="remark != null" >
         remark,
       </if>
+      <if test="githubName != null" >
+        github_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="tid != null" >
@@ -118,6 +131,9 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="githubName != null" >
+        #{githubName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -152,6 +168,9 @@
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="githubName != null" >
+        github_name = #{githubName,jdbcType=VARCHAR},
       </if>
     </set>
     where tid = #{tid,jdbcType=INTEGER}

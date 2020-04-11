@@ -13,6 +13,8 @@ public interface StudentService {
 
     int addStudent(Student student);
 
+    Student findStudentByGitHubName(String githubName);
+
     Student findStudentByStudentId(String studentId);
 
     Student findStudentBySid(Integer sid);

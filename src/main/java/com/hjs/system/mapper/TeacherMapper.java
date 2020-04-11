@@ -16,6 +16,8 @@ public interface TeacherMapper {
 
     Teacher findTeacherByTeacherId(String teacherId);
 
+    Teacher findTeacherByGitHubName(String githubName);
+
     //需要在xml那边设置返回主键
     int insertTeacher(Teacher record);
 

@@ -1,5 +1,6 @@
 package com.hjs.system.config.shiro.common;
 
+import com.hjs.system.config.shiro.FreeLogin.FreeRealm;
 import com.hjs.system.config.shiro.student.StudentRealm;
 import com.hjs.system.config.shiro.teacher.TeacherRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -65,13 +66,16 @@ public class ShiroConfig {
         securityManager.setAuthenticator(modularRealmAuthenticator());
         List<Realm> realms = new ArrayList<>();
 
-        // 添加多个Realm:
+        /* 添加多个Realm: */
 
         // 添加学生Realm数据源
         realms.add(studentShiroRealm());
 
         // 添加教师Realm数据源
         realms.add(teacherShiroRealm());
+
+        // 添加Github免密登录Realm数据源
+        realms.add(githubShiroRealm());
 
         // 自定义缓存实现，使用redis实现spring-cache
         securityManager.setCacheManager(cacheManager());
@@ -131,6 +135,7 @@ public class ShiroConfig {
 
         filterChainDefinitionMap.put("/", "anon");//访问localhost的时候能够不会被拦截，自动跳转到login.html
         filterChainDefinitionMap.put("/login.html", "anon");
+        filterChainDefinitionMap.put("/callback", "anon");
         filterChainDefinitionMap.put("/wx/login", "anon");
         filterChainDefinitionMap.put("/student/login","anon");
         filterChainDefinitionMap.put("/teacher/login","anon");
@@ -297,6 +302,18 @@ public class ShiroConfig {
         teacherRealm.setCredentialsMatcher(hashedCredentialsMatcher()); //设置解密规则
         return teacherRealm;
 
+    }
+
+
+    /**
+     * 免密Realm —— Github用户
+     * @return
+     */
+    @Bean
+    public FreeRealm githubShiroRealm() {
+        FreeRealm freeRealm = new FreeRealm();
+        // 这里不设置定义解密规则, 就是默认用数据库密码来进行匹配校验
+        return freeRealm;
     }
 
 

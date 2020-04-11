@@ -7,7 +7,7 @@ package com.hjs.system.config.shiro.common;
  * @Modified By:
  */
 public enum LoginType {
-    STUDENT("Student"), ADMIN("Admin"), TEACHER("Teacher");
+    STUDENT("Student"), ADMIN("Admin"), TEACHER("Teacher"), FreeLogin("Free");
 
     private String type;
 

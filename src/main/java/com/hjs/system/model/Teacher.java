@@ -28,6 +28,8 @@ public class Teacher implements Serializable {
 
     private String remark;
 
+    private String githubName;
+
     public Integer getTid() {
         return tid;
     }
@@ -109,6 +111,14 @@ public class Teacher implements Serializable {
         this.remark = remark;
     }
 
+    public String getGithubName() {
+        return githubName;
+    }
+
+    public void setGithubName(String githubName) {
+        this.githubName = githubName;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -122,6 +132,7 @@ public class Teacher implements Serializable {
                 ", email='" + email + '\'' +
                 ", picimg='" + picimg + '\'' +
                 ", remark='" + remark + '\'' +
+                ", githubName='" + githubName + '\'' +
                 '}';
     }
 }

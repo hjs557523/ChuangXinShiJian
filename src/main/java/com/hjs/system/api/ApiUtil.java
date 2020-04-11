@@ -26,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class ApiUtil {
     public static final String METHOD_GET = "GET";
 
 
-    // 微信登录接口
+    /* 微信小程序登录相关 */
     public static final String WX_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";
     // appid
     public static final String WX_LOGIN_APPID = "wx55cd29c85957466a";
@@ -55,7 +56,42 @@ public class ApiUtil {
     public static final String WX_LOGIN_GRANT_TYPE = "authorization_code";
 
 
-    public static String wxApiGetRequest(String url, Map<String, String> params) {
+    /* GitHub 第三方登录 */
+    // GitHub注册应用的 CLIENT_ID
+    public static final String CLIENT_ID = "fe7d32c06f96eafa8b08";
+
+    // GitHub注册应用的 CLIENT_SECRET
+    public static final String CLIENT_SECRET = "d58afc81838581ed16e5276d837beebd4fbcde73";
+
+    // GitHub回调路径
+    public static final String CALLBACK = "http://localhost:8080/callback";
+
+    // 获取access_token的URL
+    public static final String CODE_URL = "https://github.com/login/oauth/access_token";
+
+    // 获取用户信息的url
+    public static final String USER_INFO_URL = "https://api.github.com/user";
+
+
+    public static Map<String, String> getMapForAccessToken(String response) {
+        Map<String, String> map = new HashMap<>();
+        // 以&来解析字符串
+        String[] result = response.split("\\&");
+
+        for (String str : result) {
+            // 以=来解析字符串
+            String[] split = str.split("=");
+            // 将字符串存入map中
+            if (split.length == 1)
+                map.put(split[0], null);
+            else
+                map.put(split[0], split[1]);
+
+        }
+        return map;
+    }
+
+    public static String ApiGetRequest(String url, Map<String, String> params, Map<String, String> header) {
         //创建HttpClient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -75,6 +111,13 @@ public class ApiUtil {
             //创建http GET请求
             HttpGet httpGet = new HttpGet(uri);
 
+            if (header!=null) {
+                for (String key : header.keySet()) {
+                    httpGet.addHeader(key, header.get(key));
+                }
+            }
+
+
             //执行请求
             response = httpClient.execute(httpGet);//这里可能会抛出异常
 
@@ -85,7 +128,7 @@ public class ApiUtil {
             }
 
         } catch (Exception e) {
-            logger.info("get请求微信接口出现错误: " + e.getMessage());
+            logger.info("get请求接口出现错误: " + e.getMessage());
         } finally {
             try {
                 if (response != null) {
@@ -100,12 +143,12 @@ public class ApiUtil {
     }
 
 
-    public static String wxApiGetRequest(String url) {
-        return wxApiGetRequest(url, null);
+    public static String ApiGetRequest(String url) {
+        return ApiGetRequest(url, null, null);
     }
 
 
-    public static String wxApiPostRequest(String url, Map<String, String> params) {
+    public static String ApiPostRequest(String url, Map<String, String> params) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String resultString = "";
@@ -141,8 +184,8 @@ public class ApiUtil {
     }
 
 
-    public static String wxApiPostRequest(String url) {
-        return wxApiPostRequest(url, null);
+    public static String ApiPostRequest(String url) {
+        return ApiPostRequest(url, null);
     }
 
 
@@ -265,5 +308,6 @@ public class ApiUtil {
         }
 
     }
+
 
 }

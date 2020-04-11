@@ -31,7 +31,7 @@ public class UserModularRealmAuthenticator extends ModularRealmAuthenticator {
         logger.info("UserModularRealmAuthenticator: method doAuthenticate() execute");
         // 判断getRealms()是否返回为空
         assertRealmsConfigured();
-        // 强制转换回自定义的CustomizedToken
+        // 强制转换回自定义的UserToken
         UserToken userToken = (UserToken) authenticationToken;
         // 登录类型
         String loginType = userToken.getLoginType();

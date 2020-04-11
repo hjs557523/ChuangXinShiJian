@@ -75,7 +75,7 @@ public class WxLoginController {
         params.put("grant_type", ApiUtil.WX_LOGIN_GRANT_TYPE);
 
         // 发送请求
-        String wxResult = ApiUtil.wxApiGetRequest(ApiUtil.WX_LOGIN_URL, params);
+        String wxResult = ApiUtil.ApiGetRequest(ApiUtil.WX_LOGIN_URL, params, null);
         if (!StringUtil.isEmpty(wxResult)) {
             JSONObject jsonObject = JSONObject.parseObject(wxResult);
 

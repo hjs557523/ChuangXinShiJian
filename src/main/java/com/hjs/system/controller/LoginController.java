@@ -134,8 +134,8 @@ public class LoginController extends BaseController {
             //logger.info("请求了/student/login: Apache shiro  的sessionId: {}",subject.getSession().getId().toString());
             //logger.info("请求了/student/login: Spring servlet的sessionId: {}",request.getSession().getId());
 
-            logger.info(SecurityUtils.getSubject().getPrincipal().getClass().getName());
-            logger.info(Student.class.getName());
+//            logger.info(SecurityUtils.getSubject().getPrincipal().getClass().getName());
+//            logger.info(Student.class.getName());
 
 
             Map<String, Object> map = new HashMap<>();

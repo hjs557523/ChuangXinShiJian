@@ -19,6 +19,8 @@ public interface TeacherService {
 
     Teacher findTeacherByTid(Integer tid);
 
+    Teacher findTeacherByGitHubName(String githubName);
+
     int updateTeacher(Teacher teacher);
 
     int updatePassword(Integer tid, String password);

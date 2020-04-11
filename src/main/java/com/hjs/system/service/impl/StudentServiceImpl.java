@@ -34,6 +34,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
+    @Cacheable
+    @Override
+    public Student findStudentByGitHubName(String githubName) {
+        return studentMapper.findStudentByGitHubName(githubName);
+    }
+
+
     //Spring Cache默认是不支持在@Cacheable上添加过期时间的，可以在配置缓存容器时统一指定
     @Cacheable
     @Override

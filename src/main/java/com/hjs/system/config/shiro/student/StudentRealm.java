@@ -58,6 +58,7 @@ public class StudentRealm extends AuthorizingRealm {
     }
 
 
+
     /**
      * 执行认证逻辑
      * @param authenticationToken
@@ -86,7 +87,7 @@ public class StudentRealm extends AuthorizingRealm {
 
         simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(student.getStudentId())); //设置盐
 
-        logger.info("认证方法执行结束");
+        logger.info("student认证方法执行结束");
         return simpleAuthenticationInfo;
     }
 

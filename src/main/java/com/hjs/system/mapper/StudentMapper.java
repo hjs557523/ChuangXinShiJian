@@ -19,6 +19,8 @@ public interface StudentMapper extends BaseDAO<Student> {
      */
     Student findStudentByStudentId(@Param("studentId") String studentId);
 
+    Student findStudentByGitHubName(@Param("githubName") String githubName);
+
     int insertStudent(Student student);
 
     int updateProfile(Student student);
@@ -32,6 +34,8 @@ public interface StudentMapper extends BaseDAO<Student> {
     Page<Student> findAllStudent();
 
     Page<Student> fuzzyQueryAllStudent(String value);
+
+
 
 
 //    void batchSave(List<Student> list);
