@@ -12,9 +12,9 @@
 | MyBatis | ORM框架 |
 | MyBatis Generator | 持久层代码生成 |
 | PageHelper | MyBatis物理分页插件 |
-| Redis | 分布式缓存数据库 |
+| Redis | 分布式数据缓存 |
 | Alibaba Druid | 数据库连接池 |
-| WebSocket | 全双工消息推送技术 |
+| WebSocket | HTML5全双工消息推送技术 |
 | Thymeleaf | 前端页面模板 |
 | Kaptcha | 验证码生成 |
 | LayUi | 前端页面UI框架 |
