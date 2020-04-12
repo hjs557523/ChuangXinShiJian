@@ -105,7 +105,7 @@ public class GitHubLoginController {
                 //开始验证后台用户数据，完成shiro认证
                 Subject subject = SecurityUtils.getSubject();
                 subject.login(userToken);
-                SecurityUtils.getSubject().getSession().setAttribute("student",  (Student) subject.getPrincipal());
+                SecurityUtils.getSubject().getSession().setAttribute(s.getStudentId(),  (Student) subject.getPrincipal());
                 SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);//3小时
 
                 return "redirect:/index.html?current_user=" + ((Student) subject.getPrincipal()).getStudentId();

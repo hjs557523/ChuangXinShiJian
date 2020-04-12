@@ -219,6 +219,8 @@ public class ShiroConfig {
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();//默认sessionManager
         sessionManager.setSessionDAO(redisSessionDAO());
+        // 去掉shiro重定向时时url里的JSESSIONID：shiro1.3.2版本及以上才能使用该方法
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
         return sessionManager;
     }
 

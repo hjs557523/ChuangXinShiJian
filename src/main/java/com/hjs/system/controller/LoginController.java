@@ -57,19 +57,19 @@ public class LoginController extends BaseController {
 
         logger.info("接收到web端的登录请求");
 //        logger.info(request.getQueryString());
-        Cookie[] cookies = request.getCookies();
-        if (cookies!=null) {
-            for (Cookie cookie : cookies)
-                logger.info(cookie.getName() + ":" + cookie.getValue());
-        }
-
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String name = headerNames.nextElement();
-            //通过请求头的名称获取请求头的值
-            String value = request.getHeader(name);
-            System.out.println(name + "----" + value);
-        }
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies!=null) {
+//            for (Cookie cookie : cookies)
+//                logger.info(cookie.getName() + ":" + cookie.getValue());
+//        }
+//
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String name = headerNames.nextElement();
+//            //通过请求头的名称获取请求头的值
+//            String value = request.getHeader(name);
+//            System.out.println(name + "----" + value);
+//        }
 
         logger.info("接收到登录请求");
         logger.info("登录Student: " + student);
@@ -131,8 +131,8 @@ public class LoginController extends BaseController {
 
 
             //shiro session 是对 spring session 的封装，两者sessionId相同
-            //logger.info("请求了/student/login: Apache shiro  的sessionId: {}",subject.getSession().getId().toString());
-            //logger.info("请求了/student/login: Spring servlet的sessionId: {}",request.getSession().getId());
+            logger.info("请求了/student/login: Apache shiro  的sessionId: {}",subject.getSession().getId().toString());
+            logger.info("请求了/student/login: Spring servlet的sessionId: {}",request.getSession().getId());
 
 //            logger.info(SecurityUtils.getSubject().getPrincipal().getClass().getName());
 //            logger.info(Student.class.getName());
