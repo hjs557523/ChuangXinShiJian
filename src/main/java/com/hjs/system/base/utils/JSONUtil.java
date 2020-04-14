@@ -53,28 +53,33 @@ public class JSONUtil {
     }
 
 
-    //设置返回失败消息JSON字符串
+    // 设置返回失败消息JSON字符串 101
     public static String returnFailResult(String message) {
         return returnJSONResult(101, message, null);
     }
 
 
-
-    //设置返回成功消息JSON字符串
+    // 设置返回成功消息JSON字符串 0
     public static String returnSuccessResult(String message) {
         return returnJSONResult(0, message, null);
     }
 
 
 
-    //设置返回登录状态失效的JSON字符串
+    // 设置返回实体JSON字符串 0
+    public static String returnEntityResult(Object entity) {
+        return returnJSONResult(0, "返回数据", entity);
+    }
+
+
+
+    // 设置返回登录状态失效的JSON字符串 1001
     public static String returnForbiddenResult(String message) { return returnJSONResult(1001, message, null); }
 
 
-
-    //设置返回实体JSON字符串
-    public static String returnEntityResult(Object entity) {
-        return returnJSONResult(0, "返回数据", entity);
+    // 未绑定账号 1111
+    public static String returnNoBindingResult(Object entity) {
+        return JSONUtil.returnJSONResult(1111, "github账号未绑定本系统账号，请先绑定！", entity);
     }
 
 

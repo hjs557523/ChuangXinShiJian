@@ -1,5 +1,7 @@
 package com.hjs.system.controller.student;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.model.Group;
 import com.hjs.system.model.GroupMember;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author 黄继升 16041321
  * @Description:
@@ -27,6 +31,9 @@ public class GroupManagementController {
     private static final Logger logger = LoggerFactory.getLogger(GroupManagementController.class);
 
     @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
     private GroupService groupServiceImpl;
 
     @Autowired
@@ -36,20 +43,23 @@ public class GroupManagementController {
     /**
      * 创建小组
      * @param group
-     * @param subjectId
+     * @param
      * @return
      */
     @RequestMapping(value = "/student/group/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String createGroup(@RequestBody Group group, @RequestBody Integer subjectId) {
+    public String createGroup(@RequestBody Group group) {
+
+        System.out.println(group);
 
         // 获取当前用户
         Student current_user = (Student) SecurityUtils.getSubject().getPrincipal();
         Integer ownerId = current_user.getSid();
 
         group.setStateId(0);// 默认初始创建为 “未完结” 状态
-        group.setSubjectId(subjectId);
         group.setOwnerId(ownerId);
+        group.setOauthToken(null);
+
 
 
         // 添加当前用户到组员关系表中
@@ -80,10 +90,10 @@ public class GroupManagementController {
 
         // 获取当前用户
         Student current_user = (Student) SecurityUtils.getSubject().getPrincipal();
-
+        Group group = groupServiceImpl.findGroupByGid(gid);
         GroupMember groupMember = new GroupMember();
         groupMember.setStudent(current_user);
-        groupMember.setGroupId(gid);
+        groupMember.setGroup(group);
 
         try {
             if (groupMemberServiceImpl.insertGroupMember(groupMember) > 0)
@@ -95,6 +105,46 @@ public class GroupManagementController {
             logger.info("数据库异常: " + e.getMessage());
             return JSONUtil.returnFailResult("数据库异常, 请稍后重试!");
         }
+    }
+
+
+    /**
+     * 查询所加入的小组
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/student/group/findAllJoin", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findAllJoinGroupBySid(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
+        if (pageNum == null)
+            pageNum = 1;
+        if (pageSize == null)
+            pageSize = 12;
+
+        logger.info("分页查询第{}页，每页{}条", pageNum, pageSize);
+
+        try {
+
+            // 获取当前用户
+            Student current_user = (Student) SecurityUtils.getSubject().getPrincipal();
+            Integer sid = current_user.getSid();
+            Page<GroupMember> allMyGroups = groupMemberServiceImpl.findGroupMemberByStudentId(current_user.getSid(), pageNum, pageSize);
+            PageInfo<GroupMember> pageInfo = new PageInfo<>(allMyGroups);
+            Integer count = (int) pageInfo.getTotal();
+            if (count == 0)
+                return JSONUtil.returnEntityResult(count, "未查找到加入小组信息", pageInfo);
+            else
+                return JSONUtil.returnEntityResult(count, "加入小组信息如下", pageInfo);
+
+        } catch (Exception e) {
+            logger.info("查询出错：" + e.getMessage());
+            return JSONUtil.returnFailResult("数据库查询失败");
+
+        }
+
+
+
     }
 
 

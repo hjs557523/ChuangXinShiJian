@@ -7,9 +7,11 @@ public class GroupMember implements Serializable {
 
     private Integer groupMemberId;
 
-    private Integer groupId;
+//    private Integer groupId;
 
 //    private Integer studentId;
+
+    private Group group;
 
     private Student student;
 
@@ -21,14 +23,6 @@ public class GroupMember implements Serializable {
         this.groupMemberId = groupMemberId;
     }
 
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
     public Student getStudent() {
         return student;
     }
@@ -37,11 +31,19 @@ public class GroupMember implements Serializable {
         this.student = student;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     @Override
     public String toString() {
         return "GroupMember{" +
                 "groupMemberId=" + groupMemberId +
-                ", groupId=" + groupId +
+                ", group=" + group +
                 ", student=" + student +
                 '}';
     }

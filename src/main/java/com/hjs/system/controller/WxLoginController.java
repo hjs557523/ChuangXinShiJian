@@ -52,6 +52,14 @@ public class WxLoginController {
     @Autowired
     private TeacherService teacherServiceImpl;
 
+    /**
+     * 微信小程序 —— 系统账号密码登录
+     * @param code
+     * @param username
+     * @param password
+     * @param userType
+     * @return
+     */
     @RequestMapping(value = "/wx/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String wxUserLogin(@RequestParam("code") String code, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("userType") Integer userType) {

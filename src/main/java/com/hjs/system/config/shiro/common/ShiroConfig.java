@@ -136,7 +136,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/", "anon");//访问localhost的时候能够不会被拦截，自动跳转到login.html
         filterChainDefinitionMap.put("/login.html", "anon");
         filterChainDefinitionMap.put("/callback", "anon");
-        filterChainDefinitionMap.put("/wx/login", "anon");
+        filterChainDefinitionMap.put("/wx/**", "anon");
         filterChainDefinitionMap.put("/student/login","anon");
         filterChainDefinitionMap.put("/teacher/login","anon");
         filterChainDefinitionMap.put("/admin/login","anon");

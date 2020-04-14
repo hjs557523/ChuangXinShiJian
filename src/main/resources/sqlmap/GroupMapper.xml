@@ -20,14 +20,14 @@
   <select id="findAllGroup" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from group
+    from `group`
   </select>
 
 
   <select id="findGroupByStateId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from group
+    from `group`
     where state_id = #{stateId,jdbcType=INTEGER}
   </select>
 
@@ -35,7 +35,7 @@
   <select id="findGroupByOwnerId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from group
+    from `group`
     where owner_id = #{ownerId,jdbcType=INTEGER}
   </select>
 
@@ -43,7 +43,7 @@
   <select id="findGroupBySubjectId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from group
+    from `group`
     where subject_id = #{subjectId,jdbcType=INTEGER}
   </select>
 
@@ -51,20 +51,20 @@
   <select id="findGroupByGid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from group
+    from `group`
     where gid = #{gid,jdbcType=INTEGER}
   </select>
 
 
   <delete id="deleteGroupByGid" parameterType="java.lang.Integer" >
-    delete from group
+    delete from `group`
     where gid = #{gid,jdbcType=INTEGER}
   </delete>
 
 
 
   <insert id="insertGroup" parameterType="com.hjs.system.model.Group" useGeneratedKeys="true" keyColumn="gid" keyProperty="gid">
-    insert into group
+    insert into `group`
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="gid != null" >
         gid,
@@ -115,7 +115,7 @@
 
 
   <update id="updateGroup" parameterType="com.hjs.system.model.Group" >
-    update group
+    update `group`
     <set >
       <if test="groupName != null" >
         group_name = #{groupName,jdbcType=VARCHAR},

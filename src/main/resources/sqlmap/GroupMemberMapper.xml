@@ -3,7 +3,7 @@
 <mapper namespace="com.hjs.system.mapper.GroupMemberMapper" >
   <resultMap id="BaseResultMap" type="com.hjs.system.model.GroupMember" >
     <id column="group_member_id" property="groupMemberId" jdbcType="INTEGER" />
-    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <!--<result column="group_id" property="groupId" jdbcType="INTEGER" />-->
     <!--<result column="student_id" property="studentId" jdbcType="INTEGER" />-->
 
     <association property="student" column="student_id" javaType="com.hjs.system.model.Student">
@@ -20,6 +20,18 @@
       <result column="open_id" property="openId" jdbcType="VARCHAR" />
     </association>
 
+
+    <association property="group" column="group_id" javaType="com.hjs.system.model.Group">
+      <id column="gid" property="gid" jdbcType="INTEGER" />
+      <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+      <result column="repository_url" property="repositoryUrl" jdbcType="VARCHAR" />
+      <result column="oauth_token" property="oauthToken" jdbcType="VARCHAR" />
+      <result column="state_id" property="stateId" jdbcType="INTEGER" />
+      <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
+      <result column="subject_id" property="subjectId" jdbcType="INTEGER" />
+    </association>
+
+
   </resultMap>
 
 
@@ -29,22 +41,22 @@
 
 
   <select id="findAllGroupMember" resultMap="BaseResultMap">
-    select * from group_member g left join student s on g.student_id = s.sid
+    select * from group_member g left join student s on g.student_id = s.sid left join `group` p on g.group_id = p.gid
   </select>
 
 
   <select id="findGroupMemberByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select * from group_member g left join student s on g.student_id = s.sid where group_id = #{groupId,jdbcType=INTEGER}
+    select * from group_member g left join student s on g.student_id = s.sid left join `group` p on g.group_id = p.gid where group_id = #{groupId,jdbcType=INTEGER}
   </select>
 
 
   <select id="findGroupMemberByStudentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select * from group_member g left join student s on g.student_id = s.sid where student_id = #{studentId,jdbcType=INTEGER}
+    select * from group_member g left join student s on g.student_id = s.sid left join `group` p on g.group_id = p.gid where g.student_id = #{studentId,jdbcType=INTEGER}
   </select>
 
 
   <select id="findGroupMemberByGroupMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select * from group_member g left join student s on g.student_id = s.sid where group_member_id = #{groupMemberId,jdbcType=INTEGER}
+    select * from group_member g left join student s on g.student_id = s.sid left join `group` p on g.group_id = p.gid where group_member_id = #{groupMemberId,jdbcType=INTEGER}
   </select>
 
 
@@ -60,7 +72,7 @@
       <if test="groupMemberId != null" >
         group_member_id,
       </if>
-      <if test="groupId != null" >
+      <if test="group.gid != null" >
         group_id,
       </if>
       <if test="student.sid != null" >
@@ -71,8 +83,8 @@
       <if test="groupMemberId != null" >
         #{groupMemberId,jdbcType=INTEGER},
       </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=INTEGER},
+      <if test="group.gid != null" >
+        #{group.gid,jdbcType=INTEGER},
       </if>
       <if test="student.sid != null" >
         #{student.sid,jdbcType=INTEGER},
@@ -84,8 +96,8 @@
   <update id="updateGroupMember" parameterType="com.hjs.system.model.GroupMember" >
     update group_member
     <set >
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=INTEGER},
+      <if test="group.gid != null" >
+        group_id = #{group.gid,jdbcType=INTEGER},
       </if>
       <if test="student.sid != null" >
         student_id = #{student.sid,jdbcType=INTEGER},

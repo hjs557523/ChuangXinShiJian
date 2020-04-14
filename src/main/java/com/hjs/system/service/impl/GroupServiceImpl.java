@@ -32,7 +32,7 @@ public class GroupServiceImpl implements GroupService {
     private GroupMapper groupMapper;
 
     @Autowired
-    private GroupMemberMapper groupMemberMapper;
+    private GroupMemberServiceImpl groupMemberServiceImpl;
 
 
     @Cacheable
@@ -110,8 +110,8 @@ public class GroupServiceImpl implements GroupService {
             Student student = new Student();
             student.setSid(record.getOwnerId());
             groupMember.setStudent(student);
-            groupMember.setGroupId(gid);
-            return groupMemberMapper.insertGroupMember(groupMember);
+            groupMember.setGroup(record);
+            return groupMemberServiceImpl.insertGroupMember(groupMember);
         }
         return gid;
     }
