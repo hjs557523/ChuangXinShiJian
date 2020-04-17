@@ -3,7 +3,7 @@
 # 技术框架
 | **技术** |  **名称**| 
 | ------   |:------:|
-| jdk8 | jdk版本 |
+| JDK8 | JDK版本 |
 | Spring Framework | 容器  |
 | Spring Boot | 构建系统 |
 | ~SpringMVC~ | MVC框架 |
