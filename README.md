@@ -16,7 +16,7 @@
 | Alibaba Druid | 数据库连接池 |
 | WebSocket | 全双工消息推送技术 |
 | Thymeleaf | 前端页面模板 |
-| vant weapp | 小程序UI组件 |
+| Vant weapp | 有赞小程序UI组件 |
 | Kaptcha | 验证码生成 |
 | LayUi | 前端页面UI框架 |
 | Log4j | 日志管理 |
