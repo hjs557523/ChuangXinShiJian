@@ -17,6 +17,7 @@
 | WebSocket | 全双工消息推送技术 |
 | Thymeleaf | 前端页面模板 |
 | Vant weapp | 有赞小程序UI组件 |
+| ~ColorUI~ | 小程序UI组件库 |
 | Echarts | Echarts小程序图表组件 |
 | Kaptcha | 验证码生成 |
 | LayUi | 前端页面UI框架 |
