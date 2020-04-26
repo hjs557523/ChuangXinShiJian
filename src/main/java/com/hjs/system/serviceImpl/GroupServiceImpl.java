@@ -1,14 +1,11 @@
-package com.hjs.system.service.impl;
+package com.hjs.system.serviceImpl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.hjs.system.mapper.GroupMapper;
-import com.hjs.system.mapper.GroupMemberMapper;
 import com.hjs.system.model.Group;
 import com.hjs.system.model.GroupMember;
 import com.hjs.system.model.Student;
-import com.hjs.system.model.Subject;
-import com.hjs.system.service.GroupMemberService;
 import com.hjs.system.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -114,5 +111,14 @@ public class GroupServiceImpl implements GroupService {
             return groupMemberServiceImpl.insertGroupMember(groupMember);
         }
         return gid;
+    }
+
+
+    // 删除小组，将该小组的所有成员，所有任务信息一并删除
+    @Transactional
+    @CacheEvict(allEntries = true)
+    @Override
+    public int deleteGroup(Integer groupId) {
+        return 0;
     }
 }

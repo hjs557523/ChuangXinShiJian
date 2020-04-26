@@ -3,6 +3,8 @@ package com.hjs.system.api;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hjs.system.base.utils.JSONUtil;
+import com.hjs.system.vo.CommitStatistic;
+import javafx.beans.binding.ObjectExpression;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -40,7 +42,7 @@ public class ApiUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiUtil.class);
 
-    // github 相关
+    // github 相关 API
     public static final String GITHUB_HOST = "https://api.github.com";
     public static final String METHOD_POST = "POST";
     public static final String METHOD_GET = "GET";
@@ -73,6 +75,119 @@ public class ApiUtil {
     public static final String USER_INFO_URL = "https://api.github.com/user";
 
 
+    // 获取某个repo中所有的commits列表: https://api.github.com/repos/用户名/仓库名/commits
+    public static final String REPO_ALL_COMMIT_URL = "https://api.github.com/repos/%s/%s/commits";
+
+
+    // 获取某一条commit的详情: https://api.github.com/repos/用户名/仓库名/commits/某一条commit的SHA
+    public static final String ONE_COMMIT_DETAIL_URL = "https://api.github.com/repos/%s/%s/commits/%s";
+
+
+    public static final String REPO_ALL_ISSUES_URL = "https://api.github.com/repos/%s/%s/issues";
+    // GET 获取某个repo中的所有issues列表：https://api.github.com/repos/用户名/仓库名/issues
+    // POST 追加issue
+    /**
+     * 追加ISSUE
+     * JSON格式：
+     * {
+     *     "title": "Creating issue from API",
+     *     "body": "Posting a issue from Insomia",
+     *     "label": ["bug",'',...] 添加标签
+     *     "assignee": ['hjs557523', ''] 指定执行人
+     *
+     * }
+     */
+
+
+    // 获取某一条issues的详情：https://api.github.com/repos/用户名/仓库名/issues/序号。issues都是以1,2,3这样的序列排号的
+    public static final String ONE_ISSUE_DETAIL_URL = "https://api.github.com/repos/%s/%s/issues/%s";
+    // Update issue
+    // PATCH /repos/:owner/:repo/issues/:issue_number参数同上
+    // 锁定 issue
+    // PUT /repos/:owner/:repo/issues/:issue_number/lock
+    // {
+    //   "locked": true,
+    //   "active_lock_reason": "too heated"  off-topic too heated resolved spam
+    // }
+    // 解锁：DELETE /repos/:owner/:repo/issues/:issue_number/lock
+
+
+
+    // 获取受让人列表：GET /repos/:owner/:repo/assignees
+    // 检查用户是否为受让人：GET /repos/:owner/:repo/assignees/:assignee
+    // 将受让人添加到问题：POST /repos/:owner/:repo/issues/:issue_number/assignees
+    // {
+    //     "assignees": [
+    //     "hubot",
+    //     "other_user"
+    //    ]
+    //  }
+    //
+    // 从问题中删除受让人：DELETE /repos/:owner/:repo/issues/:issue_number/assignees
+    // {
+    //  "assignees": [
+    //    "hubot",
+    //    "other_user"
+    //  ]
+    //}
+    public static final String ALL_ASSIGNEES_URL = "https://api.github.com/repos/%s/%s/assigness";
+
+    // 获取repo所有issue下的comment
+    public static final String REPO_ALL_COMMENT_URL = "https://api.github.com/repos/%s/%s/issues/comments";
+
+
+    // 获取某repo某issue中的comments列表。https://api.github.com/repos/用户名/仓库名/issues/序号/comments
+    public static final String ISSUE_ALL_COMMENT_URL = "https://api.github.com/repos/%s/%s/issues/%s/comments";
+    // 创建comment：
+    // POST /repos/:owner/:repo/issues/:issue_number/comments
+    // {
+    //  "body": "Me too"
+    // }
+    //
+    // 修改comment
+    // PATCH /repos/:owner/:repo/issues/comments/:comment_id
+    //
+    // 删除comment
+    // DELETE /repos/:owner/:repo/issues/comments/:comment_id
+
+    // 获取某一条comment详情。https://api.github.com/repos/用户名/仓库名/issues/comments/评论详情的ID。其中评论ID是从issues列表中获得的
+    public static final String ONE_COMMENT_DETAIL_URL = "https://api.github.com/repos/%s/%s/issues/comments/%s";
+
+
+    // 列出仓库团队的所有协作者
+    public static final String ALL_COLLABORATORS_URL = "https://api.github.com/repos/%s/%s/collaborators";
+
+
+    public static final String IS_COLLABORATOR_URL = "https://api.github.com/repos/%s/%s/collaborators/%s";
+    // 判断用户是否为协作者:
+    // GET /repos/:owner/:repo/collaborators/:username
+    // 响应：
+    // 合作者：Status: 204 No Content
+    // 非合作者：Status: 404 Not Found
+
+    // 添加用户为协作者：
+    // PUT /repos/:owner/:repo/collaborators/:username
+    // 参数：permission 类型：string 值: pull push admin maintain triage，默认push
+
+    // 删除协作者
+    // DELETE /repos/:owner/:repo/collaborators/:username
+    // 响应：
+    // Status: 204 No Content
+
+    public static final String REPO_ALL_LABELS_URL = "https://api.github.com/repos/%s/%s/labels";
+
+
+    // 统计添加，删除，和提交的贡献者列表
+    public static final String REPO_ALL_COMMIT_STATS = "https://api.github.com/repos/%s/%s/stats/contributors";
+
+
+
+
+    /* gitLab */
+
+
+
+
     public static Map<String, String> getMapForAccessToken(String response) {
         Map<String, String> map = new HashMap<>();
         // 以&来解析字符串
@@ -90,6 +205,8 @@ public class ApiUtil {
         }
         return map;
     }
+
+
 
     public static String ApiGetRequest(String url, Map<String, String> params, Map<String, String> header) {
         //创建HttpClient对象
@@ -148,12 +265,13 @@ public class ApiUtil {
     }
 
 
-    public static String ApiPostRequest(String url, Map<String, String> params) {
+    public static String ApiPostRequest(String url, Map<String, String> params, Map<String, String> header) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String resultString = "";
         try {
             HttpPost httpPost = new HttpPost(url);
+
             if (params != null) {
                 List<NameValuePair> paramList = new ArrayList<>();
                 for (String key : params.keySet()) {
@@ -163,12 +281,20 @@ public class ApiUtil {
                 UrlEncodedFormEntity entity = new UrlEncodedFormEntity(paramList);
                 httpPost.setEntity(entity);
             }
+
+
+            if (header!=null) {
+                for (String key : header.keySet()) {
+                    httpPost.addHeader(key, header.get(key));
+                }
+            }
+
             //执行http请求
             response = httpClient.execute(httpPost);
             resultString = EntityUtils.toString(response.getEntity(), "utf-8");
 
         } catch (Exception e) {
-            logger.info("post请求微信接口出现错误: " + e.getMessage());
+            logger.info("post请求接口出现错误: " + e.getMessage());
         } finally {
             try {
                 if (response != null) {
@@ -184,9 +310,44 @@ public class ApiUtil {
     }
 
 
-    public static String ApiPostRequest(String url) {
-        return ApiPostRequest(url, null);
+
+
+    public static String ApiPostRequest(String url, String json, Map<String, String> header) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        String resultString = "";
+        try {
+            HttpPost httpPost = new HttpPost(url);
+            StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+            entity.setContentEncoding("UTF-8");
+            httpPost.setEntity(entity);
+
+            if (header!=null) {
+                for (String key : header.keySet()) {
+                    httpPost.addHeader(key, header.get(key));
+                }
+            }
+
+            //执行http请求
+            response = httpClient.execute(httpPost);
+            resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+
+        } catch (Exception e) {
+            logger.info("post请求接口出现错误: " + e.getMessage());
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+                httpClient.close();
+            } catch (IOException e) {
+                logger.info("关闭response出现错误: " + e.getMessage());
+            }
+        }
+
+        return resultString;
     }
+
 
 
     public static String wxApiPostRequestJSON(String url, String json) {
@@ -309,5 +470,82 @@ public class ApiUtil {
 
     }
 
+
+    public static List getRepoAllLabels(String githubName, String repo, String accessToken) {
+        List<String> list = new ArrayList<>();
+        String url = String.format(ApiUtil.REPO_ALL_LABELS_URL, new Object[]{githubName, repo});
+
+        Map<String, String> header = new HashMap<>();
+
+        header.put("Authorization", "Basic " + accessToken);
+        header.put("Content-Type", "application/json; charset=utf-8");
+        header.put("Connection", "keep-Alive");
+        header.put("User-Agent", githubName);
+
+        String result = ApiGetRequest(url, null, header);
+        try {
+            JSONArray jsonArray = JSONArray.parseArray(result);
+            for (Object item : jsonArray) {
+                list.add(((JSONObject)item).getString("name"));
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        return list;
+
+    }
+
+
+    /**
+     * 代码统计 + commit统计
+     * @param ownerGitHub
+     * @param repo
+     * @param accessToken
+     * @param myGitHub
+     * @return
+     */
+    public static List getMemberCommit(String ownerGitHub, String repo, String accessToken, String myGitHub) {
+        List<CommitStatistic> list = new ArrayList<>();
+        String url = String.format(ApiUtil.REPO_ALL_COMMIT_STATS, new Object[]{ownerGitHub, repo});
+        Map<String, String> header = new HashMap<>();
+        header.put("Authorization", "Basic " + accessToken);
+        header.put("Content-Type", "application/json; charset=utf-8");
+        header.put("Connection", "keep-Alive");
+        header.put("User-Agent", myGitHub);
+
+        String result = ApiGetRequest(url, null, header);
+        try {
+            JSONArray jsonArray = JSONArray.parseArray(result);
+            for (Object item : jsonArray) {
+                JSONObject jsonObject = (JSONObject) item;
+                CommitStatistic commitStatistic = new CommitStatistic();
+                commitStatistic.setTotalCodeNum(0);
+                List<Integer> weekCodeNum = new ArrayList<>();
+                Integer total = jsonObject.getInteger("total");
+                JSONArray weekArray = jsonObject.getJSONArray("weeks");
+                for (Object week : weekArray) {
+                    JSONObject weekObject = (JSONObject) week;
+                    Integer add = weekObject.getInteger("a");
+                    Integer del = weekObject.getInteger("d");
+                    commitStatistic.setTotalCodeNum(commitStatistic.getTotalCodeNum() + add - del);
+                    weekCodeNum.add(add - del);
+                }
+                commitStatistic.setWeekCodeNum(weekCodeNum);
+                JSONObject author = jsonObject.getJSONObject("author");
+                String githubName = author.getString("login");
+                commitStatistic.setTotalCommit(total);
+                commitStatistic.setGithubName(githubName);
+                list.add(commitStatistic);
+            }
+
+            return list;
+
+        } catch (Exception e) {
+            logger.info("产生异常: " + e.getMessage());
+            return null;
+        }
+
+    }
 
 }

@@ -6,6 +6,8 @@ import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.model.Subject;
 import com.hjs.system.model.Teacher;
 import com.hjs.system.service.SubjectService;
+import net.sf.json.JSONNull;
+import org.apache.poi.ss.extractor.ExcelExtractor;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,5 +97,27 @@ public class SubjectManagementController {
             return JSONUtil.returnFailResult("数据库查询失败");
         }
         
+    }
+
+
+    @RequestMapping(value = "/student/subject/getTeacherInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String getTeacherInfoBySubjectId(@RequestParam("subjectId") Integer subjectId) {
+        if (subjectId == null) {
+            return JSONUtil.returnFailResult("课题Id为空");
+        }
+
+        try {
+            Subject subject = subjectServiceImpl.findSubjectBySubjectId(subjectId);
+            if (subject == null) {
+                return JSONUtil.returnFailResult("教师信息为空");
+            } else {
+                Teacher teacher = subject.getTeacher();
+                return JSONUtil.returnEntityResult(teacher);
+            }
+        } catch (Exception e) {
+            logger.info("数据库异常" + e.getMessage());
+            return JSONUtil.returnFailResult("数据库的信息为空");
+        }
     }
 }

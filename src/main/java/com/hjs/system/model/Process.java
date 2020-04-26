@@ -28,6 +28,8 @@ public class Process implements Serializable {
 
     private String moduleUrl;
 
+    private Integer issueNumber;
+
     public Integer getProcessId() {
         return processId;
     }
@@ -116,6 +118,14 @@ public class Process implements Serializable {
         this.moduleUrl = moduleUrl;
     }
 
+    public Integer getIssueNumber() {
+        return issueNumber;
+    }
+
+    public void setIssueNumber(Integer issueNumber) {
+        this.issueNumber = issueNumber;
+    }
+
     @Override
     public String toString() {
         return "Process{" +
@@ -130,6 +140,7 @@ public class Process implements Serializable {
                 ", endTime=" + endTime +
                 ", groupId=" + groupId +
                 ", moduleUrl='" + moduleUrl + '\'' +
+                ", issueNumber=" + issueNumber +
                 '}';
     }
 }

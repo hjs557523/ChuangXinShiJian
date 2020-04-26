@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SystemApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class ClassMemberMapperTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassMemberMapperTest.class);
@@ -32,7 +32,7 @@ class ClassMemberMapperTest {
 
     @Test
     public void Test1() {
-        PageHelper.startPage(1, 5);
+        PageHelper.startPage(0, 0);
         for (ClassMember classMember : classMemberMapperImpl.findAllClassMember())
         logger.info(classMember.toString());
     }

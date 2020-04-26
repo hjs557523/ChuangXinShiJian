@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement //开启事务
 @MapperScan(basePackages = "com.hjs.system.mapper") //mapper 接口类扫描包配置
 @SpringBootApplication
+@EnableScheduling
 public class SystemApplication {
     public static void main(String[] args) {
 

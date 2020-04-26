@@ -150,7 +150,7 @@ public class WebSocketServer {
                         while (iterator.hasNext()) {
                             sendMessage(iterator.next());
                             iterator.remove();
-                            Thread.sleep(1500);
+                            Thread.sleep(2000);
                         }
                     } catch (Exception e) {
                         logger.error("未读消息发送失败" + e.getMessage());

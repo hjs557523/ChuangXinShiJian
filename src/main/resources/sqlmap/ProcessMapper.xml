@@ -13,12 +13,13 @@
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
     <result column="module_url" property="moduleUrl" jdbcType="VARCHAR" />
+    <result column="issue_number" property="issueNumber" jdbcType="INTEGER"/>
   </resultMap>
 
 
   <sql id="Base_Column_List" >
     process_id, process_type, process_status, process_title, process_detail, publisher_id, 
-    executer_id_list, create_time, end_time, group_id, module_url
+    executer_id_list, create_time, end_time, group_id, module_url,issue_number
   </sql>
 
 
@@ -61,7 +62,7 @@
   </select>
 
 
-  <select id="findProcessByGroupId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="findProcessByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
     from process
@@ -119,6 +120,9 @@
       <if test="moduleUrl != null" >
         module_url,
       </if>
+      <if test="issueNumber != null" >
+        issue_number,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processId != null" >
@@ -153,6 +157,9 @@
       </if>
       <if test="moduleUrl != null" >
         #{moduleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="issueNumber != null" >
+        #{issueNumber,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -190,6 +197,9 @@
       </if>
       <if test="moduleUrl != null" >
         module_url = #{moduleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="issueNumber != null" >
+        issue_number = #{issueNumber,jdbcType=INTEGER},
       </if>
     </set>
     where process_id = #{processId,jdbcType=INTEGER}

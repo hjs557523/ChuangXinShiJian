@@ -1,6 +1,5 @@
-package com.hjs.system.service.impl;
+package com.hjs.system.serviceImpl;
 
-import com.hjs.system.SystemApplication;
 import com.hjs.system.model.Group;
 import com.hjs.system.service.GroupService;
 import org.junit.jupiter.api.Test;

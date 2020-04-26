@@ -123,7 +123,7 @@ public class WxLoginController {
                             }
                         }
                         //更新session
-                        SecurityUtils.getSubject().getSession().setAttribute("student", authenticationInfo);
+                        SecurityUtils.getSubject().getSession().setAttribute("Student", authenticationInfo);
                         SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);//3小时
                     } catch (Exception e) {
                         logger.info("添加openId失败!");
@@ -152,7 +152,10 @@ public class WxLoginController {
 //                    }
 //                }
 //                    subject.getSession().setAttribute("teacher", (Teacher)subject.getPrincipal());
-                return JSONUtil.returnEntityResult("JSESSIONID=" + subject.getSession().getId());
+                Map<String, Object> map = new HashMap<>();
+                map.put("cookie", "JSESSIONID=" + subject.getSession().getId());
+                map.put("userId", ((Student) SecurityUtils.getSubject().getPrincipal()).getSid());
+                return JSONUtil.returnEntityResult(map);
             } catch (AuthenticationException e) {
                 logger.info("认证失败");
                 return JSONUtil.returnFailResult("账号或密码错误");

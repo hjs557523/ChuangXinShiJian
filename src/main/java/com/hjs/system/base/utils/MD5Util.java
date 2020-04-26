@@ -15,6 +15,6 @@ public class MD5Util {
     }
 
     public static void main(String[] args) {
-        System.out.println(getMd5HashPassword(2,"16041322","890115"));
+        System.out.println(getMd5HashPassword(2,"16041326","557523"));
     }
 }

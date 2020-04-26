@@ -1,14 +1,12 @@
-package com.hjs.system.service.impl;
+package com.hjs.system.serviceImpl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hjs.system.SystemApplication;
 import com.hjs.system.mapper.ClassMapper;
-import com.hjs.system.mapper.StudentMapper;
 import com.hjs.system.model.Class;
 import com.hjs.system.model.Teacher;
-import com.hjs.system.service.ClassService;
 import com.hjs.system.service.TeacherService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author 黄继升 16041321

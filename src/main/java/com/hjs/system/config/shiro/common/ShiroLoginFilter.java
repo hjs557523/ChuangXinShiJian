@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Result;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 /**
  * @author 黄继升 16041321
@@ -34,9 +36,23 @@ public class ShiroLoginFilter extends FormAuthenticationFilter {
      */
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+
         logger.info("执行了自定义的ShiroLoginFilter过滤器：未登录 / 没有当前用户没有相应权限 / Session过期失效 都会触发这个方法");
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
+        Cookie[] cookies = httpServletRequest.getCookies();
+//        for (Cookie cookie : cookies)
+//        logger.info(cookie.getName() + ":" + cookie.getValue());
+
+//        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String name = headerNames.nextElement();
+//            //通过请求头的名称获取请求头的值
+//            String value = httpServletRequest.getHeader(name);
+//            System.out.println(name + "----" + value);
+//        }
+
 
         //先判断是否是ajax请求
         if (isAjaxRequest(httpServletRequest)) {

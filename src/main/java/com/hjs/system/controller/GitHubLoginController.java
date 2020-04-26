@@ -152,6 +152,8 @@ public class GitHubLoginController {
     @RequestMapping(value = "/wx/githubLogin",  method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String githubUserLogin(@RequestParam("base64Token") String base64Token, @RequestParam("userType") Integer userType) {
+        String githubUsername = null;
+        String githubAvatarUrl = null;
         String userInfo = null;
         Student s = null;
         Teacher t = null;
@@ -164,6 +166,7 @@ public class GitHubLoginController {
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Basic " + base64Token);
         header.put("Content-Type", "application/json; charset=utf-8");
+        header.put("Accept","application/json");
         header.put("Connection", "keep-Alive");
         header.put("User-Agent", "创新实践课程管理系统");
 
@@ -171,17 +174,17 @@ public class GitHubLoginController {
         // 请求github
         try {
             userInfo = ApiUtil.ApiGetRequest(ApiUtil.USER_INFO_URL, null, header);
+            // 获取到github的用户信息
+            githubUser = JSONObject.parseObject(userInfo);
+            githubUsername = githubUser.getString("login");
+            githubAvatarUrl = githubUser.getString("avatar_url");
         } catch (Exception e) {
             logger.info("异常: " + e.getMessage());
+            return JSONUtil.returnFailResult("账号或密码错误");
         }
 
         logger.info(userInfo);
 
-
-        // 获取到github的用户信息
-        githubUser = JSONObject.parseObject(userInfo);
-        String githubUsername = githubUser.getString("login");
-        String githubAvatarUrl = githubUser.getString("avatar_url");
 
         if (githubUsername == null)
             return JSONUtil.returnFailResult("登录失败，Github没有当前用户!");
@@ -198,11 +201,12 @@ public class GitHubLoginController {
                     Subject subject = SecurityUtils.getSubject();
                     subject.login(userToken);
                     SecurityUtils.getSubject().getSession().setAttribute("Student",  (Student) subject.getPrincipal());
+                    SecurityUtils.getSubject().getSession().setAttribute("token", base64Token);
                     SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);//3小时
 
                     Map<String, Object> map = new HashMap<>();
                     map.put("cookie", "JSESSIONID=" + subject.getSession().getId());
-                    map.put("userId", s.getStudentId());
+                    map.put("userId", s.getSid());
                     //map.put("avatar", s.getPicImg());
                     return JSONUtil.returnEntityResult(map);// 返回sessionId给小程序前台缓存cookie
 
@@ -227,11 +231,12 @@ public class GitHubLoginController {
                     Subject subject = SecurityUtils.getSubject();
                     subject.login(userToken);
                     SecurityUtils.getSubject().getSession().setAttribute("Teacher", (Teacher) subject.getPrincipal());
+                    SecurityUtils.getSubject().getSession().setAttribute("token", base64Token);
                     SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);
 
                     Map<String, Object> map = new HashMap<>();
                     map.put("cookie", "JSESSIONID=" + subject.getSession().getId());
-                    map.put("userId", t.getTeacherId());
+                    map.put("userId", t.getTid());
                     return JSONUtil.returnEntityResult(map);
 
                 } catch (Exception e) {

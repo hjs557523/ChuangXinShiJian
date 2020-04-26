@@ -24,4 +24,5 @@ public interface SubjectService {
     Subject findSubjectBySubjectId(Integer subjectId);
 
     int updateSubject(Subject record);
+
 }

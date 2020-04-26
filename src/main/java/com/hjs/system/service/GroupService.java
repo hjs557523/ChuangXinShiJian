@@ -30,4 +30,6 @@ public interface GroupService {
 
     int createGroup(Group record);
 
+    int deleteGroup(Integer groupId);
+
 }

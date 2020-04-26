@@ -1,6 +1,5 @@
 package com.hjs.system.controller;
 
-import com.hjs.system.SystemApplication;
 import com.hjs.system.base.BaseController;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
@@ -9,7 +8,6 @@ import com.hjs.system.config.shiro.common.UserToken;
 import com.hjs.system.model.Student;
 import com.hjs.system.model.Teacher;
 import com.hjs.system.service.StudentService;
-import com.hjs.system.service.impl.StudentServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
@@ -21,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 

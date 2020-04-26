@@ -3,13 +3,14 @@ package com.hjs.system.controller.student;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.hjs.system.base.utils.JSONUtil;
+import com.hjs.system.base.utils.StringUtil;
 import com.hjs.system.model.Group;
 import com.hjs.system.model.GroupMember;
 import com.hjs.system.model.Student;
 import com.hjs.system.service.GroupMemberService;
 import com.hjs.system.service.GroupService;
+import com.hjs.system.service.StudentService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 黄继升 16041321
@@ -38,6 +41,9 @@ public class GroupManagementController {
 
     @Autowired
     private GroupMemberService groupMemberServiceImpl;
+
+    @Autowired
+    private StudentService studentServiceImpl;
 
 
     /**
@@ -75,6 +81,24 @@ public class GroupManagementController {
         }
 
     }
+
+
+//    /**
+//     * 删除小组
+//     * @param groupId
+//     * @return
+//     */
+//    @RequestMapping(value = "/student/group/delete", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+//    @ResponseBody
+//    public String createGroup(@RequestParam("groupId") Integer groupId) {
+//        if (groupId == null)
+//            return JSONUtil.returnFailResult("groupId null");
+//
+//        try {
+//            if ()
+//        }
+//        return null;
+//    }
 
 
 
@@ -132,6 +156,7 @@ public class GroupManagementController {
             Page<GroupMember> allMyGroups = groupMemberServiceImpl.findGroupMemberByStudentId(current_user.getSid(), pageNum, pageSize);
             PageInfo<GroupMember> pageInfo = new PageInfo<>(allMyGroups);
             Integer count = (int) pageInfo.getTotal();
+
             if (count == 0)
                 return JSONUtil.returnEntityResult(count, "未查找到加入小组信息", pageInfo);
             else
@@ -144,6 +169,73 @@ public class GroupManagementController {
         }
 
 
+    }
+
+
+    /**
+     * 查找组长信息
+     * @param ownerIdList
+     * @return
+     */
+    @RequestMapping(value = "/student/group/findOwner", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findGroupOwner(@RequestBody List<Integer> ownerIdList) {
+        List<Student> list = new ArrayList<>();
+
+        if (StringUtil.isEmpty(ownerIdList.toString())) {
+            return JSONUtil.returnFailResult("组长Id列表为空!");
+        }
+
+        try {
+            for (Integer ownerId : ownerIdList) {
+                Student student = studentServiceImpl.findStudentBySid(ownerId);
+                if (student != null) {
+                    list.add(student);
+                }
+                else {
+                    return JSONUtil.returnFailResult("数据库异常");
+                }
+            }
+            return JSONUtil.returnEntityResult(list);
+
+        } catch (Exception e) {
+            logger.info("数据库查询异常 :" + e.getMessage());
+            return JSONUtil.returnFailResult("查询失败");
+        }
+
+    }
+
+
+    /**
+     * 查找小组所有成员
+     * @param groupId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/student/group/findAllMember",  method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findAllMemberByGroupId(@RequestParam("groupId") Integer groupId, @RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
+        if (groupId == null)
+            return JSONUtil.returnFailResult("小组id null");
+        if (pageNum == null)
+            pageNum = 1;
+        if (pageSize == null)
+            pageSize = 12;
+
+        try {
+            Page<GroupMember> groupMembers = groupMemberServiceImpl.findGroupMemberByGroupId(groupId, pageNum, pageSize);
+            PageInfo<GroupMember> pageInfo = new PageInfo<>(groupMembers);
+            Integer count = (int) pageInfo.getTotal();
+            if (count == 0)
+                return JSONUtil.returnEntityResult(count, "当前小组没有成员加入", pageInfo);
+            else
+                return JSONUtil.returnEntityResult(count, "小组成员如下", pageInfo);
+
+        } catch (Exception e) {
+            logger.info("数据库异常: " + e.getMessage());
+            return JSONUtil.returnFailResult("数据库异常");
+        }
 
     }
 

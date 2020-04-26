@@ -82,7 +82,7 @@ public class GitHubUserRegController {
                         logger.info("shiro session: " + SecurityUtils.getSubject().getSession().getId());
 //                        Map<String, Object> map = new HashMap<>();
 //                        map.put("userId", student.getStudentId());
-                        return JSONUtil.returnEntityResult(student.getStudentId());
+                        return JSONUtil.returnEntityResult(student.getSid());
                     } catch (Exception e) {
                         logger.info("新绑定的用户密码错误");
                         return JSONUtil.returnFailResult("绑定失败");

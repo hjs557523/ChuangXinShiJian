@@ -1,4 +1,4 @@
-package com.hjs.system.service.impl;
+package com.hjs.system.serviceImpl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
