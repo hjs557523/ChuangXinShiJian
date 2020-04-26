@@ -4,7 +4,7 @@
 | **技术** |  **名称**| 
 | ------   |:------:|
 | JDK8 | JDK版本 |
-| Spring Framework | 容器  |
+| Spring Framework | 框架容器  |
 | Spring Boot | 构建系统 |
 | ~SpringMVC~ | MVC框架 |
 | Apache Shiro | 安全框架 |
