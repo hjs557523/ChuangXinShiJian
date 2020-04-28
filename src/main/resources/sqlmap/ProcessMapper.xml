@@ -58,7 +58,7 @@
     select
     <include refid="Base_Column_List" />
     from process
-    where process_type > 0 and executer_id_list like concat('%', #{executerId, jdbcType=VARCHAR}, '%')
+    where executer_id_list like concat('%', #{executerId, jdbcType=VARCHAR}, '%')
   </select>
 
 

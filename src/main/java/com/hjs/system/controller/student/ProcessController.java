@@ -12,6 +12,7 @@ import com.hjs.system.service.GroupService;
 import com.hjs.system.service.ProcessService;
 import com.hjs.system.service.StudentService;
 import com.hjs.system.vo.CommitStatistic;
+import com.hjs.system.vo.ProcessInfo;
 import com.hjs.system.vo.TaskStatistic;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -319,6 +320,46 @@ public class ProcessController {
             }
 
             return JSONUtil.returnEntityResult(list);
+
+        } catch (Exception e) {
+            logger.info("异常: " + e.getMessage());
+            return JSONUtil.returnFailResult("error2");
+        }
+
+    }
+
+
+
+    @RequestMapping(value = "/student/process/getAllMyDoProcess", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String getMyAllDoProcess() {
+        List<ProcessInfo> myProcesses = new ArrayList<>();
+        try {
+            Student student = (Student) SecurityUtils.getSubject().getPrincipal();
+            Integer sid = student.getSid();
+            Page<Process> processes = processServiceImpl.findProcessByExecuterId(sid, 0, 0);
+            PageInfo<Process> pageInfo = new PageInfo<>(processes);
+            for (Process process : pageInfo.getList()) {
+                if (process.getProcessStatus() != 1) {
+                    String[] arr = process.getExecuterIdList().split(",");
+                    for (String a : arr) {
+                        if (a.equals(sid.toString())) {
+                            ProcessInfo processInfo = new ProcessInfo();
+                            processInfo.setProcess(process);
+                            List<Student> list = new ArrayList<>();
+                            for (String b : arr) {
+                                Student s = studentServiceImpl.findStudentBySid(Integer.parseInt(b));
+                                list.add(s);
+                            }
+                            processInfo.setExecutorList(list);
+                            myProcesses.add(processInfo);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return JSONUtil.returnEntityResult(myProcesses);
 
         } catch (Exception e) {
             logger.info("异常: " + e.getMessage());
