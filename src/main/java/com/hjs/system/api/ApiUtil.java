@@ -50,12 +50,20 @@ public class ApiUtil {
 
     /* 微信小程序登录相关 */
     public static final String WX_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";
+
+    // 获取access_token的接口地址(GET) 限2000（次/天）
+    public static final String WX_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
+
+    public static final String WX_SUBSCRIBE_MESSAGE_URL = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send";
+
     // appid
     public static final String WX_LOGIN_APPID = "wx55cd29c85957466a";
     // appid_secret
     public static final String WX_LOGIN_SECRET = "55888c4b9a6653ba667c3bab2ebb7dce";
     // 固定参数: 授权类型
     public static final String WX_LOGIN_GRANT_TYPE = "authorization_code";
+    // 固定参数: 授权类型
+    public static final String WX_ACCESS_TOKEN_GRANT_TYPE = "client_credential";
 
 
     /* GitHub 第三方登录 */

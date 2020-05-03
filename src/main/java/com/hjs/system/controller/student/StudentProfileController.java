@@ -64,7 +64,7 @@ public class StudentProfileController {
         File _dirFile = new File(realPath);
         if (!_dirFile.exists() && !_dirFile.isDirectory()) {
             logger.info("文件夹路径不存在，创建文件夹");
-            _dirFile.mkdir();
+            _dirFile.mkdirs();
         }
 
         //根据时间函数，生成一个新的，不产生重复的文件名

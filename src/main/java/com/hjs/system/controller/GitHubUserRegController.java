@@ -51,7 +51,7 @@ public class GitHubUserRegController {
 
     @RequestMapping(value = "/wx/githubBinding", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String RegistFromWeChatApp(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public String RegistFromWeChatApp(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("name") String name) {
 
         // 插入，再执行登录
         if (request.getSession(false) == null) {
@@ -61,6 +61,7 @@ public class GitHubUserRegController {
         logger.info("当前session的id = " + request.getSession(false).getId());
         String githubName = (String) request.getSession().getAttribute("githubUserName");
         String githubAvatarUrl = (String) request.getSession().getAttribute("githubAvatarUrl");
+        String openId = (String) request.getSession().getAttribute("openId");
         Integer userType = (Integer) request.getSession().getAttribute("userType");
         String md5Password = MD5Util.getMd5HashPassword(2, username, password);
 
@@ -71,6 +72,8 @@ public class GitHubUserRegController {
                 student.setPicImg(githubAvatarUrl);
                 student.setStudentId(username);
                 student.setPassword(md5Password);
+                student.setOpenId(openId);
+                student.setName(name);
                 if (studentServiceImpl.addStudent(student) > 0) {
                     // 执行真正的登录操作
                     UserToken userToken = new UserToken(username, password, STUDENT_LOGIN_TYPE);
@@ -79,9 +82,6 @@ public class GitHubUserRegController {
                         subject.login(userToken);
                         SecurityUtils.getSubject().getSession().setAttribute("Student", (Student) subject.getPrincipal());
                         SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);
-                        logger.info("shiro session: " + SecurityUtils.getSubject().getSession().getId());
-//                        Map<String, Object> map = new HashMap<>();
-//                        map.put("userId", student.getStudentId());
                         return JSONUtil.returnEntityResult(student.getSid());
                     } catch (Exception e) {
                         logger.info("新绑定的用户密码错误");

@@ -144,118 +144,141 @@ public class GitHubLoginController {
 
 
     /**
-     * 微信小程序端 —— github账号密码 方式登录（个人类型小程序不支持第三方webView跳转授权） 因此这里用Basic认证方式登录
+     * 微信小程序端 —— 微信 + github账号密码 双重认证方式登录（个人类型小程序不支持第三方webView跳转授权） 因此这里用Basic认证方式登录
      * @param base64Token
      * @param userType
      * @return
      */
     @RequestMapping(value = "/wx/githubLogin",  method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String githubUserLogin(@RequestParam("base64Token") String base64Token, @RequestParam("userType") Integer userType) {
-        String githubUsername = null;
-        String githubAvatarUrl = null;
-        String userInfo = null;
-        Student s = null;
-        Teacher t = null;
-        JSONObject githubUser = null;
-        if (StringUtil.isEmpty(base64Token) || StringUtil.isEmpty(userType.toString())) {
-            return JSONUtil.returnFailResult("token和userType不能为空!");
-        }
-        logger.info("Basic " + base64Token);
+    public String githubUserLogin(@RequestParam("base64Token") String base64Token, @RequestParam("userType") Integer userType, @RequestParam("code") String code) {
 
-        Map<String, String> header = new HashMap<>();
-        header.put("Authorization", "Basic " + base64Token);
-        header.put("Content-Type", "application/json; charset=utf-8");
-        header.put("Accept","application/json");
-        header.put("Connection", "keep-Alive");
-        header.put("User-Agent", "创新实践课程管理系统");
+        if (StringUtil.isEmpty(code) || StringUtil.isEmpty(base64Token))
+            return JSONUtil.returnFailResult("验证信息不完整, 请重新填写登录!");
 
+        // 先进行微信登录验证
+        Map<String, String> params = new HashMap<>();
+        params.put("appid", ApiUtil.WX_LOGIN_APPID);
+        params.put("secret", ApiUtil.WX_LOGIN_SECRET);
+        params.put("js_code", code);
+        params.put("grant_type", ApiUtil.WX_LOGIN_GRANT_TYPE);
 
-        // 请求github
-        try {
-            userInfo = ApiUtil.ApiGetRequest(ApiUtil.USER_INFO_URL, null, header);
-            // 获取到github的用户信息
-            githubUser = JSONObject.parseObject(userInfo);
-            githubUsername = githubUser.getString("login");
-            githubAvatarUrl = githubUser.getString("avatar_url");
-        } catch (Exception e) {
-            logger.info("异常: " + e.getMessage());
-            return JSONUtil.returnFailResult("账号或密码错误");
-        }
+        // 发送请求
+        String wxResult = ApiUtil.ApiGetRequest(ApiUtil.WX_LOGIN_URL, params, null);
+        if (!StringUtil.isEmpty(wxResult)) {
+            JSONObject jsonObject = JSONObject.parseObject(wxResult);
+            // 获取返回微信用户的openId
+            // String session_key = jsonObject.get("session_key").toString();
+            String open_id = jsonObject.getString("openid");
 
-        logger.info(userInfo);
-
-
-        if (githubUsername == null)
-            return JSONUtil.returnFailResult("登录失败，Github没有当前用户!");
-
-        // 接下来执行github用户在本系统的登录操作
-        if (userType == 0) { //学生
-            if ((s = studentServiceImpl.findStudentByGitHubName(githubUsername)) != null) { // 如果该github在本系统有账号
-
-                // 接下来执行登录操作, github用户免密登录
-                UserToken userToken = new UserToken(githubUsername, s.getPassword(), FREE_LOGIN);
-                userToken.setRememberMe(false);
-                try {
-                    //开始验证后台用户数据，完成shiro认证
-                    Subject subject = SecurityUtils.getSubject();
-                    subject.login(userToken);
-                    SecurityUtils.getSubject().getSession().setAttribute("Student",  (Student) subject.getPrincipal());
-                    SecurityUtils.getSubject().getSession().setAttribute("token", base64Token);
-                    SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);//3小时
-
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("cookie", "JSESSIONID=" + subject.getSession().getId());
-                    map.put("userId", s.getSid());
-                    //map.put("avatar", s.getPicImg());
-                    return JSONUtil.returnEntityResult(map);// 返回sessionId给小程序前台缓存cookie
-
-                } catch (Exception e) {
-                    logger.info("github学生登录失败，未知错误");
-                    return JSONUtil.returnFailResult("登录失败，服务器连接异常，请稍后再试");
-                }
-            } else { //该github在本系统没有账号，需要进行绑定（插入），但是先缓存用户登录态信息
-                request.getSession().setAttribute("githubUserName", githubUsername);
-                request.getSession().setAttribute("githubAvatarUrl", githubAvatarUrl);
-                request.getSession().setAttribute("token", base64Token); //之后再进行github操作需要用到
-                request.getSession().setAttribute("userType", userType);
-                return JSONUtil.returnNoBindingResult("JSESSIONID=" + request.getSession().getId());
+            String githubUsername = null;
+            String githubAvatarUrl = null;
+            String userInfo = null;
+            Student s = null;
+            Teacher t = null;
+            JSONObject githubUser = null;
+            if (StringUtil.isEmpty(base64Token) || StringUtil.isEmpty(userType.toString())) {
+                return JSONUtil.returnFailResult("token和userType不能为空!");
             }
-        }
+            logger.info("Basic " + base64Token);
 
-        else if (userType == 1) { //教师
-            if ((t = teacherServiceImpl.findTeacherByGitHubName(githubUsername)) != null) {
-                UserToken userToken = new UserToken(githubUsername, t.getPassword(), FREE_LOGIN);
-                userToken.setRememberMe(false);
-                try {
-                    Subject subject = SecurityUtils.getSubject();
-                    subject.login(userToken);
-                    SecurityUtils.getSubject().getSession().setAttribute("Teacher", (Teacher) subject.getPrincipal());
-                    SecurityUtils.getSubject().getSession().setAttribute("token", base64Token);
-                    SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);
+            Map<String, String> header = new HashMap<>();
+            header.put("Authorization", "Basic " + base64Token);
+            header.put("Content-Type", "application/json; charset=utf-8");
+            header.put("Accept","application/json");
+            header.put("Connection", "keep-Alive");
+            header.put("User-Agent", "创新实践课程管理系统");
 
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("cookie", "JSESSIONID=" + subject.getSession().getId());
-                    map.put("userId", t.getTid());
-                    return JSONUtil.returnEntityResult(map);
 
-                } catch (Exception e) {
-                    logger.info("github教师登录失败, 未知错误");
-                    return JSONUtil.returnFailResult("登录失败，服务器连接异常，请稍后再试");
+            // 请求github验证用户是否具有权限
+            try {
+                userInfo = ApiUtil.ApiGetRequest(ApiUtil.USER_INFO_URL, null, header);
+                // 获取到github的用户信息
+                githubUser = JSONObject.parseObject(userInfo);
+                githubUsername = githubUser.getString("login");
+                githubAvatarUrl = githubUser.getString("avatar_url");
+            } catch (Exception e) {
+                logger.info("异常: " + e.getMessage());
+                return JSONUtil.returnFailResult("账号或密码错误");
+            }
+
+            if (githubUsername == null)
+                return JSONUtil.returnFailResult("登录失败，Github没有当前用户!");
+
+            // 接下来执行github用户在本系统的登录操作
+            if (userType == 0) { //学生
+                if ((s = studentServiceImpl.findStudentByGitHubName(githubUsername)) != null) { // 如果该github在本系统有账号
+
+                    // 接下来执行登录操作, github用户免密登录
+                    UserToken userToken = new UserToken(githubUsername, s.getPassword(), FREE_LOGIN);
+                    userToken.setRememberMe(false);
+                    try {
+                        //开始验证后台用户数据，完成shiro认证
+                        Subject subject = SecurityUtils.getSubject();
+                        subject.login(userToken);
+                        SecurityUtils.getSubject().getSession().setAttribute("Student",  (Student) subject.getPrincipal());
+                        SecurityUtils.getSubject().getSession().setAttribute("token", base64Token);
+                        SecurityUtils.getSubject().getSession().setTimeout(6 * 60 * 60 * 1000);//6小时
+
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("cookie", "JSESSIONID=" + subject.getSession().getId());
+                        map.put("userId", s.getSid());
+                        return JSONUtil.returnEntityResult(map);// 返回sessionId给小程序前台缓存cookie
+
+                    } catch (Exception e) {
+                        logger.info("github学生登录失败，未知错误");
+                        return JSONUtil.returnFailResult("登录异常, 请联系开发者处理");
+                    }
+                } else { //该github在本系统没有账号，需要进行绑定（插入），但是先缓存用户登录态信息
+                    request.getSession().setAttribute("githubUserName", githubUsername);
+                    request.getSession().setAttribute("githubAvatarUrl", githubAvatarUrl);
+                    request.getSession().setAttribute("token", base64Token); //之后再进行github操作需要用到
+                    request.getSession().setAttribute("userType", userType);
+                    request.getSession().setAttribute("openId", open_id);
+                    return JSONUtil.returnNoBindingResult("JSESSIONID=" + request.getSession().getId());
+                }
+            }
+
+            else if (userType == 1) { //教师
+                if ((t = teacherServiceImpl.findTeacherByGitHubName(githubUsername)) != null) {
+                    UserToken userToken = new UserToken(githubUsername, t.getPassword(), FREE_LOGIN);
+                    userToken.setRememberMe(false);
+                    try {
+                        Subject subject = SecurityUtils.getSubject();
+                        subject.login(userToken);
+                        SecurityUtils.getSubject().getSession().setAttribute("Teacher", (Teacher) subject.getPrincipal());
+                        SecurityUtils.getSubject().getSession().setAttribute("token", base64Token);
+                        SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);
+
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("cookie", "JSESSIONID=" + subject.getSession().getId());
+                        map.put("userId", t.getTid());
+                        return JSONUtil.returnEntityResult(map);
+
+                    } catch (Exception e) {
+                        logger.info("github教师登录失败, 未知错误");
+                        return JSONUtil.returnFailResult("登录失败，服务器连接异常，请稍后再试");
+                    }
+                }
+
+                else {
+                    request.getSession().setAttribute("githubUserName", githubUsername);
+                    request.getSession().setAttribute("token", base64Token);
+                    request.getSession().setAttribute("userType", userType);
+                    return JSONUtil.returnNoBindingResult("JSESSIONID=" + request.getSession().getId());
                 }
             }
 
             else {
-                request.getSession().setAttribute("githubUserName", githubUsername);
-                request.getSession().setAttribute("token", base64Token);
-                request.getSession().setAttribute("userType", userType);
-                return JSONUtil.returnNoBindingResult("JSESSIONID=" + request.getSession().getId());
+                return JSONUtil.returnFailResult("用户类型登录类型错误");
             }
         }
-
         else {
-            return JSONUtil.returnFailResult("用户类型登录类型错误");
+            return JSONUtil.returnFailResult("请检查code是否正确");
         }
+
+
+
 
     }
 

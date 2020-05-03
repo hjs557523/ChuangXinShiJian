@@ -105,7 +105,7 @@ public class LoginController extends BaseController {
 
 //            servlet session 和 shiro session? : https://yq.aliyun.com/articles/114167?t=t1
 //            subject.getSession().setAttribute("student", (Student)subject.getPrincipal());
-            subject.getSession().setAttribute(student.getStudentId(), (Student)subject.getPrincipal());
+            subject.getSession().setAttribute("student", (Student)subject.getPrincipal());
 //            HttpSession session = request.getSession();
 //            Enumeration enumeration = session.getAttributeNames();
 //            while (enumeration.hasMoreElements()) {

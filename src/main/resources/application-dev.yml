@@ -46,7 +46,8 @@ spring:
     timeout: 500 #连接超时时间
     password: root
 
-
+uploadFile:
+  location: D:/GraduationProject/uploadFile #自定义上传文件本地保存路径
 
 #  activiti:
 #    check-process-definitions: false #自动检查、部署流程定义文件

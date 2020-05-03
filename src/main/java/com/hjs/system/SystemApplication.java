@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement //开启事务
 @MapperScan(basePackages = "com.hjs.system.mapper") //mapper 接口类扫描包配置
-@SpringBootApplication
 @EnableScheduling
+@SpringBootApplication
 public class SystemApplication {
     public static void main(String[] args) {
 

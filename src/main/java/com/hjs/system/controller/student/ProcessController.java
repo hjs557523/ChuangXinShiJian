@@ -1,19 +1,17 @@
 package com.hjs.system.controller.student;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.hjs.system.runnable.SendMessage;
+import com.hjs.system.schedule.WeChatAccessTokenTask;
 import com.hjs.system.api.ApiUtil;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.model.*;
 import com.hjs.system.model.Process;
-import com.hjs.system.service.GroupMemberService;
-import com.hjs.system.service.GroupService;
-import com.hjs.system.service.ProcessService;
-import com.hjs.system.service.StudentService;
-import com.hjs.system.vo.CommitStatistic;
-import com.hjs.system.vo.ProcessInfo;
-import com.hjs.system.vo.TaskStatistic;
+import com.hjs.system.service.*;
+import com.hjs.system.vo.*;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author 黄继升 16041321
@@ -38,6 +40,11 @@ public class ProcessController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProcessController.class);
 
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
+
+    @Autowired
+    private WeChatAccessTokenTask weChatAccessTokenTask;
+
     @Autowired
     private ProcessService processServiceImpl;
 
@@ -49,6 +56,9 @@ public class ProcessController {
 
     @Autowired
     private StudentService studentServiceImpl;
+
+    @Autowired
+    private TaskService taskServiceImpl;
 
 
     @RequestMapping(value = "/student/process/findAllProcess", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
@@ -79,6 +89,8 @@ public class ProcessController {
         }
     }
 
+
+
     @RequestMapping(value = "/student/process/addProcess", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addProcess(Process process) {
@@ -95,10 +107,12 @@ public class ProcessController {
         String executerIdsStr = process.getExecuterIdList();
         String[] executerIdArr = executerIdsStr.split(",");
         List<String> list = new ArrayList<>();
+        List<String> openIdList = new ArrayList<>();
         for (String sid : executerIdArr) {
             Integer intSid = Integer.parseInt(sid);
             Student member = studentServiceImpl.findStudentBySid(intSid);
             list.add(member.getGithubName());
+            openIdList.add(member.getOpenId());
         }
 
         List<String> list2 = new ArrayList<>();
@@ -113,25 +127,43 @@ public class ProcessController {
             header.put("Content-Type", "application/json; charset=utf-8");
             header.put("Connection", "keep-Alive");
             header.put("User-Agent", ((Student) SecurityUtils.getSubject().getPrincipal()).getGithubName());
-            logger.info(header.toString());
             String url = String.format(ApiUtil.REPO_ALL_ISSUES_URL, new Object[]{owner.getGithubName(), group.getRepositoryUrl()});
-            logger.info(url);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("title", process.getProcessTitle());
             jsonObject.put("body", process.getProcessDetail());
             jsonObject.put("labels", list2);
             jsonObject.put("assignees", list);
             String json = jsonObject.toJSONString();
-            logger.info(json);
             String result = ApiUtil.ApiPostRequest(url, json, header);
-            logger.info(result);
             JSONObject resultJson = JSONObject.parseObject(result);
             if (resultJson.getString("number") == null) {
-                return JSONUtil.returnFailResult("添加任务失败1");
+                return JSONUtil.returnFailResult("github创建issue失败");
             }
 
             process.setIssueNumber(Integer.parseInt(resultJson.getString("number")));
             if (processServiceImpl.insertProcess(process) > 0) {
+                // 发布消息订阅通知
+
+                for (String openId : openIdList) {
+                    WxMssVo wxMssVo = new WxMssVo();
+                    wxMssVo.setTouser(openId);
+                    wxMssVo.setPage("pages/myTask/myTask");
+                    wxMssVo.setTemplate_id("7tHGRJ6DoXw28_YtKewPg4OnKBn4nZRm9tMpI5vU-rs");
+                    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+                    Date date = process.getEndTime();
+                    String endTime = formatter.format(date);
+                    Map<String, TemplateData> map = new HashMap<>(4);
+                    map.put("thing1", new TemplateData(process.getProcessTitle()));
+                    map.put("date2", new TemplateData(endTime));
+                    map.put("phrase3", new TemplateData(process.getModuleUrl()));
+                    map.put("thing4", new TemplateData(process.getProcessDetail()));
+                    wxMssVo.setData(map);
+
+                    String wxAccessToken = weChatAccessTokenTask.getWxAccessToken();
+                    SendMessage sendMessage = new SendMessage(wxMssVo, wxAccessToken);
+                    executorService.execute(sendMessage);// 发送消息订阅
+                }
+
                 return JSONUtil.returnSuccessResult("添加子任务成功");
             } else {
                 return JSONUtil.returnFailResult("添加子任务失败");
@@ -330,10 +362,12 @@ public class ProcessController {
 
 
 
-    @RequestMapping(value = "/student/process/getAllMyDoProcess", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/student/process/getAllMyProcesses", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String getMyAllDoProcess() {
-        List<ProcessInfo> myProcesses = new ArrayList<>();
+        Map<String, List<ProcessInfo>> map = new HashMap<>();
+        List<ProcessInfo> myDoProcesses = new ArrayList<>();
+        List<ProcessInfo> myFinishedProcesses = new ArrayList<>();
         try {
             Student student = (Student) SecurityUtils.getSubject().getPrincipal();
             Integer sid = student.getSid();
@@ -351,15 +385,57 @@ public class ProcessController {
                                 Student s = studentServiceImpl.findStudentBySid(Integer.parseInt(b));
                                 list.add(s);
                             }
+                            Integer publisherId = process.getPublisherId();
+                            Integer groupId = process.getGroupId();
+                            Integer taskId = process.getProcessType();
+                            Student publisher = studentServiceImpl.findStudentBySid(publisherId);
+                            Group group = groupServiceImpl.findGroupByGid(groupId);
+                            Task task = taskServiceImpl.findTaskByTaskId(taskId);
+
+                            processInfo.setPublisher(publisher);
                             processInfo.setExecutorList(list);
-                            myProcesses.add(processInfo);
+                            processInfo.setGroup(group);
+                            processInfo.setTask(task);
+                            myDoProcesses.add(processInfo);
                             break;
                         }
                     }
+                } else {
+                    String[] arr = process.getExecuterIdList().split(",");
+                    for (String a : arr) {
+                        if (a.equals(sid.toString())) {
+                            ProcessInfo processInfo = new ProcessInfo();
+                            processInfo.setProcess(process);
+                            List<Student> list = new ArrayList<>();
+                            for (String b : arr) {
+                                Student s = studentServiceImpl.findStudentBySid(Integer.parseInt(b));
+                                list.add(s);
+                            }
+                            Integer publisherId = process.getPublisherId();
+                            Integer groupId = process.getGroupId();
+                            Integer taskId = process.getProcessType();
+                            logger.info(groupId.toString());
+
+                            Student publisher = studentServiceImpl.findStudentBySid(publisherId);
+                            Group group = groupServiceImpl.findGroupByGid(groupId);
+                            Task task = taskServiceImpl.findTaskByTaskId(taskId);
+
+                            processInfo.setPublisher(publisher);
+                            processInfo.setExecutorList(list);
+                            processInfo.setGroup(group);
+                            processInfo.setTask(task);
+                            myFinishedProcesses.add(processInfo);
+                            break;
+                        }
+                    }
+
                 }
             }
 
-            return JSONUtil.returnEntityResult(myProcesses);
+            map.put("undo", myDoProcesses);
+            map.put("finished", myFinishedProcesses);
+
+            return JSONUtil.returnEntityResult(map);
 
         } catch (Exception e) {
             logger.info("异常: " + e.getMessage());
@@ -367,5 +443,8 @@ public class ProcessController {
         }
 
     }
+
+
+
 
 }

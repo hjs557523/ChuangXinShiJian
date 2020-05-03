@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hjs.system.mapper.WeekPaperMapper" >
+  <resultMap id="BaseResultMap" type="com.hjs.system.model.WeekPaper" >
+    <id column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="this_week_work" property="thisWeekWork" jdbcType="VARCHAR" />
+    <result column="next_week_work" property="nextWeekWork" jdbcType="VARCHAR" />
+    <result column="sid" property="sid" jdbcType="INTEGER" />
+    <result column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="file" property="file" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uuid, this_week_work, next_week_work, sid, tid, create_time, file
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from week_paper
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="findAllWeekPaper" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from week_paper
+  </select>
+
+
+  <select id="findWeekPaperBySid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from week_paper
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="findWeekPaperByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from week_paper
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from week_paper
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.hjs.system.model.WeekPaper" >
+    insert into week_paper (uuid, this_week_work, next_week_work, 
+      sid, tid, create_time, 
+      file)
+    values (#{uuid,jdbcType=VARCHAR}, #{thisWeekWork,jdbcType=VARCHAR}, #{nextWeekWork,jdbcType=VARCHAR}, 
+      #{sid,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{file,jdbcType=VARCHAR})
+  </insert>
+
+
+  <insert id="insertSelective" parameterType="com.hjs.system.model.WeekPaper" >
+    insert into week_paper
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="thisWeekWork != null" >
+        this_week_work,
+      </if>
+      <if test="nextWeekWork != null" >
+        next_week_work,
+      </if>
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="file != null" >
+        file,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="thisWeekWork != null" >
+        #{thisWeekWork,jdbcType=VARCHAR},
+      </if>
+      <if test="nextWeekWork != null" >
+        #{nextWeekWork,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null" >
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="file != null" >
+        #{file,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjs.system.model.WeekPaper" >
+    update week_paper
+    <set >
+      <if test="thisWeekWork != null" >
+        this_week_work = #{thisWeekWork,jdbcType=VARCHAR},
+      </if>
+      <if test="nextWeekWork != null" >
+        next_week_work = #{nextWeekWork,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null" >
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="file != null" >
+        file = #{file,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.hjs.system.model.WeekPaper" >
+    update week_paper
+    set this_week_work = #{thisWeekWork,jdbcType=VARCHAR},
+      next_week_work = #{nextWeekWork,jdbcType=VARCHAR},
+      sid = #{sid,jdbcType=INTEGER},
+      tid = #{tid,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      file = #{file,jdbcType=VARCHAR}
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

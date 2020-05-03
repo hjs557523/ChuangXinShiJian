@@ -1,7 +1,9 @@
 package com.hjs.system.vo;
 
+import com.hjs.system.model.Group;
 import com.hjs.system.model.Process;
 import com.hjs.system.model.Student;
+import com.hjs.system.model.Task;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,6 +21,12 @@ public class ProcessInfo implements Serializable {
 
     private List<Student> executorList;
 
+    private Student publisher;
+
+    private Group group;
+
+    private Task task;
+
     public Process getProcess() {
         return process;
     }
@@ -35,11 +43,27 @@ public class ProcessInfo implements Serializable {
         this.executorList = executorList;
     }
 
-    @Override
-    public String toString() {
-        return "ProcessInfo{" +
-                "process=" + process +
-                ", executorList=" + executorList +
-                '}';
+    public Student getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Student publisher) {
+        this.publisher = publisher;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 }
