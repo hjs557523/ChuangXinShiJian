@@ -2,6 +2,7 @@ package com.hjs.system.controller.teacher;
 
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
+import com.hjs.system.base.utils.TokenUtil;
 import com.hjs.system.model.Student;
 import com.hjs.system.model.Teacher;
 import com.hjs.system.service.*;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 黄继升 16041321
@@ -53,29 +56,46 @@ public class TeacherIndexController {
     @Autowired
     private BbsReplyService bbsReplyService;
 
+    @Autowired
+    private HttpServletRequest request;
 
-    @RequestMapping(value = "/teacher/index", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+
+//    @RequestMapping(value = "/teacher/index", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+//    @ResponseBody
+//    public String getTeacherUserInfo(String access_token) {
+//        //if (access_token == null)
+//        if (StringUtil.isEmpty(access_token))
+//            return JSONUtil.returnFailResult("前端传递的 access_token 为空，请重新登录!");
+//
+//        String sessionId = SecurityUtils.getSubject().getSession().getId().toString();
+//
+//        if (access_token.equals(sessionId)) {
+//            //同一会话
+//            Teacher teacher = (Teacher) SecurityUtils.getSubject().getPrincipal();
+//            //统计下老师所管辖的班级人数
+//            //统计下老师所有的学生人数
+//            //统计下老师的课题
+//            //获得公告
+//            //
+//
+//            return JSONUtil.returnEntityResult(teacher);
+//
+//        } else {
+//            return JSONUtil.returnFailResult("登录状态已失效，请重新登录!");
+//        }
+//    }
+
+
+    @RequestMapping(value = "/teacher/index", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String getTeacherUserInfo(String access_token) {
-        //if (access_token == null)
-        if (StringUtil.isEmpty(access_token))
-            return JSONUtil.returnFailResult("前端传递的 access_token 为空，请重新登录!");
-
-        String sessionId = SecurityUtils.getSubject().getSession().getId().toString();
-
-        if (access_token.equals(sessionId)) {
-            //同一会话
+    public String getTeacherUserInfo() {
+        logger.info("请求了这个方法");
+        try {
             Teacher teacher = (Teacher) SecurityUtils.getSubject().getPrincipal();
-            //统计下老师所管辖的班级人数
-            //统计下老师所有的学生人数
-            //统计下老师的课题
-            //获得公告
-            //
-
             return JSONUtil.returnEntityResult(teacher);
-
-        } else {
-            return JSONUtil.returnFailResult("登录状态已失效，请重新登录!");
+        } catch (Exception e) { //抛出异常是由于session仍存在，但该用户已退出登录。就直接跳到登录界面
+            return JSONUtil.returnForbiddenResult("登录失效");
         }
+
     }
 }

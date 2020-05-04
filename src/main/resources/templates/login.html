@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../static/layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="../static/layuiadmin/style/login.css" media="all">
     <link rel="stylesheet" href="../static/layuiadmin/style/mycss.css" media="all">
- 
+
 </head>
 
 <body>
@@ -27,7 +27,7 @@
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-username"
                        for="LAY-user-login-username"></label>
-                <input type="text" name="studentId" id="LAY-user-login-username" lay-verify="required" placeholder="用户名"
+                <input type="text" name="teacherId" id="LAY-user-login-username" lay-verify="required" placeholder="用户名"
                        class="layui-input">
             </div>
             <div class="layui-form-item">
@@ -59,7 +59,7 @@
                        for="LAY-user-login-usertype"></label>
                 <select name="userType" lay-verify="required" id="LAY-user-login-usertype">
                     <option value="">请选择您的登录身份</option>
-                    <option value="0">学生登入</option>
+                    <!--<option value="0">学生登入</option>-->
                     <option value="1">教师登入</option>
                     <option value="2">管理员登入</option>
                 </select>
@@ -131,28 +131,10 @@
 
         //提交
         form.on('submit(LAY-user-login-submit)', function (obj) {
-            //   console.log(obj.field);
-            //   var a = 0;
-            //   while (a < 100) {
-            //     $.ajax({
-            //       type: 'GET',
-            //       header: {
-            //         "Authorization": "token d862884936d07ea21617b7b9cbbc2eb3df833c49",
-            //         "User-Agent": "Hjs's Graduation Project"
-            //       },
-            //       url: 'https://api.github.com/users/hjs557523?access_token=d862884936d07ea21617b7b9cbbc2eb3df833c49',
-            //       dataType: 'json',
-            //       success: function (res) {
-            //         console.log(res)
-            //       }
-            //     });
-            //     a++;
-            // }
-
             var api;
-            if (obj.field.userType == 0)
-                api = 'http://localhost:8080/student/login';
-            else if (obj.field.userType == 1)
+            // if (obj.field.userType == 0)
+            //     api = 'http://localhost:8080/student/login';
+            if (obj.field.userType == 1)
                 api = 'http://localhost:8080/teacher/login';
             else
                 api = 'http://localhost:8080/admin/login';
@@ -181,10 +163,10 @@
                     layer.msg('登录成功', {
                         offset: '15px'
                         , icon: 1
-                        , time: 1000
+                        , time: 1500
                     }, function () {
                         //location.href = './index.html?current_user='+res.data.userId; //后台主页
-                        location.href = './websocket.html';
+                        location.href = './index.html';
                     });
                 },
 

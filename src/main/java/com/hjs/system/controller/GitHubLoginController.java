@@ -54,7 +54,7 @@ public class GitHubLoginController {
 
 
     /**
-     * web端 github第三方授权登录 OAuth2 方式
+     * 教师web端 github第三方授权登录 OAuth2 方式
      * @param code
      * @param state
      * @return
@@ -106,36 +106,38 @@ public class GitHubLoginController {
         githubUser = JSONObject.parseObject(userInfo);
 
 
-        // 接下来执行github用户在本系统的登录操作
-        if ((s = studentServiceImpl.findStudentByGitHubName(githubUser.getString("login"))) != null) {
+        // 接下来执行教师github用户在本系统的登录操作
+        if ((t = teacherServiceImpl.findTeacherByGitHubName(githubUser.getString("login"))) != null) {
 
             // 接下来执行登录操作
-            String githubName = s.getGithubName();
+            String githubName = t.getGithubName();
 
             // Github免密登录
-            UserToken userToken = new UserToken(githubName, s.getPassword(), FREE_LOGIN);
+            UserToken userToken = new UserToken(githubName, t.getPassword(), FREE_LOGIN);
             userToken.setRememberMe(false);
             try {
 
                 //开始验证后台用户数据，完成shiro认证
                 Subject subject = SecurityUtils.getSubject();
                 subject.login(userToken);
-                SecurityUtils.getSubject().getSession().setAttribute(s.getStudentId(),  (Student) subject.getPrincipal());
-                SecurityUtils.getSubject().getSession().setTimeout(3 * 60 * 60 * 1000);//3小时
+                SecurityUtils.getSubject().getSession().setAttribute("Teacher",  (Teacher) subject.getPrincipal());
+                SecurityUtils.getSubject().getSession().setTimeout(6 * 60 * 60 * 1000);//6小时
 
-                return "redirect:/index.html?current_user=" + ((Student) subject.getPrincipal()).getStudentId();
+                return "redirect:/index.html";
 
             } catch (Exception e) {
                 logger.info("登录失败, 该github用户还没有绑定账号");
-                return "redirect:/user/binding.html";
+                return "redirect:/binding.html";
             }
 
 
         }
-        //else if (教师表不为null)
 
         else {
-            return "redirect:/user/binding.html";//跳转到绑定系统账号和github账号
+            logger.info("即将跳转到绑定账号界面");
+            request.getSession().setAttribute("githubUserName", githubUser.getString("login"));
+            request.getSession().setAttribute("githubAvatarUrl", githubUser.getString("avatar_url"));
+            return "redirect:/binding.html";//跳转到绑定系统账号和github账号
             //然后临时保存github 用户信息到session里，再定义一个Controller接收绑定参数（根据userType在表中进行插入。。草！）
         }
     }

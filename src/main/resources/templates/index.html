@@ -91,7 +91,7 @@
         <div class="layui-side-scroll">
           <div class="layui-logo" lay-href="home/console.html">
             <!--这里定义自动跳转的界面-->
-            <span>创新实践课程管理系统——学生端</span>
+            <span>创新实践课程管理系统——教师管理端</span>
           </div>
           
           <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -314,19 +314,11 @@
                 <cite>页面</cite>
               </a>
               <dl class="layui-nav-child">
-                <dd><a lay-href="template/personalpage.html">个人主页</a></dd>
                 <dd><a lay-href="template/addresslist.html">通讯录</a></dd>
-                <dd><a lay-href="template/goodslist.html">商品列表</a></dd>
                 <dd><a lay-href="template/msgboard.html">留言板</a></dd>
-                <dd><a lay-href="template/search.html">搜索结果</a></dd>
-                <dd><a href="user/reg.html" target="_blank">注册</a></dd>
-                <dd><a href="user/login.html" target="_blank">登入</a></dd>
-                <dd><a href="user/binding.html" target="_blank">忘记密码</a></dd>
                 <dd><a lay-href="template/tips/404.html">404页面不存在</a></dd>
                 <dd><a lay-href="template/tips/error.html">错误提示</a></dd>
                 <dd><a lay-href="http://www.baidu.com/">百度一下</a></dd>
-                <dd><a lay-href="http://www.layui.com/">layui官网</a></dd>
-                <dd><a lay-href="http://www.layui.com/admin/">layuiAdmin官网</a></dd>
               </dl>
             </li>
             <li data-name="app" class="layui-nav-item">
@@ -365,9 +357,6 @@
                 <cite>高级</cite>
               </a>
               <dl class="layui-nav-child">
-                <dd>
-                  <a layadmin-event="im">LayIM 通讯系统</a>  
-                </dd>
                 <dd data-name="echarts">
                   <a href="javascript:;">Echarts集成</a>
                   <dl class="layui-nav-child">
@@ -402,13 +391,6 @@
               </a>
               <dl class="layui-nav-child">
                 <dd class="layui-nav-itemed">
-                  <a href="javascript:;">系统设置</a>
-                  <dl class="layui-nav-child">
-                    <dd><a lay-href="set/system/website.html">网站设置</a></dd>
-                    <dd><a lay-href="set/system/email.html">邮件服务</a></dd>
-                  </dl>
-                </dd>
-                <dd class="layui-nav-itemed">
                   <a href="javascript:;">我的设置</a>
                   <dl class="layui-nav-child">
                     <dd><a lay-href="set/user/info.html">基本资料</a></dd>
@@ -416,12 +398,6 @@
                   </dl>
                 </dd>
               </dl>
-            </li>
-            <li data-name="get" class="layui-nav-item">
-              <a href="javascript:;" lay-href="http://www.layui.com/admin/#get" lay-tips="授权" lay-direction="2">
-                <i class="layui-icon layui-icon-auz"></i>
-                <cite>github授权</cite>
-              </a>
             </li>
           </ul>
         </div>
@@ -464,11 +440,11 @@
   </div>
 
   <script src="../static/mystatic/js/url.js" type="text/javascript"></script>
-  <script src="../layuiadmin/layui/layui.js"></script>
+  <script src="../static/layuiadmin/layui/layui.js"></script>
   <script src="../static/mystatic/js/url.js" type="text/javascript"></script>
   <script>
   layui.config({
-    base: '../layuiadmin/' //静态资源所在路径
+    base: '../static/layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
   }).use(['index', 'user', 'laytpl', 'jquery'], function () {
@@ -480,9 +456,9 @@
     //渲染主页数据
     admin.req({
       type: 'GET',
-      url: 'http://localhost:8080/student/index?current_user='+ getQueryVariable('current_user', getTopURL()),
+      url: 'http://localhost:8080/teacher/index',
       done: function (res) {
-        $("#studentName").html(res.data.name);
+        $("#studentName").html(res.data.realName);
       },
 
       fail: function (res) {
@@ -492,9 +468,9 @@
         layer.msg(res.msg, {
           offset: '15px'
           , icon: 1
-          , time: 1500
+          , time: 3000
         }, function () {
-          location.href = './login.html'; //后台主页
+          //location.href = './login.html'; //后台主页
         });
 
       }

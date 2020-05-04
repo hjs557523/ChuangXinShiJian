@@ -119,4 +119,48 @@ public class GitHubUserRegController {
         }
 
     }
+
+
+    @RequestMapping(value = "/web/githubBinding", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String RegistFromWeb(@RequestParam("teacherId") String teacherId, @RequestParam("realName") String realName, @RequestParam("password") String password) {
+
+        // 插入，再执行登录
+        if (request.getSession(false) == null) {
+            return JSONUtil.returnFailResult("先执行github用户的验证操作!");
+        }
+
+        logger.info("当前session的id = " + request.getSession(false).getId());
+        String githubName = (String) request.getSession().getAttribute("githubUserName");
+        String githubAvatarUrl = (String) request.getSession().getAttribute("githubAvatarUrl");
+        String md5Password = MD5Util.getMd5HashPassword(2, teacherId, password);
+
+        try {
+            Teacher teacher = new Teacher();
+            teacher.setGithubName(githubName);
+            teacher.setPicimg(githubAvatarUrl);
+            teacher.setRealName(realName);
+            teacher.setTeacherId(teacherId);
+            teacher.setPassword(md5Password);
+            if (teacherServiceImpl.addTeacher(teacher) > 0) {
+                UserToken userToken = new UserToken(teacherId, password, TEACHER_LOGIN_TYPE);
+                Subject subject = SecurityUtils.getSubject();
+                try {
+                    subject.login(userToken);
+                    SecurityUtils.getSubject().getSession().setAttribute("Teacher", (Teacher) subject.getPrincipal());
+                    SecurityUtils.getSubject().getSession().setTimeout(6 * 60 * 60 * 1000);
+                    logger.info("shiro session: " + SecurityUtils.getSubject().getSession().getId());
+                    return JSONUtil.returnEntityResult(teacher.getTeacherId());
+                } catch (Exception e) {
+                    logger.info("新绑定的用户密码错误");
+                    return JSONUtil.returnFailResult("绑定失败");
+                }
+            } else
+                return JSONUtil.returnFailResult("绑定失败");
+        } catch (Exception e) {
+            logger.info("数据库异常：" + e.getMessage());
+            return JSONUtil.returnFailResult("数据库异常");
+        }
+
+    }
 }

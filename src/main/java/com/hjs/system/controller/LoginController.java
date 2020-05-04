@@ -153,7 +153,7 @@ public class LoginController extends BaseController {
     @ResponseBody
     public String teacherLogin(Teacher teacher) {
         logger.info("接收到请求");
-        logger.info("登录Student: " + teacher);
+        logger.info("登录Teacher: " + teacher);
         if (StringUtil.isEmpty(teacher.getTeacherId()))
             return JSONUtil.returnFailResult("教师工号不能为空");
         else if (StringUtil.isEmpty(teacher.getPassword()))
