@@ -42,7 +42,7 @@
 
 
   <select id="findSubjectByTid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select * from subject s left join teacher t on s.tid = t.tid where tid = #{tid,jdbcType=INTEGER}
+    select * from subject s left join teacher t on s.tid = t.tid where s.tid = #{tid,jdbcType=INTEGER}
   </select>
 
 

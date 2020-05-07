@@ -14,6 +14,50 @@
 <body>
 
   <div class="layui-fluid">
+
+    <div class="layui-card">
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label" style="width: auto">请选择开设的课题</label>
+            <div class="layui-input-inline">
+              <select name="selectSubject" id="selectSubject" lay-verify="required" lay-filter="chooseSubject">
+                <script id="selectMode" type="text/html">
+                  <option selected="selected" value="">点击下拉选择</option>
+                  {{# layui.each(d.subjectList, function(index, item) { }}
+                  <option value='{{ item.subjectId }}'>{{ item.subjectName}}</option>
+                  {{# }); }}
+                </script>
+              </select>
+            </div>
+          </div>
+
+          <div class="layui-inline">
+            <label class="layui-form-label" style="width: auto">请选择课题小组</label>
+            <div class="layui-input-inline">
+              <select name="selectGroup" id="selectGroup" lay-verify="required" lay-filter="chooseGroup">
+                <script id="selectMode2" type="text/html">
+                  <option selected="selected" value="">点击下拉选择</option>
+                  {{# layui.each(d.groupList, function(index, item) { }}
+                  <option value='{{ item.gid }}'>{{ item.groupName }}</option>
+                  {{# }); }}
+                </script>
+              </select>
+            </div>
+          </div>
+
+          <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md6">
         <div class="layui-card">

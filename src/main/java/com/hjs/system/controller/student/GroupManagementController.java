@@ -167,8 +167,6 @@ public class GroupManagementController {
             return JSONUtil.returnFailResult("数据库查询失败");
 
         }
-
-
     }
 
 

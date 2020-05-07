@@ -506,7 +506,7 @@ public class ApiUtil {
 
 
     /**
-     * 代码统计 + commit统计
+     * 学生端代码统计 + commit统计
      * @param ownerGitHub
      * @param repo
      * @param accessToken
@@ -518,6 +518,59 @@ public class ApiUtil {
         String url = String.format(ApiUtil.REPO_ALL_COMMIT_STATS, new Object[]{ownerGitHub, repo});
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Basic " + accessToken);
+        header.put("Content-Type", "application/json; charset=utf-8");
+        header.put("Connection", "keep-Alive");
+        header.put("User-Agent", myGitHub);
+
+        String result = ApiGetRequest(url, null, header);
+        try {
+            JSONArray jsonArray = JSONArray.parseArray(result);
+            for (Object item : jsonArray) {
+                JSONObject jsonObject = (JSONObject) item;
+                CommitStatistic commitStatistic = new CommitStatistic();
+                commitStatistic.setTotalCodeNum(0);
+                List<Integer> weekCodeNum = new ArrayList<>();
+                Integer total = jsonObject.getInteger("total");
+                JSONArray weekArray = jsonObject.getJSONArray("weeks");
+                for (Object week : weekArray) {
+                    JSONObject weekObject = (JSONObject) week;
+                    Integer add = weekObject.getInteger("a");
+                    Integer del = weekObject.getInteger("d");
+                    commitStatistic.setTotalCodeNum(commitStatistic.getTotalCodeNum() + add - del);
+                    weekCodeNum.add(add - del);
+                }
+                commitStatistic.setWeekCodeNum(weekCodeNum);
+                JSONObject author = jsonObject.getJSONObject("author");
+                String githubName = author.getString("login");
+                commitStatistic.setTotalCommit(total);
+                commitStatistic.setGithubName(githubName);
+                list.add(commitStatistic);
+            }
+
+            return list;
+
+        } catch (Exception e) {
+            logger.info("产生异常: " + e.getMessage());
+            return null;
+        }
+
+    }
+
+
+
+    /**
+     * 教师端代码统计 + commit统计
+     * @param ownerGitHub
+     * @param repo
+     * @param accessToken
+     * @param myGitHub
+     * @return
+     */
+    public static List getMemberCommit2(String ownerGitHub, String repo, String accessToken, String myGitHub) {
+        List<CommitStatistic> list = new ArrayList<>();
+        String url = String.format(ApiUtil.REPO_ALL_COMMIT_STATS, new Object[]{ownerGitHub, repo});
+        Map<String, String> header = new HashMap<>();
+        header.put("Authorization", "bearer " + accessToken);
         header.put("Content-Type", "application/json; charset=utf-8");
         header.put("Connection", "keep-Alive");
         header.put("User-Agent", myGitHub);

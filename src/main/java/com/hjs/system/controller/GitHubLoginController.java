@@ -82,12 +82,13 @@ public class GitHubLoginController {
             responseStr = ApiUtil.ApiGetRequest(ApiUtil.CODE_URL, params, null);
         }
 
+        logger.info(responseStr);
         String access_token = ApiUtil.getMapForAccessToken(responseStr).get("access_token");
 
         logger.info("access_token = " + access_token);
 
         Map<String, String> header = new HashMap<>();
-        header.put("Authorization", "token " + access_token);
+        header.put("Authorization", "bearer " + access_token);
         header.put("User-Agent", "创新实践课程管理系统");
 
         Map<String, String> params2 = new HashMap<>();
@@ -104,6 +105,7 @@ public class GitHubLoginController {
 
         // 获取到github的用户信息
         githubUser = JSONObject.parseObject(userInfo);
+        request.getSession().setAttribute("token", access_token);
 
 
         // 接下来执行教师github用户在本系统的登录操作

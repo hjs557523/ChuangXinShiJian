@@ -5,7 +5,6 @@
     layui.use(["admin", "carousel"], function () {
 
 
-
         var e = layui.$, t = (layui.admin, layui.carousel), a = layui.element, i = layui.device();
         // e.ajax({
         //     type: 'GET',
