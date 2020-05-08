@@ -16,19 +16,19 @@
       <div class="layui-form layui-card-header layuiadmin-card-header-auto">
         <div class="layui-form-item">
           <div class="layui-inline">
-            <label class="layui-form-label">课题ID</label>
+            <label class="layui-form-label">周报ID</label>
             <div class="layui-input-inline">
               <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
           </div>
           <div class="layui-inline">
-            <label class="layui-form-label">课题名称</label>
+            <label class="layui-form-label">学生姓名</label>
             <div class="layui-input-inline">
               <input type="text" name="author" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
           </div>
           <div class="layui-inline">
-            <label class="layui-form-label">标题</label>
+            <label class="layui-form-label">学生学号</label>
             <div class="layui-input-inline">
               <input type="text" name="title" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
@@ -43,18 +43,21 @@
 
       <div class="layui-card-body">
         <div style="padding-bottom: 10px;">
-          <button class="layui-btn layuiadmin-btn-list" data-type="batchdel">删除</button>
-          <button class="layui-btn layuiadmin-btn-list" data-type="add">添加</button>
-          <a href="D:/GraduationProject/uploadFile/student/16041321/weekPaper/1588319560735_《创新综合实践立项报告》-16041321-黄继升.docx"  download="文件名称">文件名称</a>
         </div>
         <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table> 
         <script type="text/html" id="buttonTpl">
-          {{#  if(d.selected > 0){ }}
-            <button class="layui-btn layui-btn-xs">已有{{ d.selected }}个小组选择</button>
+          {{#  if(typeof(d.weekPaper.file) !== 'undefined'){  }}
+            <button class="layui-btn layui-btn-xs layui-btn-warm" lay-event="download">点击下载附件</button>
           {{#  } else { }}
-            <button class="layui-btn layui-btn-primary layui-btn-xs">未有学生选择课题</button>
+            <button class="layui-btn layui-btn-primary layui-btn-xs">未有上传附件</button>
           {{#  } }}
         </script>
+
+        <script type="text/html" id="imgTpl">
+          <img style="display: inline-block; width: auto; height: 100%;" src= {{ d.student.picImg }}>
+        </script>
+
+
         <script type="text/html" id="table-content-list">
           <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
           <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
@@ -69,7 +72,7 @@
     base: '../../../layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
-  }).use(['index', 'contlist', 'table'], function(){
+  }).use(['index', 'weekpaper', 'table'], function(){
     var table = layui.table
     ,form = layui.form;
     

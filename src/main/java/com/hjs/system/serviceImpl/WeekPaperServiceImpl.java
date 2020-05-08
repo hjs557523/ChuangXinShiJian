@@ -28,6 +28,12 @@ public class WeekPaperServiceImpl implements WeekPaperService {
 
     @Cacheable
     @Override
+    public WeekPaper findWeekPaperByUUID(String uuid) {
+        return weekPaperMapper.selectByPrimaryKey(uuid);
+    }
+
+    @Cacheable
+    @Override
     public Page<WeekPaper> findWeekPaperByPage(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo, pageSize);
         return weekPaperMapper.findAllWeekPaper();

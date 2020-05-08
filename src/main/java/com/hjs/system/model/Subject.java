@@ -7,8 +7,6 @@ public class Subject implements Serializable {
 
     private Integer subjectId;
 
-//    private Integer tid;
-
     private Teacher teacher;
 
     private String subjectName;

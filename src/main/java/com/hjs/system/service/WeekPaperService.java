@@ -12,6 +12,8 @@ import com.hjs.system.model.WeekPaper;
  */
 public interface WeekPaperService {
 
+    WeekPaper findWeekPaperByUUID(String uuid);
+
     Page<WeekPaper> findWeekPaperByPage(int pageNo, int pageSize);
 
     Page<WeekPaper> findWeekPaperBySidAndPage(Integer sid, int pageNo, int pageSize);

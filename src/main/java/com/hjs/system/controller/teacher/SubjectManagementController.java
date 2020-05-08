@@ -4,9 +4,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.hjs.system.base.utils.JSONUtil;
 import com.hjs.system.base.utils.StringUtil;
+import com.hjs.system.model.Group;
 import com.hjs.system.model.Subject;
 import com.hjs.system.model.Teacher;
+import com.hjs.system.service.GroupService;
 import com.hjs.system.service.SubjectService;
+import com.hjs.system.vo.SubjectVO;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +40,9 @@ public class SubjectManagementController {
     private SubjectService subjectServiceImpl;
 
     @Autowired
+    private GroupService groupServiceImpl;
+
+    @Autowired
     private HttpServletRequest request;
 
 
@@ -44,7 +51,7 @@ public class SubjectManagementController {
      * @param subject
      * @return
      */
-    @RequestMapping(value = "/teacher/subject/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/teacher/subject/create", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String createSubject(Subject subject) {
         if (StringUtil.isEmpty(subject.getSubjectName()))
@@ -76,7 +83,7 @@ public class SubjectManagementController {
      * 教师删除课题接口
      * @return
      */
-    @RequestMapping(value = "/teacher/subject/delete", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/teacher/subject/delete", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteSubject(Integer subjectId) {
         if (subjectId == null)
@@ -86,10 +93,8 @@ public class SubjectManagementController {
                 // 获取当前教师用户
                 Teacher current_user = (Teacher) SecurityUtils.getSubject().getPrincipal();
                 Subject delSubejct = subjectServiceImpl.findSubjectBySubjectId(subjectId);
-                // 删除前再检查是否是当前老师的课题
-                if (delSubejct.getTeacher().getTid() != current_user.getTid())
-                    return JSONUtil.returnFailResult("您没有权限删除该课题！");
-                else if (subjectServiceImpl.deleteSubjectBySubjectId(subjectId) > 0)
+
+                if (subjectServiceImpl.deleteSubjectBySubjectId(subjectId) > 0)
                     return JSONUtil.returnSuccessResult("删除课题成功！");
                 else
                     return JSONUtil.returnFailResult("删除课题失败，请稍后重试！");
@@ -115,7 +120,7 @@ public class SubjectManagementController {
         if (pageNum == null) {
             pageNum = 1;
         } else if (pageSize == null) {
-            pageSize = 12;
+            pageSize = 10;
         }
 
         logger.info("分页查询第{}页，每页{}条", pageNum, pageSize);
@@ -139,14 +144,54 @@ public class SubjectManagementController {
 
 
 
+    @RequestMapping(value = "/teacher/subject/findAllMine2", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String findMySubjectByPage2(@RequestParam("page")Integer pageNum, @RequestParam("limit")Integer pageSize) {
+        List<SubjectVO> subjectVOS = new ArrayList<>();
+        if (pageNum == null) {
+            pageNum = 1;
+        } else if (pageSize == null) {
+            pageSize = 10;
+        }
+
+        logger.info("分页查询第{}页，每页{}条", pageNum, pageSize);
+        // 获取当前教师用户
+        Teacher current_user = (Teacher) SecurityUtils.getSubject().getPrincipal();
+        Integer tid = current_user.getTid();
+        try {
+            Page<Subject> subjects = subjectServiceImpl.findSubjectByTid(tid, pageNum, pageSize);
+            PageInfo<Subject> pageInfo = new PageInfo<>(subjects);
+            for (Subject s : pageInfo.getList()) {
+                SubjectVO subjectVO = new SubjectVO();
+                subjectVO.setSubject(s);
+                Page<Group> groups = groupServiceImpl.findGroupBySubjectId(s.getSubjectId(), 0, 0);
+                Integer count2 = (int) groups.getTotal();
+                subjectVO.setSelected(count2);
+                subjectVOS.add(subjectVO);
+            }
+            Integer count = (int) pageInfo.getTotal();
+            if (count == 0)
+                return JSONUtil.returnEntityResult(count, "您没有任何课题，请先创建课题！", subjectVOS);
+            else
+                return JSONUtil.returnEntityResult(count, "您创建的课题记录如下：", subjectVOS);
+        } catch (Exception e) {
+            logger.info("查询出错：" + e.getMessage());
+            return JSONUtil.returnFailResult("数据库查询失败");
+        }
+    }
+
+
+
+
     /**
      * 教师修改课题接口
      * @param subject
      * @return
      */
-    @RequestMapping(value = "/teacher/subject/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/teacher/subject/update", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String modifySubjectInfo(Subject subject) {
+        logger.info(subject.toString());
         // 校验数据
         if (StringUtil.isEmpty(subject.getSubjectName()))
             return JSONUtil.returnFailResult("请设置您的课题名称");
