@@ -61,6 +61,8 @@ public class GitHubLoginController {
      */
     @RequestMapping("/callback")
     public String githubUserLogin(@RequestParam("code") String code, @RequestParam("state") String state) {
+        logger.info("code = " + code);
+
         String userInfo = null;
         String responseStr = null;
         JSONObject githubUser = null;
@@ -131,7 +133,6 @@ public class GitHubLoginController {
                 logger.info("登录失败, 该github用户还没有绑定账号");
                 return "redirect:/binding.html";
             }
-
 
         }
 

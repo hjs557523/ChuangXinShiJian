@@ -43,6 +43,7 @@
             }
         }
     }
+
     function sendMessage() {
         if(typeof(WebSocket) == "undefined") {
             console.log("您的浏览器不支持WebSocket");
@@ -52,6 +53,7 @@
             socket.send('{"toUserId":"'+$("#toUserId").val()+'","contentText":"'+$("#contentText").val()+'"}');
         }
     }
+
 </script>
 <body>
 <p>【userId】：<div><input id="userId" name="userId" type="text" value="10"></div>

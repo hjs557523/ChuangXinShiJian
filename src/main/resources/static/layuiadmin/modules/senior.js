@@ -200,7 +200,7 @@
 
                     if (res.data.length > 0) {
                         for (var i = 0; i < res.data[0].weekCodeNum.length; i++) {
-                            weekNameList.push('第' + i + '周');
+                            weekNameList.push('第' + (i + 1) + '周');
                         }
                     }
 
