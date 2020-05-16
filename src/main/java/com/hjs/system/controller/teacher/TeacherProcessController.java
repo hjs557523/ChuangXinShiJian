@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,6 +61,7 @@ public class TeacherProcessController {
     @RequestMapping(value = "/teacher/process/taskStatistic", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String getTaskStatistic(@RequestParam("groupId") Integer groupId) {
+        DecimalFormat df = new DecimalFormat("0.00");
         List<TaskStatistic> result = new ArrayList<>();
 
         Map<String, TaskStatistic> map = new HashMap<>();
@@ -100,7 +102,9 @@ public class TeacherProcessController {
                     }
                 }
             }
+
             for (String key : map.keySet()) {
+                map.get(key).setPercent(((float) map.get(key).getFinish() / map.get(key).getCount()) * 100);
                 result.add(map.get(key));
             }
 

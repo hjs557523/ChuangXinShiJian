@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Echarts集成 - 折线图</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: auto">请选择开设的课题</label>
+                    <div class="layui-input-inline">
+                        <select name="selectSubject" id="selectSubject" lay-verify="required" lay-filter="chooseSubject">
+                            <script id="selectMode" type="text/html">
+                                <option selected="selected" value="">点击下拉选择</option>
+                                {{# layui.each(d.subjectList, function(index, item) { }}
+                                <option value='{{ item.subjectId }}'>{{ item.subjectName}}</option>
+                                {{# }); }}
+                            </script>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: auto">请选择课题小组</label>
+                    <div class="layui-input-inline">
+                        <select name="selectGroup" id="selectGroup" lay-verify="required" lay-filter="chooseGroup">
+                            <script id="selectMode2" type="text/html">
+                                <option selected="selected" value="">点击下拉选择</option>
+                                {{# layui.each(d.groupList, function(index, item) { }}
+                                <option value='{{ item.gid }}'>{{ item.groupName }}</option>
+                                {{# }); }}
+                            </script>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-normcol">
+                            <div carousel-item id="LAY-index-normcol">
+                                <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-col-md12">
+                    <!--<div class="layui-card-header" style="font-size: 16px; font-weight: 500">任务完成统计表格</div>-->
+                    <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
+                    <!--<script type="text/html" id="buttonTpl">-->
+                        <!--{{#  if(typeof(d.weekPaper.file) !== 'undefined'){  }}-->
+                        <!--<button class="layui-btn layui-btn-xs layui-btn-warm" lay-event="download">点击下载附件</button>-->
+                        <!--{{#  } else { }}-->
+                        <!--<button class="layui-btn layui-btn-primary layui-btn-xs">未有上传附件</button>-->
+                        <!--{{#  } }}-->
+                    <!--</script>-->
+
+                    <script type="text/html" id="imgTpl">
+                        <img style="display: inline-block; width: auto; height: 100%;" src={{ d.avatar }}>
+                    </script>
+
+
+                    <script type="text/html" id="table-content-list">
+                        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
+                                class="layui-icon layui-icon-edit"></i>提出建议</a>
+                        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i-->
+                                <!--class="layui-icon layui-icon-delete"></i>删除</a>-->
+                    </script>
+                </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../../../static/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../../static/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'task', 'table'], function () {
+
+    });
+</script>
+</body>
+</html>
+
+
+
