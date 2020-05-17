@@ -1724,12 +1724,20 @@ a cite {
     background-color: #FF5722 !important
 }
 
+.layui-bg-red2 {
+    background-color: #FF0000 !important
+}
+
 .layui-bg-orange {
     background-color: #FFB800 !important
 }
 
 .layui-bg-green {
     background-color: #009688 !important
+}
+
+.layui-bg-lightgreen {
+    background-color: #5FB878 !important
 }
 
 .layui-bg-cyan {

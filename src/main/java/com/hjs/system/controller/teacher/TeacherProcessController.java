@@ -10,6 +10,7 @@ import com.hjs.system.model.Process;
 import com.hjs.system.schedule.WeChatAccessTokenTask;
 import com.hjs.system.service.*;
 import com.hjs.system.vo.CommitStatistic;
+import com.hjs.system.vo.ProcessInfo;
 import com.hjs.system.vo.TaskStatistic;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -160,5 +161,40 @@ public class TeacherProcessController {
             return JSONUtil.returnFailResult("error2");
         }
 
+    }
+
+
+    @RequestMapping(value = "/teacher/process/getAllProcessInfoByGid", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String getGroupAllProcessInfo(@RequestParam("groupId") Integer groupId) {
+        List<ProcessInfo> processInfoList = new ArrayList<>();
+        if (groupId == null)
+            return JSONUtil.returnFailResult("groupId null");
+        try {
+            Page<Process> processes = processServiceImpl.findProcessByGroupId(groupId, 0, 0);
+            PageInfo<Process> processPageInfo = new PageInfo<>(processes);
+            for (Process process : processPageInfo.getList()) {
+                ProcessInfo processInfo = new ProcessInfo();
+                processInfo.setProcess(process);
+                String[] arr = process.getExecuterIdList().split(",");
+                List<Student> students = new ArrayList<>();
+                for (String s : arr) {
+                    Student student = studentServiceImpl.findStudentBySid(Integer.parseInt(s));
+                    students.add(student);
+                }
+                processInfo.setExecutorList(students);
+                Student student = studentServiceImpl.findStudentBySid(process.getPublisherId());
+                processInfo.setPublisher(student);
+                Task task = taskServiceImpl.findTaskByTaskId(process.getProcessType());
+                processInfo.setTask(task);
+                processInfoList.add(processInfo);
+            }
+
+            return JSONUtil.returnEntityResult(processInfoList);
+
+        } catch (Exception e) {
+            logger.info("数据库异常: " + e.getMessage());
+        }
+        return null;
     }
 }
