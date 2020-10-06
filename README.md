@@ -1,4 +1,4 @@
-# GraduationProject
+# 创新实践课程管理系统
 * 学生端: 微信小程序
 * 教师端: web管理后台
 * 服务端: Java编写
